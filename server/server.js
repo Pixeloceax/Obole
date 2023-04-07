@@ -1,47 +1,28 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 const app = express();
+const axios = require('axios');
+const MongoClient = require('mongodb').MongoClient;
 
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+const url = 'mongodb://localhost:27017';
+const dbName = 'bank';
 
-// Route pour la page d'accueil
-app.get('/', (req, res) => {
-  res.send('Bienvenue sur la page d accueil !');
+app.get('/clients', function(req, res) {
+MongoClient.connect(url, function(err, client) {
+const db = client.db(dbName);
+const collection = db.collection('clients');
+collection.find({}).toArray(function(err, docs) {
+  if (err) {
+    console.log(err);
+    client.close();
+    res.status(500).send('Error retrieving data');
+  } else {
+    res.send(docs);
+    client.close();
+  }
+});
+});
 });
 
-// Route pour la liste des utilisateurs
-app.get('/users', (req, res) => {
-  res.send('Voici la liste des utilisateurs !');
-});
-
-// Route pour créer un nouvel utilisateur
-app.post('/users', (req, res) => {
-  const user = req.body;
-  console.log(user);
-  res.send('L utilisateur a été créé avec succès !');
-});
-
-// Route pour mettre à jour un utilisateur existant
-app.put('/users/:id', (req, res) => {
-  const id = req.params.id;
-  const user = req.body;
-  console.log(`Mise à jour de l'utilisateur avec l'ID ${id} :`, user);
-  res.send(`L'utilisateur avec l'ID ${id} a été mis à jour avec succès !`);
-});
-
-// Route pour supprimer un utilisateur existant
-app.delete('/users/:id', (req, res) => {
-  const id = req.params.id;
-  console.log(`Suppression de l'utilisateur avec l'ID ${id}`);
-  res.send(`L'utilisateur avec l'ID ${id} a été supprimé avec succès !`);
-});
-
-// Démarrage du serveur
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Le serveur est en cours d'exécution sur le port ${port}`);
+app.listen(3001, function() {
+console.log('Server listening on port 3001');
 });

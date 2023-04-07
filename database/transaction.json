@@ -1,0 +1,8 @@
+{
+  "_id": "606ecf3277297f8cdecb0802",
+  "account_number": "FR123456789",
+  "type": "debit",
+  "amount": 100,
+  "date": "2022-04-01T12:00:00Z",
+  "description": "achat en ligne"
+}
