@@ -1,28 +1,50 @@
-const express = require('express');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+
 const app = express();
-const axios = require('axios');
-const MongoClient = require('mongodb').MongoClient;
+app.use(cors());
 
-const url = 'mongodb://localhost:27017';
-const dbName = 'bank';
+const uri =
+  "mongodb+srv://obole:1YUM76QQgyYnfcbc@obole.dqfi0yz.mongodb.net/bank?retryWrites=true&w=majority";
 
-app.get('/clients', function(req, res) {
-MongoClient.connect(url, function(err, client) {
-const db = client.db(dbName);
-const collection = db.collection('clients');
-collection.find({}).toArray(function(err, docs) {
-  if (err) {
-    console.log(err);
-    client.close();
-    res.status(500).send('Error retrieving data');
-  } else {
-    res.send(docs);
-    client.close();
+async function connect() {
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.log("Error connecting to MongoDB", err);
+  }
+}
+
+connect();
+
+const clientSchema = new mongoose.Schema({
+  first_name: String,
+  last_name: String,
+  address: {
+    street: String,
+    city: String,
+    postal_code: String,
+  },
+  phone: String,
+  email: String,
+});
+
+const Client = mongoose.model("Client", clientSchema);
+
+app.get("/api/clients", async (req, res) => {
+  try {
+    const clients = await Client.find();
+    res.json(clients);
+  } catch (err) {
+    res.status(500).send(err);
   }
 });
-});
-});
 
-app.listen(3001, function() {
-console.log('Server listening on port 3001');
+app.listen(3001, () => {
+  console.log("Server listening on port 3001");
 });
