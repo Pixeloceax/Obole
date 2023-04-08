@@ -4,22 +4,22 @@ const { MongoClient } = require("mongodb");
 
 const uri =
   "mongodb+srv://obole:1YUM76QQgyYnfcbc@obole.dqfi0yz.mongodb.net/bank?retryWrites=true&w=majority";
-const client = new MongoClient(uri, {
+const MongoClientConnection = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 router.get("/", (req, res) => {
-  client.connect((err) => {
-    const collection = client.db("bank").collection("clients");
-    collection.find({}).toArray((err, docs) => {
+  MongoClientConnection.connect((err) => {
+    const database = MongoClientConnection.db("bank");
+    database.listCollections().toArray((err, collections) => {
       if (err) {
         console.error(err);
-        res.status(500).send("Error retrieving clients");
+        res.status(500).send("Error retrieving collections");
       } else {
-        res.send(docs);
+        res.send(collections.map((c) => c.name));
       }
-      client.close();
+      MongoClientConnection.close();
     });
   });
 });
