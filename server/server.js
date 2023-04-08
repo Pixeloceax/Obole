@@ -22,6 +22,8 @@ async function connect() {
 
 connect();
 
+// clients schema and model definition
+
 const clientSchema = new mongoose.Schema({
   first_name: String,
   last_name: String,
@@ -30,8 +32,10 @@ const clientSchema = new mongoose.Schema({
     city: String,
     postal_code: String,
   },
-  phone: String,
-  email: String,
+  contact: {
+    phone: String,
+    email: String,
+  },
 });
 
 const Client = mongoose.model("Client", clientSchema);
@@ -40,6 +44,45 @@ app.get("/api/clients", async (req, res) => {
   try {
     const clients = await Client.find();
     res.json(clients);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// accounts schema and model definition
+
+const securitySchema = new mongoose.Schema({
+  username: String,
+  password: String,
+  pin: String,
+});
+
+const Security = mongoose.model("Security", securitySchema);
+
+app.get("/api/security", async (req, res) => {
+  try {
+    const security = await Security.find();
+    res.json(security);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// audit schema and model definition
+
+const auditSchema = new mongoose.Schema({
+  user_id: String,
+  action: String,
+  date: Date,
+  result: String,
+});
+
+const Audit = mongoose.model("Audit", auditSchema);
+
+app.get("/api/audit", async (req, res) => {
+  try {
+    const audit = await Audit.find();
+    res.json(audit);
   } catch (err) {
     res.status(500).send(err);
   }

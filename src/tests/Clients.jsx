@@ -16,29 +16,29 @@ function Clients() {
   }, []);
 
   return (
-    <div>
-      <h1>Clients</h1>
-      <table>
+    <div className="container mx-auto">
+      <h1 className="text-3xl font-bold mb-4">Clients</h1>
+      <table className="table-auto">
         <thead>
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Email</th>
+            <th className="px-4 py-2">First Name</th>
+            <th className="px-4 py-2">Last Name</th>
+            <th className="px-4 py-2">Address</th>
+            <th className="px-4 py-2">Phone</th>
+            <th className="px-4 py-2">Email</th>
           </tr>
         </thead>
         <tbody>
           {clients.map((client) => (
             <tr key={client._id}>
-              <td>{client.first_name}</td>
-              <td>{client.last_name}</td>
-              <td>
+                        <td className="border px-4 py-2">{client.first_name}</td>
+              <td className="border px-4 py-2">{client.last_name}</td>
+              <td className="border px-4 py-2">
                 {client.address.street} {client.address.city}{" "}
                 {client.address.postal_code}
               </td>
-              <td>{client.phone}</td>
-              <td>{client.email}</td>
+              <td className="border px-4 py-2">{client.contact.phone}</td>
+              <td className="border px-4 py-2">{client.contact.email}</td>
             </tr>
           ))}
         </tbody>

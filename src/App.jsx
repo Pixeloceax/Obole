@@ -1,8 +1,14 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+//pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Clients from "./pages/Clients";
+
+// testing pages
+import Clients from "./tests/Clients";
+import RetrieveAllDataFromOneID from "./tests/RetrieveAllDataFromOneID";
+import LoginTest from "./tests/LoginTest";
 
 function App() {
   return (
@@ -11,6 +17,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/clients" element={<Clients />} />
+        <Route path="/retrieve" element={<RetrieveAllDataFromOneID />} />
+        <Route path="/loginTest" element={<LoginTest />} />
       </Routes>
     </BrowserRouter>
   );
