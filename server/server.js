@@ -1,47 +1,93 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
 app.use(cors());
 
-// Route pour la page d'accueil
-app.get('/', (req, res) => {
-  res.send('Bienvenue sur la page d accueil !');
+const uri =
+  "mongodb+srv://obole:1YUM76QQgyYnfcbc@obole.dqfi0yz.mongodb.net/bank?retryWrites=true&w=majority";
+
+async function connect() {
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.log("Error connecting to MongoDB", err);
+  }
+}
+
+connect();
+
+// clients schema and model definition
+
+const clientSchema = new mongoose.Schema({
+  first_name: String,
+  last_name: String,
+  address: {
+    street: String,
+    city: String,
+    postal_code: String,
+  },
+  contact: {
+    phone: String,
+    email: String,
+  },
 });
 
-// Route pour la liste des utilisateurs
-app.get('/users', (req, res) => {
-  res.send('Voici la liste des utilisateurs !');
+const Client = mongoose.model("Client", clientSchema);
+
+app.get("/api/clients", async (req, res) => {
+  try {
+    const clients = await Client.find();
+    res.json(clients);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
-// Route pour créer un nouvel utilisateur
-app.post('/users', (req, res) => {
-  const user = req.body;
-  console.log(user);
-  res.send('L utilisateur a été créé avec succès !');
+// accounts schema and model definition
+
+const securitySchema = new mongoose.Schema({
+  username: String,
+  password: String,
+  pin: String,
 });
 
-// Route pour mettre à jour un utilisateur existant
-app.put('/users/:id', (req, res) => {
-  const id = req.params.id;
-  const user = req.body;
-  console.log(`Mise à jour de l'utilisateur avec l'ID ${id} :`, user);
-  res.send(`L'utilisateur avec l'ID ${id} a été mis à jour avec succès !`);
+const Security = mongoose.model("Security", securitySchema);
+
+app.get("/api/security", async (req, res) => {
+  try {
+    const security = await Security.find();
+    res.json(security);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
-// Route pour supprimer un utilisateur existant
-app.delete('/users/:id', (req, res) => {
-  const id = req.params.id;
-  console.log(`Suppression de l'utilisateur avec l'ID ${id}`);
-  res.send(`L'utilisateur avec l'ID ${id} a été supprimé avec succès !`);
+// audit schema and model definition
+
+const auditSchema = new mongoose.Schema({
+  user_id: String,
+  action: String,
+  date: Date,
+  result: String,
 });
 
-// Démarrage du serveur
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Le serveur est en cours d'exécution sur le port ${port}`);
+const Audit = mongoose.model("Audit", auditSchema);
+
+app.get("/api/audit", async (req, res) => {
+  try {
+    const audit = await Audit.find();
+    res.json(audit);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+app.listen(3001, () => {
+  console.log("Server listening on port 3001");
 });

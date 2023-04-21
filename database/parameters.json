@@ -1,0 +1,18 @@
+{
+  "_id": "parameters",
+  "transaction_limit": 5000,
+  "daily_withdrawal_limit": 2000,
+  "interest_rate": 0.02,
+  "minimum_balance": 100,
+  "transaction_fee": 0.01,
+  "max_login_attempts": 3,
+  "session_timeout": 30,
+  "password_complexity": {
+    "min_length": 8,
+    "max_length": 20,
+    "require_uppercase": true,
+    "require_lowercase": true,
+    "require_numeric": true,
+    "require_special_characters": false
+  }
+}

@@ -1,0 +1,7 @@
+obole
+1YUM76QQgyYnfcbc
+
+fowarded port into vscode : 3001
+mongo "mongodb+srv://obole.dqfi0yz.mongodb.net/bank" --username obole --password 1YUM76QQgyYnfcbc
+
+mongodb+srv://obole:1YUM76QQgyYnfcbc@obole.dqfi0yz.mongodb.net/bank?retryWrites=true&w=majority

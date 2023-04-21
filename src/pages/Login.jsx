@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assets/Logo_white_bg_gray.png";
+// import logo from "../assets/Logo_white_bg_gray.png";
 import "../styles/index.css";
 
 const Login = () => {
