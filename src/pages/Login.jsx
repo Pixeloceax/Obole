@@ -1,8 +1,30 @@
-import React from "react";
 import logo from "../assets/Logo_white_bg_gray.png";
+import React, { useState, useEffect } from "react";
 import "../styles/index.css";
 
 const Login = () => {
+  const [message, setMessage] = useState("");
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const formDataJSON = Object.fromEntries(formData.entries());
+
+    const response = await fetch("http://localhost:3001/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formDataJSON),
+    });
+
+    const data = await response.json();
+    setMessage(data.message);
+  };
+
+  useEffect(() => {
+    setMessage("");
+  }, []);
+
   return (
     <div className="md:min-h-screen flex items-center justify-center bg-gray-100">
       <div className="md:max-w-lg md:w-[80%] md:space-y-8">
@@ -15,7 +37,7 @@ const Login = () => {
               Login
             </h2>
           </div>
-          <form className="mt-8 space-y-6">
+          <form className="mt-8 space-y-6" onSubmit={handleFormSubmit}>
             <div className="justify-center md:p-0 p-5">
               <div className="mb-5">
                 <input
@@ -40,22 +62,6 @@ const Login = () => {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember_me"
-                  name="remember_me"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="remember_me"
-                  className="ml-2 block text-sm text-white"
-                >
-                  Remember me
-                </label>
-              </div>
-            </div>
             <div>
               <button
                 type="submit"
@@ -65,6 +71,9 @@ const Login = () => {
               </button>
             </div>
           </form>
+          {message && (
+            <div className="text-center text-red-500 mt-2">{message}</div>
+          )}
         </div>
       </div>
     </div>

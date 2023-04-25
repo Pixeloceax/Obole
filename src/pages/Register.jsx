@@ -1,21 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import logo from "../assets/Logo_white_bg_gray.png";
 import "../styles/index.css";
 
 const Register = () => {
+  const [message, setMessage] = useState("");
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const formDataJSON = Object.fromEntries(formData.entries());
+
+    const response = await fetch("http://localhost:3001/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formDataJSON),
+    });
+
+    const data = await response.json();
+    setMessage(data.message);
+  };
+
+  useEffect(() => {
+    setMessage("");
+  }, []);
   return (
     <div className="md:min-h-screen flex items-center justify-center bg-gray-100">
       <div className="">
         <div className="bg-black sm:p-20 p-10 pt-10 md:rounded-3xl h-screen md:h-[90vh] md:w-[70vh] w-screen">
           <div className="flex justify-center">
-            <img className="" src={logo} alt="logo" />
+            <img className="h-[15rem] md:h-fit" src={logo} alt="logo" />
           </div>
           <div>
             <h2 className="text-center text-3xl font-extrabold text-white">
               Register
             </h2>
           </div>
-          <form className="md:mt-8 mt-2 md:space-y-16 space-y-2">
+          <form className="md:mt-2 mt-0 md:space-y-10 space-y-2"  onSubmit={handleFormSubmit}>
             <div class="md:flex justify-center">
               <div class="justify-center md:p-0 p-5">
                 <div class="mb-5">
@@ -40,6 +61,17 @@ const Register = () => {
                     placeholder="Prenom"
                   />
                 </div>
+                <div className="mt-5">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                    class="input appearance-none relative block w-full px-3 pr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    placeholder="Email"
+                  />
+                </div>
               </div>
               <div class="justify-center md:p-0 p-5 md:ml-5">
                 <div class="mb-5">
@@ -55,8 +87,8 @@ const Register = () => {
                 </div>
                 <div>
                   <input
-                    id="telephone"
-                    name="telephone"
+                    id="tel"
+                    name="tel"
                     type="tel"
                     autocomplete="tel"
                     required
@@ -85,6 +117,9 @@ const Register = () => {
               </button>
             </div>
           </form>
+          {message && (
+            <div className="text-center text-red-500 mt-2">{message}</div>
+          )}
         </div>
       </div>
     </div>

@@ -85,6 +85,7 @@ app.post("/register", (request, response) => {
         message: "Error creating user",
         error,
       });
+      console.log(error)
     });
 });
 
