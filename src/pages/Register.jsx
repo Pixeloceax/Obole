@@ -6,7 +6,7 @@ const Register = () => {
   return (
     <div className="md:min-h-screen flex items-center justify-center bg-gray-100">
       <div className="">
-        <div className="bg-black sm:p-20 p-10 pt-20 md:rounded-3xl h-screen md:h-[90vh] md:w-[70vh] w-screen">
+        <div className="bg-black sm:p-20 p-10 pt-10 md:rounded-3xl h-screen md:h-[90vh] md:w-[70vh] w-screen">
           <div className="flex justify-center">
             <img className="" src={logo} alt="logo" />
           </div>
@@ -15,8 +15,8 @@ const Register = () => {
               Register
             </h2>
           </div>
-          <form className="mt-8 space-y-9">
-            <div class="flex justify-center">
+          <form className="md:mt-8 mt-2 md:space-y-16 space-y-2">
+            <div class="md:flex justify-center">
               <div class="justify-center md:p-0 p-5">
                 <div class="mb-5">
                   <input
@@ -41,7 +41,7 @@ const Register = () => {
                   />
                 </div>
               </div>
-              <div class="justify-center md:p-0 p-5 ml-5">
+              <div class="justify-center md:p-0 p-5 md:ml-5">
                 <div class="mb-5">
                   <input
                     id="adresse"
@@ -66,12 +66,12 @@ const Register = () => {
                 </div>
               </div>
             </div>
-            <div class="flex items-center text-white">
+            <div class="flex items-center text-white justify-center">
               <label class="inline-flex items-center">
                 <input type="radio" class="form-radio text-blue-500" name="gender" value="male" />
                 <span class="ml-2">Homme</span>
               </label>
-              <label class="inline-flex items-center ml-6">
+              <label class="inline-flex items-center ml-12">
                 <input type="radio" class="form-radio text-pink-500" name="gender" value="female" />
                 <span class="ml-2">Femme</span>
               </label>

@@ -40,19 +40,34 @@ app.get("/", (request, response, next) => {
 
 // register endpoint
 app.post("/register", (request, response) => {
-  // hash the password
-  const salt = uuidv4(); // generate random salt
-  const password = request.body.password + salt; // add salt to the password
-  const hash = crypto.createHash("sha256"); // create a sha256 hash object
-  hash.update(password); // add password to hash object
-  const hashedPassword = hash.digest("hex"); // get hashed password from hash object
+  const nom = request.body.nom;
+  const prenom = request.body.prenom;
+  const email = request.body.email;
+  const tel = request.body.tel;
+  const adresse = request.body.adresse;
+  const gender = request.body.gender;
 
-  // create a new user instance and collect the data
+  const compteNumber = Math.floor(Math.random() * 1000000000000);
+
+  const password = Math.floor(Math.random() * 10000000000).toString();
+
+  const hashpassword = crypto
+    .createHash("sha256")
+    .update(password)
+    .digest("hex");
+
   const user = new User({
-    email: request.body.email,
-    password: hashedPassword,
-    salt: salt,
+    nom,
+    prenom,
+    email,
+    tel,
+    adresse,
+    gender,
+    compteNumber,
+    hashpassword,
   });
+
+  console.log(password + " " + user);
 
   // save the new user
   user
@@ -76,17 +91,23 @@ app.post("/register", (request, response) => {
 // login endpoint
 app.post("/login", (request, response) => {
   // check if email exists
-  User.findOne({ email: request.body.email })
+  User.findOne({ compteNumber: request.body.compteNumber })
     // if email exists
     .then((user) => {
       // create a sha256 hash object
-      const hash = crypto.createHash("sha256");
+      // const hash = crypto.createHash("sha256");
       // add password and salt to hash object
-      hash.update(request.body.password + user.salt);
+      // hash.update(request.body.password + user.salt);
       // get hashed password from hash object
-      const hashedPassword = hash.digest("hex");
+      // const hashedPassword = hash.digest("hex");
       // compare the password entered and the hashed password found
-      if (hashedPassword !== user.password) {
+      const password = request.body.password;
+      const hashpassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
+
+      if (hashpassword !== user.hashpassword) {
         response.status(401).send({
           message: "Passwords does not match",
         });
@@ -95,7 +116,7 @@ app.post("/login", (request, response) => {
         const token = jwt.sign(
           {
             userId: user._id,
-            userEmail: user.email,
+            userCompteNumber: user.compteNumber,
           },
           "RANDOM-TOKEN",
           { expiresIn: "24h" }
@@ -104,7 +125,7 @@ app.post("/login", (request, response) => {
         // return success response
         response.status(200).send({
           message: "Login Successful",
-          email: user.email,
+          compteNumber: user.compteNumber,
           token,
         });
       }
