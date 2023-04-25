@@ -18,9 +18,6 @@ const Login = () => {
           <form className="mt-8 space-y-6">
             <div className="justify-center md:p-0 p-5">
               <div className="mb-5">
-                <label htmlFor="username" className="sr-only">
-                  Username
-                </label>
                 <input
                   id="compteNumber"
                   name="compteNumber"
@@ -32,9 +29,6 @@ const Login = () => {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
                 <input
                   id="password"
                   name="password"
@@ -60,14 +54,6 @@ const Login = () => {
                 >
                   Remember me
                 </label>
-              </div>
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium hover:text-indigo-500 text-white"
-                >
-                  Forgot your password?
-                </a>
               </div>
             </div>
             <div>
