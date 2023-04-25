@@ -1,13 +1,13 @@
 import React from "react";
-// import logo from "../assets/Logo_white_bg_gray.png";
+import logo from "../assets/Logo_white_bg_gray.png";
 import "../styles/index.css";
 
 const Login = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-lg w-[80%] space-y-8">
-        <div className="bg-black p-20 rounded-3xl">
-          <div>
+    <div className="md:min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="md:max-w-lg md:w-[80%] md:space-y-8">
+        <div className="bg-black sm:p-20 p-10 pt-20 md:rounded-3xl h-screen md:h-fit md:w-fit w-screen">
+          <div className="flex justify-center">
             <img className="" src={logo} alt="logo" />
           </div>
           <div>
@@ -16,7 +16,7 @@ const Login = () => {
             </h2>
           </div>
           <form className="mt-8 space-y-6">
-            <div className="justify-center">
+            <div className="justify-center md:p-0 p-5">
               <div className="mb-5">
                 <label htmlFor="username" className="sr-only">
                   Username
