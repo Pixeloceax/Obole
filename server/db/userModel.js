@@ -18,12 +18,7 @@ const UserSchema = new mongoose.Schema({
     email: {
       type: String,
       required: [true, "Please provide an email!"],
-      validate: {
-        validator: function(v) {
-          return /\S+@\S+\.\S+/.test(v);
-        },
-        message: props => `${props.value} n'est pas une adresse email valide!`
-      }
+      unique: [true, "email already exists"],
     },
     genre: {
       type: String,
