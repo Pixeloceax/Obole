@@ -38,14 +38,36 @@ app.get("/", (request, response, next) => {
   next();
 });
 
+const checkEmailExists = async (email) => {
+  try {
+    const user = await User.findOne({ "Information.email": email });
+    if (user) {
+      return true; // email already exists in the database
+    } else {
+      return false; // email does not exist in the database
+    }
+  } catch (error) {
+    throw new Error(`Error checking if email exists: ${error}`);
+  }
+};
+
 // register endpoint
-app.post("/register", (request, response) => {
+app.post("/register", async (request, response) => {
   const nom = request.body.nom;
   const prenom = request.body.prenom;
   const email = request.body.email;
   const tel = request.body.tel;
   const adresse = request.body.adresse;
   const genre = request.body.genre;
+
+  // check if email already exists
+  const emailExists = await checkEmailExists(email);
+  if (emailExists) {
+    return response.status(400).send({
+      message: "Email already exists",
+    });
+  }
+
 
   const compteNumber = Math.floor(Math.random() * 1000000000000);
   const password = Math.floor(Math.random() * 10000000000).toString();
