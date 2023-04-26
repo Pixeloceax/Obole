@@ -100,11 +100,11 @@ const Register = () => {
             </div>
             <div class="flex items-center text-white justify-center">
               <label class="inline-flex items-center">
-                <input type="radio" class="form-radio text-blue-500" name="gender" value="male" />
+                <input type="radio" class="form-radio text-blue-500" name="genre" value="male" />
                 <span class="ml-2">Homme</span>
               </label>
               <label class="inline-flex items-center ml-12">
-                <input type="radio" class="form-radio text-pink-500" name="gender" value="female" />
+                <input type="radio" class="form-radio text-pink-500" name="genre" value="female" />
                 <span class="ml-2">Femme</span>
               </label>
             </div>

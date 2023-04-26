@@ -45,26 +45,46 @@ app.post("/register", (request, response) => {
   const email = request.body.email;
   const tel = request.body.tel;
   const adresse = request.body.adresse;
-  const gender = request.body.gender;
+  const genre = request.body.genre;
 
   const compteNumber = Math.floor(Math.random() * 1000000000000);
-
   const password = Math.floor(Math.random() * 10000000000).toString();
-
   const hashpassword = crypto
     .createHash("sha256")
     .update(password)
     .digest("hex");
+  const carteNumber = Math.floor(Math.random() * 10000000000000000);
+  const date = new Date();
+  date.setFullYear(date.getFullYear() + 5);
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear().toString().slice(-2);
+  const dateExpiration = `${month.toString().padStart(2, "0")}/${year}`;
+  const code = Math.floor(Math.random() * 10000);
+  const CCV = Math.floor(Math.random() * 1000);
 
   const user = new User({
-    nom,
-    prenom,
-    email,
-    tel,
-    adresse,
-    gender,
-    compteNumber,
-    hashpassword,
+    Information: {
+      nom,
+      prenom,
+      tel,
+      email,
+      genre,
+      adresse,
+    },
+    Compte: {
+      compteNumber,
+      hashpassword,
+    },
+    Carte: {
+      carteNumber,
+      dateExpiration,
+      code,
+      CCV,
+      plafond: 200,
+    },
+    Solde: {
+      solde: 1000,
+    },
   });
 
   console.log(password + " " + user);
@@ -85,7 +105,7 @@ app.post("/register", (request, response) => {
         message: "Error creating user",
         error,
       });
-      console.log(error)
+      console.log(error);
     });
 });
 
@@ -104,9 +124,9 @@ app.post("/login", (request, response) => {
       // compare the password entered and the hashed password found
       const password = request.body.password;
       const hashpassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
+        .createHash("sha256")
+        .update(password)
+        .digest("hex");
 
       if (hashpassword !== user.hashpassword) {
         response.status(401).send({

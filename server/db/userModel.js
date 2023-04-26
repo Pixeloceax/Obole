@@ -2,60 +2,86 @@ const mongoose = require("mongoose");
 
 // define a user schema using mongoose.Schema class
 const UserSchema = new mongoose.Schema({
-  // email field with validation rules
-  email: {
-    type: String,
-    required: [true, "Please provide an Email!"], // required field with custom error message
-    unique: [true, "Email Exist"], // unique field with custom error message
+  Information: {
+    nom: {
+      type: String,
+      required: [true, "Please provide a nom!"],
+    },
+    prenom: {
+      type: String,
+      required: [true, "Please provide a prenom!"],
+    },
+    tel: {
+      type: String,
+      required: [true, "Please provide a tel!"],
+    },
+    email: {
+      type: String,
+      required: [true, "Please provide an email!"],
+      validate: {
+        validator: function(v) {
+          return /\S+@\S+\.\S+/.test(v);
+        },
+        message: props => `${props.value} n'est pas une adresse email valide!`
+      }
+    },
+    genre: {
+      type: String,
+      required: [true, "Please provide a genre!"],
+    },
+    adresse: {
+      type: String,
+      required: [true, "Please provide an adresse!"],
+    },
   },
-
-  // password field with validation rules
-  hashpassword: {
-    type: String,
-    required: [true, "Please provide a password!"], // required field with custom error message
-    unique: false, // not a unique field
+  Compte: {
+    compteNumber: {
+      type: Number,
+      required: [true, "Please provide a compteNumber!"],
+      unique: [true, "Compte Number already exists"],
+    },
+    hashpassword: {
+      type: String,
+      required: [true, "Please provide a hashpassword!"],
+    },
   },
-
-  // nom field with validation rules
-  nom: {
-    type: String,
-    required: [true, "Please provide a nom!"], // required field with custom error message
-    unique: false, // not a unique field
-  },
-
-  // prenom field with validation rules
-  prenom: {
-    type: String,
-    required: [true, "Please provide a prenom!"], // required field with custom error message
-    unique: false, // not a unique field
-  },
-
-  // tel field with validation rules
-  tel: {
-    type: Number,
-    required: [true, "Please provide a tel!"], // required field with custom error message
-    unique: false, // not a unique field
-  },
-
-  // adresse field with validation rules
-  adresse: {
-    type: String,
-    required: [true, "Please provide a adresse!"], // required field with custom error message
-    unique: false, // not a unique field
-  },
-
-  // gendre field with validation rules
-  gender: {
-    type: String,
-    required: [true, "Please provide a adresse!"], // required field with custom error message
-    unique: false, // not a unique field
-  },
-
-  // compteNumber field with validation rules
-  compteNumber: {
-    type: Number,
-    required: [true, "Please provide a compteNumber!"], // required field with custom error message
-    unique: true, // not a unique field
+  Carte: [
+    {
+      carteNumber: {
+        type: Number,
+        required: [true, "Please provide a carteNumber!"],
+      },
+      dateExpiration: {
+        type: String,
+        required: [true, "Please provide a dateExpiration!"],
+      },
+      code: {
+        type: Number,
+        required: [true, "Please provide a code!"],
+      },
+      CCV: {
+        type: Number,
+        required: [true, "Please provide a CCV!"],
+      },
+      verrouiller: {
+        type: Boolean,
+        default: false,
+      },
+      opposition: {
+        type: Boolean,
+        default: false,
+      },
+      plafond: {
+        type: Number,
+        required: [true, "Please provide a plafond!"],
+      },
+    },
+  ],
+  Solde: {
+    solde: {
+      type: Number,
+      required: [true, "Please provide a solde!"],
+    },
   },
 });
 
