@@ -18,7 +18,13 @@ const Register = () => {
     });
 
     const data = await response.json();
-    setMessage(data.message);
+    if (data.message === "User Created Successfully") {
+      window.location.href = "/login";
+    }
+    if (data.message === "Email already exists") {
+      document.querySelector("#email").classList.add("border-red-500");
+      document.querySelector("#alert").classList.remove("hidden");
+    }
   };
 
   useEffect(() => {
@@ -36,7 +42,7 @@ const Register = () => {
               Register
             </h2>
           </div>
-          <form className="md:mt-2 mt-0 md:space-y-10 space-y-2"  onSubmit={handleFormSubmit}>
+          <form className="md:mt-2 mt-0 md:space-y-10 space-y-2" onSubmit={handleFormSubmit}>
             <div class="md:flex justify-center">
               <div class="justify-center md:p-0 p-5">
                 <div class="mb-5">
@@ -46,7 +52,7 @@ const Register = () => {
                     type="text"
                     autocomplete="nom"
                     required
-                    class="input appearance-none relative block w-full px-3 pr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Nom"
                   />
                 </div>
@@ -57,7 +63,7 @@ const Register = () => {
                     type="text"
                     autocomplete="prenom"
                     required
-                    class="input appearance-none relative block w-full px-3 pr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Prenom"
                   />
                 </div>
@@ -68,9 +74,12 @@ const Register = () => {
                     type="email"
                     autocomplete="email"
                     required
-                    class="input appearance-none relative block w-full px-3 pr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Email"
                   />
+                </div>
+                <div className="h-2 pt-2">
+                  <div id="alert" className="text-red-500 text-center hidden">L'email est deja utiliser</div>
                 </div>
               </div>
               <div class="justify-center md:p-0 p-5 md:ml-5">
@@ -81,7 +90,7 @@ const Register = () => {
                     type="text"
                     autocomplete="adresse"
                     required
-                    class="input appearance-none relative block w-full px-3 pr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Adresse"
                   />
                 </div>
@@ -92,7 +101,7 @@ const Register = () => {
                     type="tel"
                     autocomplete="tel"
                     required
-                    class="input appearance-none relative block w-full px-3 pr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Numéro de téléphone"
                   />
                 </div>

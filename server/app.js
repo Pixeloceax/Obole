@@ -134,23 +134,16 @@ app.post("/register", async (request, response) => {
 // login endpoint
 app.post("/login", (request, response) => {
   // check if email exists
-  User.findOne({ compteNumber: request.body.compteNumber })
+  User.findOne({ "Compte.compteNumber": request.body.compteNumber })
     // if email exists
     .then((user) => {
-      // create a sha256 hash object
-      // const hash = crypto.createHash("sha256");
-      // add password and salt to hash object
-      // hash.update(request.body.password + user.salt);
-      // get hashed password from hash object
-      // const hashedPassword = hash.digest("hex");
-      // compare the password entered and the hashed password found
       const password = request.body.password;
       const hashpassword = crypto
         .createHash("sha256")
         .update(password)
         .digest("hex");
 
-      if (hashpassword !== user.hashpassword) {
+      if (hashpassword !== user.Compte.hashpassword) {
         response.status(401).send({
           message: "Passwords does not match",
         });
@@ -159,16 +152,17 @@ app.post("/login", (request, response) => {
         const token = jwt.sign(
           {
             userId: user._id,
-            userCompteNumber: user.compteNumber,
+            userCompteNumber: user.Compte.compteNumber,
           },
           "RANDOM-TOKEN",
-          { expiresIn: "24h" }
+          { expiresIn: "120s" }
         );
+        
 
         // return success response
         response.status(200).send({
           message: "Login Successful",
-          compteNumber: user.compteNumber,
+          compteNumber: user.Compte.compteNumber,
           token,
         });
       }
@@ -176,7 +170,7 @@ app.post("/login", (request, response) => {
     // catch error if email does not exist
     .catch((e) => {
       response.status(404).send({
-        message: "Email not found",
+        message: "Compte not found",
         e,
       });
     });
@@ -188,7 +182,8 @@ app.get("/free-endpoint", (request, response) => {
 });
 
 // authentication endpoint
-app.get("/auth-endpoint", auth, (request, response) => {
+app.get("/auth", auth, (request, response) => {
+  console.log("in auth");
   response.send({ message: "You are authorized to access me" });
 });
 

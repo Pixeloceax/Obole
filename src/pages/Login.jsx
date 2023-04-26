@@ -1,24 +1,31 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import logo from "../assets/Logo_white_bg_gray.png";
-import React, { useState, useEffect } from "react";
-import "../styles/index.css";
 
-const Login = () => {
+const Login = ({handleLogin}) => {
   const [message, setMessage] = useState("");
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+  
     const formData = new FormData(event.target);
     const formDataJSON = Object.fromEntries(formData.entries());
-
-    const response = await fetch("http://localhost:3001/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formDataJSON),
-    });
-
-    const data = await response.json();
-    setMessage(data.message);
+  
+    try {
+      const response = await axios.post("http://localhost:3001/login", formDataJSON);
+  
+      if (response.status === 200 && response.data.message === "Login Successful") {
+        const token = response.data.token;
+        sessionStorage.setItem("session", token);
+        
+        handleLogin();
+      } else {
+        setMessage(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("An error occurred while logging in.");
+    }
   };
 
   useEffect(() => {
