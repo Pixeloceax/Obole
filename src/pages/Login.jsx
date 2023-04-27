@@ -16,7 +16,9 @@ const Login = ({handleLogin}) => {
   
       if (response.status === 200 && response.data.message === "Login Successful") {
         const token = response.data.token;
+        const _id = response.data._id;
         sessionStorage.setItem("session", token);
+        sessionStorage.setItem("_id", _id);
         
         handleLogin();
       } else {

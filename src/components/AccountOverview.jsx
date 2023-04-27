@@ -1,37 +1,53 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 function AccountOverview() {
-  const { compteNumber } = useParams();
+  const _id = sessionStorage.getItem("_id")
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/dashboard/${compteNumber}`);
-      const result = await response.json();
-      setData(result);
+      try {
+        const response = await fetch(`http://localhost:3001/dashboard?_id=${_id}`);
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+        console.log(response)
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchData();
-  }, [compteNumber]);
+  }, [_id]);
 
-  // Add a conditional rendering to handle the case where data is null
-  if (!data) {
-    return <div>Loading...</div>;
-  }
+  console.log(data)
 
-  // Update the JSX code to use the `compteNumber` and `solde` values from the data
+
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h1>Dashboard for Compte {data.compteNumber}</h1>
-      <h2 className="text-xl font-medium mb-4">Account Overview</h2>
-      <div className="flex justify-between items-center mb-4">
-        <span className="text-gray-500">Account Balance</span>
-        <span className="text-gray-900 font-medium">${data.solde}</span>
-      </div>
-      <div className="flex justify-between items-center">
-        <span className="text-gray-500">Credit Limit</span>
-        <span className="text-gray-900 font-medium">$5,000</span>
-      </div>
+    <div className="p-6 bg-white">
+      {data ? (
+        <div className="ml-5">
+          <h1 className="text-3xl">Bonjour, {data.Information.nom}</h1>
+          <div class="w-[40%] mt-10 bg-purple rounded-3xl shadow-md p-8">
+            <h1 class="text-white font-bold text-4xl mb-12">Compte Courant</h1>
+            <div class="flex justify-between items-center mb-8">
+              <h2 class="text-white font-bold text-xl">N° **** 1234</h2>
+              <p class="text-white font-bold text-3xl">10 000€</p>
+            </div>
+            <hr class="border-2 border-white mb-8" />
+              <div class="flex justify-between items-center">
+                <p class="text-white font-bold text-3xl">CB VISA</p>
+                <img src="path/to/icon" alt="icon" class="w-8 h-16" />
+              </div>
+              <p class="text-white font-bold text-xl mt-12">N° **** 1234</p>
+          </div>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }

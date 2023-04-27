@@ -162,7 +162,7 @@ app.post("/login", (request, response) => {
         // return success response
         response.status(200).send({
           message: "Login Successful",
-          compteNumber: user.Compte.compteNumber,
+          _id: user._id,
           token,
         });
       }
@@ -175,6 +175,26 @@ app.post("/login", (request, response) => {
       });
     });
 });
+
+// Créer un endpoint pour récupérer les données d'un compte
+app.get('/dashboard', async (req, res) => {
+  const { _id } = req.query;
+
+  try {
+    const compte = await User.findOne({ "_id": _id });
+    if (!compte) {
+      return res.status(404).json({ message: 'Compte non trouvé' });
+    }
+
+    res.json(compte);
+    return compte;
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
+
 
 // free endpoint
 app.get("/free-endpoint", (request, response) => {

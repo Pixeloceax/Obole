@@ -1,18 +1,18 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = async (request, response, next) => {
+module.exports = (request, response, next) => {
   try {
     // Récupérer le token depuis le header d'autorisation
-    const token = await request.headers.authorization.split(" ")[1];
+    const token = request.headers.authorization.split(" ")[1];
 
     // Vérifier que le token correspond à l'origine supposée
-    const decodedToken = await jwt.verify(token, "RANDOM-TOKEN");
+    const decodedToken = jwt.verify(token, "RANDOM-TOKEN");
 
-    // Récupérer les informations de l'utilisateur connecté à partir du token décodé
-    const user = await decodedToken;
+    // Récupérer le numéro de compte à partir du token décodé
+    const numeroCompte = decodedToken.compteNumber;
 
-    // Passer les informations de l'utilisateur aux endpoints suivants
-    request.user = user;
+    // Stocker le numéro de compte dans l'objet request pour une utilisation ultérieure
+    request.numeroCompte = numeroCompte;
 
     // Passer la fonctionnalité aux endpoints suivants
     next();
