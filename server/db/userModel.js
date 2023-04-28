@@ -78,6 +78,18 @@ const UserSchema = new mongoose.Schema({
       required: [true, "Please provide a solde!"],
     },
   },
+  Livret: [
+    {
+      type: {
+        type: String,
+        required: [true, "Please provide a type!"],
+      },
+      soldeLivret: {
+        type: Number,
+        required: [true, "Please provide a solde!"],
+      },
+    },
+  ],
 });
 
 // export User model with collection name and schema
