@@ -109,6 +109,10 @@ app.post("/register", async (request, response) => {
   const dateExpiration = `${month.toString().padStart(2, "0")}/${year}`;
   const code = Math.floor(Math.random() * 10000);
   const CCV = Math.floor(Math.random() * 1000);
+  const list = ["A", "Jeune"];
+  const randomElement = list[Math.floor(Math.random() * list.length)];
+  const type = randomElement;
+  const soldeLivret = 1000;
 
   const user = new User({
     Information: {
@@ -132,6 +136,10 @@ app.post("/register", async (request, response) => {
     },
     Solde: {
       solde: 1000,
+    },
+    Livret: {
+      type,
+      soldeLivret,
     },
   });
 
