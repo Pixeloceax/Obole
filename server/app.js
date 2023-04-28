@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { v4: uuidv4 } = require("uuid");
+const nodemailer = require("nodemailer");
 
 // require database connection
 const dbConnect = require("./db/dbConnect");
@@ -50,6 +51,33 @@ const checkEmailExists = async (email) => {
     throw new Error(`Error checking if email exists: ${error}`);
   }
 };
+
+const sendEmail = async (email, password, compteNumber) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp-mail.outlook.com",
+      secureConnection: false,
+      port: 587,
+      auth: {
+        user: "obole1@outlook.fr",
+        pass: "Oboleaxelcolas"
+      }
+    });
+
+    const mailOptions = {
+      from: "obole1@outlook.fr",
+      to: email,
+      subject: "Obole Bank - Votre mot de passe",
+      text: `Votre mot de passe est ${password} et votre numéro de compte est ${compteNumber}`
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`Email sent: ${info.response}`);
+  } catch (error) {
+    throw new Error(`Error sending email: ${error}`);
+  }
+};
+
 
 // register endpoint
 app.post("/register", async (request, response) => {
@@ -110,6 +138,8 @@ app.post("/register", async (request, response) => {
   });
 
   console.log(password + " " + user);
+
+  sendEmail(email, password, compteNumber);
 
   // save the new user
   user

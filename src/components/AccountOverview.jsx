@@ -66,7 +66,6 @@ function AccountOverview() {
                   <img src={right_icon} alt="icon" class="h-16" />
                 </Link>
               </div>
-
               <div className="flex">
                 <div class="flex justify-between items-center mb-8">
                   <h2 className="text-white font-bold text-xl"> N° **** {(data.Compte.compteNumber).toString().slice(-4)}</h2>
