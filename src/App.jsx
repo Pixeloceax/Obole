@@ -31,20 +31,6 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  const allPath = [
-    "/",
-    "/login",
-    "/register",
-    "/dashboard",
-    "/dashboardAdmin",
-    "/404",
-    //TODO add all path here
-  ];
-
-  if (!allPath.includes(window.location.pathname)) {
-    window.location.pathname = "/404";
-  }
-
   return (
     <BrowserRouter>
       <Routes>
@@ -75,7 +61,7 @@ function App() {
         <Route path="/epargne" element={<Epargne />} />
         <Route path="/statistic" element={<Statistic />} />
         <Route path="/message" element={<Message />} />
-        <Route path="/404" element={<Page404 />} />
+        <Route path="/*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );
