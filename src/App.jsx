@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-//pages
+// pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -12,23 +12,23 @@ import Epargne from "./pages/Epargne";
 import Statistic from "./pages/Statistic";
 import Message from "./pages/Message";
 
-/*
-  for comment use this syntax
-  ! or //! for problem
-  ? or //? for question
-  TODO or //TODO for to do
-  * or //* for explanation
-
-  Also add list top of the file of number of comment like this:
-  TODO: 1
-*/
-
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const handleLogin = () => {
     setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
   };
 
   const allPath = [
@@ -51,11 +51,26 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route
           path="/login"
-          element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login handleLogin={handleLogin} />}
+          element={
+            isLoggedIn ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <Login handleLogin={handleLogin} />
+            )
+          }
         />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/dashboardAdmin" element={<Dashboard isLoggedIn />} />{/*//* dasboard view easy to delete after */}
+        <Route
+          path="/dashboard"
+          element={
+            isLoggedIn ? (
+              <Dashboard handleLogout={handleLogout} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route path="/dashboardAdmin" element={<Dashboard isLoggedIn />} />
         <Route path="/cartes" element={<Cartes />} />
         <Route path="/epargne" element={<Epargne />} />
         <Route path="/statistic" element={<Statistic />} />

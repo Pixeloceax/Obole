@@ -60,15 +60,15 @@ const sendEmail = async (email, password, compteNumber) => {
       port: 587,
       auth: {
         user: "obole1@outlook.fr",
-        pass: "Oboleaxelcolas"
-      }
+        pass: "Oboleaxelcolas",
+      },
     });
 
     const mailOptions = {
       from: "obole1@outlook.fr",
       to: email,
       subject: "Obole Bank - Votre mot de passe",
-      text: `Votre mot de passe est ${password} et votre numéro de compte est ${compteNumber}`
+      text: `Votre mot de passe est ${password} et votre numéro de compte est ${compteNumber}`,
     };
 
     const info = await transporter.sendMail(mailOptions);
@@ -77,7 +77,6 @@ const sendEmail = async (email, password, compteNumber) => {
     throw new Error(`Error sending email: ${error}`);
   }
 };
-
 
 // register endpoint
 app.post("/register", async (request, response) => {
@@ -95,7 +94,6 @@ app.post("/register", async (request, response) => {
       message: "Email already exists",
     });
   }
-
 
   const compteNumber = Math.floor(Math.random() * 1000000000000);
   const password = Math.floor(Math.random() * 10000000000).toString();
@@ -185,9 +183,8 @@ app.post("/login", (request, response) => {
             userCompteNumber: user.Compte.compteNumber,
           },
           "RANDOM-TOKEN",
-          { expiresIn: "120s" }
+          { expiresIn: "2m" }
         );
-        
 
         // return success response
         response.status(200).send({
@@ -200,31 +197,29 @@ app.post("/login", (request, response) => {
     // catch error if email does not exist
     .catch((e) => {
       response.status(404).send({
-        message: "Compte not found",
+        message: "CompteNumber was not found",
         e,
       });
     });
 });
 
 // Créer un endpoint pour récupérer les données d'un compte
-app.get('/dashboard', async (req, res) => {
+app.get("/dashboard", async (req, res) => {
   const { _id } = req.query;
 
   try {
-    const compte = await User.findOne({ "_id": _id });
+    const compte = await User.findOne({ _id: _id });
     if (!compte) {
-      return res.status(404).json({ message: 'Compte non trouvé' });
+      return res.status(404).json({ message: "Compte non trouvé" });
     }
 
     res.json(compte);
     return compte;
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(500).json({ message: "Erreur serveur" });
   }
 });
-
-
 
 // free endpoint
 app.get("/free-endpoint", (request, response) => {

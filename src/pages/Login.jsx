@@ -2,24 +2,30 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import logo from "../assets/Logo_white_bg_gray.png";
 
-const Login = ({handleLogin}) => {
+const Login = ({ handleLogin }) => {
   const [message, setMessage] = useState("");
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-  
+
     const formData = new FormData(event.target);
     const formDataJSON = Object.fromEntries(formData.entries());
-  
+
     try {
-      const response = await axios.post("http://localhost:3001/login", formDataJSON);
-  
-      if (response.status === 200 && response.data.message === "Login Successful") {
+      const response = await axios.post(
+        "http://localhost:3001/login",
+        formDataJSON
+      );
+
+      if (
+        response.status === 200 &&
+        response.data.message === "Login Successful"
+      ) {
         const token = response.data.token;
         const _id = response.data._id;
-        sessionStorage.setItem("session", token);
+        localStorage.setItem("token", token);
         sessionStorage.setItem("_id", _id);
-        
+
         handleLogin();
       } else {
         setMessage(response.data.message);
