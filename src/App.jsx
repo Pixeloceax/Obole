@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 // pages
 import Home from "./pages/Home";
@@ -14,11 +15,19 @@ import Message from "./pages/Message";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isTokenExpired = (token) => {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    return decodedToken.exp < currentTime;
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && !isTokenExpired(token)) {
       setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+      localStorage.removeItem("token");
     }
   }, []);
 
