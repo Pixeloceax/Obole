@@ -2,8 +2,16 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import logo from "../assets/Logo_white_bg_gray.png";
 
+import jwtDecode from "jwt-decode";
+
 const Login = ({ handleLogin }) => {
   const [message, setMessage] = useState("");
+
+  const isTokenExpired = (token) => {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    return decodedToken.exp < currentTime;
+  };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -23,10 +31,14 @@ const Login = ({ handleLogin }) => {
       ) {
         const token = response.data.token;
         const _id = response.data._id;
-        localStorage.setItem("token", token);
-        sessionStorage.setItem("_id", _id);
 
-        handleLogin();
+        if (!isTokenExpired(token)) {
+          localStorage.setItem("token", token);
+          sessionStorage.setItem("_id", _id);
+          handleLogin();
+        } else {
+          setMessage("Token expired");
+        }
       } else {
         setMessage(response.data.message);
       }
