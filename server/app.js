@@ -191,7 +191,7 @@ app.post("/login", (request, response) => {
             userCompteNumber: user.Compte.compteNumber,
           },
           "RANDOM-TOKEN",
-          { expiresIn: "2m" }
+          { expiresIn: "300s" }
         );
 
         // return success response
