@@ -10,6 +10,7 @@ const nodemailer = require("nodemailer");
 // require database connection
 const dbConnect = require("./db/dbConnect");
 const User = require("./db/userModel");
+const Transaction = require("./db/transactionModel");
 const auth = require("./auth");
 
 // execute database connection
@@ -187,7 +188,7 @@ app.post("/login", (request, response) => {
         // create JWT token
         const token = jwt.sign(
           {
-            userId: user._id,
+            _id: user._id,
             userCompteNumber: user.Compte.compteNumber,
           },
           "RANDOM-TOKEN",
@@ -220,6 +221,44 @@ app.get("/dashboard", async (req, res) => {
     if (!compte) {
       return res.status(404).json({ message: "Compte non trouvé" });
     }
+
+    res.json(compte);
+    return compte;
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+// Créer un endpoint pour effectuer une transaction
+
+app.post("/transaction", async (req, res) => {
+  const { _id, montant, destinataire } = req.body;
+
+  try {
+    const compte = await User.findOne({ _id: _id });
+    if (!compte) {
+      return res.status(404).json({ message: "Compte non trouvé" });
+    }
+
+    const destinataireCompte = await User.findOne({
+      "Compte.compteNumber": destinataire,
+    });
+    if (!destinataireCompte) {
+      return res
+        .status(404)
+        .json({ message: "Compte destinataire non trouvé" });
+    }
+
+    if (compte.Solde.solde < montant) {
+      return res.status(404).json({ message: "Solde insuffisant" });
+    }
+
+    compte.Solde.solde -= montant;
+    destinataireCompte.Solde.solde += montant;
+
+    await compte.save();
+    await destinataireCompte.save();
 
     res.json(compte);
     return compte;
