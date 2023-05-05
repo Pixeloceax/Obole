@@ -1,25 +1,74 @@
-import React from "react";
+import { useState } from "react";
+import axios from "axios";
 
-function Transactions() {
+function Transaction() {
+  const [transactionData, setTransactionData] = useState({
+    _id: "",
+    destinataire: "",
+    montant: "",
+  });
+
+  const [compte, setCompte] = useState(null);
+  const [error, setError] = useState(null);
+
+  const handleChange = (event) => {
+    setTransactionData({
+      ...transactionData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/transaction",
+        transactionData
+      );
+      setCompte(response.data.Compte);
+      setError(null);
+    } catch (err) {
+      setError(err.response.data.message);
+      setCompte(null);
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-medium mb-4">Recent Transactions</h2>
-      <div className="flex flex-col">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-500">Payment Received</span>
-          <span className="text-green-500 font-medium">$200</span>
+    <div>
+      <h1>Transaction</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="destinataire">Destinataire</label>
+          <input
+            type="text"
+            id="destinataire"
+            name="destinataire"
+            onChange={handleChange}
+            value={transactionData.destinataire}
+          />
         </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-500">ATM Withdrawal</span>
-          <span className="text-red-500 font-medium">-$100</span>
+        <div>
+          <label htmlFor="montant">Montant</label>
+          <input
+            type="text"
+            id="montant"
+            name="montant"
+            onChange={handleChange}
+            value={transactionData.montant}
+          />
+          <button type="submit">Envoyer</button>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-gray-500">Online Purchase</span>
-          <span className="text-red-500 font-medium">-$50</span>
+      </form>
+      {compte && (
+        <div>
+          <p>Compte: {compte._id}</p>
+          <p>Solde: {compte.solde}</p>
+          {/* render other properties of the compte object as needed */}
         </div>
-      </div>
+      )}
+      {error && <p>{error}</p>}
     </div>
   );
 }
 
-export default Transactions;
+export default Transaction;
