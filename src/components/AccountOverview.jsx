@@ -26,7 +26,46 @@ function AccountOverview() {
     fetchData();
   }, [_id]);
 
-  console.log(data)
+  //! si on veux test data sans db
+  // if (!data) {
+  //   const dataConf = {
+  //     "Information": {
+  //       "nom": "Colos",
+  //       "prenom": "Ranard",
+  //       "tel": "0624348782",
+  //       "email": "2@gmail.com",
+  //       "genre": "male",
+  //       "adresse": "365 rue des pyrennes"
+  //     },
+  //     "Compte": {
+  //       "compteNumber": 372709220879,
+  //       "hashpassword": "737f2ddac3a6894264adf67313f9c6c08705345c8eed1101651e8072f10a094c"
+  //     },
+  //     "Solde": {
+  //       "solde": 1000
+  //     },
+  //     "_id": "644922f53561216e0014d659",
+  //     "Carte": [
+  //       {
+  //         "verrouiller": false,
+  //         "opposition": false,
+  //         "_id": "644922f53561216e0014d65a",
+  //         "carteNumber": 8945198484733698,
+  //         "dateExpiration": "04/28",
+  //         "code": 2220,
+  //         "CCV": 253,
+  //         "plafond": 200
+  //       }
+  //     ],
+  //     "Livret": [{
+  //       "_id": "644bb6ed89d2e0a984392983",
+  //       "type": "A",
+  //       "soldeLivret": 1000
+  //     }],
+  //     "__v": 0
+  //   }
+  //   setData(dataConf)
+  // }
 
   const numberLivret = data ? data.Livret.length : 0;
 

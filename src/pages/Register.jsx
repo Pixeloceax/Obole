@@ -33,7 +33,7 @@ const Register = () => {
   return (
     <div className="md:min-h-screen flex items-center justify-center bg-gray-100">
       <div className="">
-        <div className="bg-black sm:p-20 p-10 pt-10 md:rounded-3xl h-screen md:h-[90vh] md:w-[70vh] w-screen">
+        <div className="bg-black sm:p-20 sm:pt-[3vw] p-10 pt-10 md:rounded-3xl h-screen md:h-[90vh] md:w-[70vh] w-screen">
           <div className="flex justify-center">
             <img className="h-[15rem] md:h-fit" src={logo} alt="logo" />
           </div>
@@ -42,7 +42,7 @@ const Register = () => {
               Register
             </h2>
           </div>
-          <form className="md:mt-2 mt-0 md:space-y-10 space-y-2" onSubmit={handleFormSubmit}>
+          <form className="md:mt-2 mt-0 md:space-y-8 space-y-2" onSubmit={handleFormSubmit}>
             <div class="md:flex justify-center">
               <div class="justify-center md:p-0 p-5">
                 <div class="mb-5">
