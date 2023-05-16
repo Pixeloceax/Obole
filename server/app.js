@@ -233,40 +233,86 @@ app.get("/dashboard", async (req, res) => {
 // Créer un endpoint pour effectuer une transaction
 
 app.post("/transaction", async (req, res) => {
-  const { _id, montant, destinataire } = req.body;
-
   try {
-    const compte = await User.findOne({ _id: _id });
-    if (!compte) {
-      return res.status(404).json({ message: "Compte non trouvé" });
+    const {
+      sourceAccount,
+      destinationAccount,
+      amount,
+      currency,
+      description,
+      type,
+    } = req.body;
+
+    // Vérifier si le compte source a suffisamment d'argent pour le virement
+    const sourceBalance = await getAccountBalance(sourceAccount);
+    const destinationBalance = await getAccountBalance(destinationAccount);
+
+    if (sourceBalance < amount) {
+      return res.status(400).json({
+        error: "Fonds insuffisants pour effectuer le virement.",
+      });
     }
 
-    const destinataireCompte = await User.findOne({
-      "Compte.compteNumber": destinataire,
+    // Mettre à jour les soldes des comptes source et destination
+    const newSourceBalance = sourceBalance - amount;
+    const newDestinationBalance =
+      parseFloat(destinationBalance) + parseFloat(amount);
+
+    // Effectuer les mises à jour dans la base de données
+    await updateAccountBalance(sourceAccount, newSourceBalance);
+    await updateAccountBalance(destinationAccount, newDestinationBalance);
+
+    // Créer une nouvelle instance de la transaction
+    const newTransaction = new Transaction({
+      sourceAccount,
+      destinationAccount,
+      amount,
+      currency,
+      description,
+      type,
     });
-    if (!destinataireCompte) {
-      return res
-        .status(404)
-        .json({ message: "Compte destinataire non trouvé" });
-    }
 
-    if (compte.Solde.solde < montant) {
-      return res.status(404).json({ message: "Solde insuffisant" });
-    }
+    // Enregistrer la transaction dans la base de données
+    const savedTransaction = await newTransaction.save();
 
-    compte.Solde.solde -= montant;
-    destinataireCompte.Solde.solde += montant;
-
-    await compte.save();
-    await destinataireCompte.save();
-
-    res.json(compte);
-    return compte;
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(201).json(savedTransaction);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Une erreur est survenue lors de la création de la transaction.",
+    });
   }
 });
+
+// Fonction pour obtenir le solde d'un compte
+async function getAccountBalance(compteNumber) {
+  try {
+    const user = await User.findOne({ "Compte.compteNumber": compteNumber });
+    if (!user) {
+      throw new Error("Compte non trouvé");
+    }
+    return user.Solde.solde;
+  } catch (error) {
+    throw new Error("Erreur lors de la récupération du solde du compte.");
+  }
+}
+
+// Fonction pour mettre à jour le solde d'un compte
+async function updateAccountBalance(compteNumber, newBalance) {
+  try {
+    const user = await User.findOneAndUpdate(
+      { "Compte.compteNumber": compteNumber },
+      { $set: { "Solde.solde": newBalance } },
+      { new: true, useFindAndModify: false }
+    );
+
+    if (!user) {
+      throw new Error("Compte non trouvé");
+    }
+  } catch (error) {
+    throw new Error("Erreur lors de la mise à jour du solde du compte.");
+  }
+}
 
 // free endpoint
 app.get("/free-endpoint", (request, response) => {
