@@ -365,7 +365,7 @@ app.get("/auth", auth, (request, response) => {
 });
 
 app.get("/carte", async (req, res) => {
-  const { _id, type, index } = req.query;
+  const { _id, type, index, newPlafond } = req.query;
 
   try {
     const user = await User.findOne({ _id: _id });
@@ -374,6 +374,9 @@ app.get("/carte", async (req, res) => {
       user.Carte[index].verrouiller = !user.Carte[index].verrouiller;
     } else if (type === "opposition") {
       user.Carte[index].opposition = !user.Carte[index].opposition;
+    }
+    else if (type === "plafond") {
+      user.Carte[index].plafond = newPlafond;
     }
 
     const updatedUser = await user.save();
