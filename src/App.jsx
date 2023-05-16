@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
-//pages
+// pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -12,38 +13,32 @@ import Epargne from "./pages/Epargne";
 import Statistic from "./pages/Statistic";
 import Message from "./pages/Message";
 
-/*
-  for comment use this syntax
-  ! or //! for problem
-  ? or //? for question
-  TODO or //TODO for to do
-  * or //* for explanation
-
-  Also add list top of the file of number of comment like this:
-  TODO: 1
-*/
-
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isTokenExpired = (token) => {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    return decodedToken.exp < currentTime;
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && !isTokenExpired(token)) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+      localStorage.removeItem("token");
+    }
+  }, []);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
 
-  const allPath = [
-    "/",
-    "/login",
-    "/register",
-    "/dashboard",
-    "/dashboardAdmin",
-    "/404",
-    //TODO add all path here
-  ];
-
-  if (!allPath.includes(window.location.pathname)) {
-    window.location.pathname = "/404";
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  };
 
   return (
     <BrowserRouter>
@@ -51,16 +46,31 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route
           path="/login"
-          element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login handleLogin={handleLogin} />}
+          element={
+            isLoggedIn ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <Login handleLogin={handleLogin} />
+            )
+          }
         />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/dashboardAdmin" element={<Dashboard isLoggedIn />} />{/*//* dasboard view easy to delete after */}
+        <Route
+          path="/dashboard"
+          element={
+            isLoggedIn ? (
+              <Dashboard handleLogout={handleLogout} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route path="/dashboardAdmin" element={<Dashboard isLoggedIn />} />
         <Route path="/cartes" element={<Cartes />} />
         <Route path="/epargne" element={<Epargne />} />
         <Route path="/statistic" element={<Statistic />} />
         <Route path="/message" element={<Message />} />
-        <Route path="/404" element={<Page404 />} />
+        <Route path="/*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );

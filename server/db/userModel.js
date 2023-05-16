@@ -70,6 +70,10 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         required: [true, "Please provide a plafond!"],
       },
+      utilisé: {
+        type: Number,
+        required: [true, "Please provide a utilisé!"],
+      },
     },
   ],
   Solde: {

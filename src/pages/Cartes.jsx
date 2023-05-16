@@ -1,12 +1,15 @@
 import React from 'react';
 
 import Navbar from '../components/Navbar';
+import ViewCartes from '../components/ViewCartes';
 
 const Cartes = () => {
     return (
-        <div>
+        <div className='flex'>
             <Navbar />
-            Cartes
+            <div className='w-full'>
+                <ViewCartes />
+            </div>
         </div>
     );
 };
