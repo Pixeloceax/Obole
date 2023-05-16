@@ -7,7 +7,7 @@ import logo from "../assets/Logo_white_bg_gray.png";
 function CartesBancaires() {
     const _id = sessionStorage.getItem("_id");
     const [data, setData] = useState(null);
-    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,6 +27,23 @@ function CartesBancaires() {
         };
         fetchData();
     }, [_id]);
+
+    const ClickButton = (type, index) => async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:3001/carte?_id=${_id}&type=${type}&index=${index}`
+            );
+            if (!response.ok) {
+                throw new Error("Something went wrong!");
+            }
+            console.log(response);
+            const result = await response.json();
+            setData(result);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
 
     return (
         <div className="p-6 bg-white h-full">
@@ -64,15 +81,15 @@ function CartesBancaires() {
                                             </div>
                                         </div>
                                         <div className="flex flex-col text-center">
-                                            <div className="relative pt-1">
+                                            <div className="relative mt-10">
                                                 <div className="flex mb-2 items-center justify-between">
                                                     <div>
-                                                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full">
+                                                        <span className="text-xl font-semibold inline-block py-1 px-2 uppercase rounded-full">
                                                             Plafond utilisé
                                                         </span>
                                                     </div>
                                                     <div className="text-right">
-                                                        <span className="text-xs font-semibold inline-block">
+                                                        <span className="text-xl font-semibold inline-block">
                                                             {carte.utilisé} € / {carte.plafond} €
                                                         </span>
                                                     </div>
@@ -84,24 +101,18 @@ function CartesBancaires() {
                                                     ></div>
                                                 </div>
                                             </div>
-                                            {carte.verrouiller ? (
-                                                <p className="text-lg font-medium text-red-600">
-                                                    Carte verrouillée
-                                                </p>
-                                            ) : (
-                                                <p className="text-lg font-medium text-green-600">
-                                                    Carte déverrouillée
-                                                </p>
-                                            )}
-                                            {carte.opposition ? (
-                                                <p className="text-lg font-medium text-red-600">
-                                                    Carte opposition
-                                                </p>
-                                            ) : (
-                                                <p className="text-lg font-medium text-green-600">
-                                                    Carte en cours d'utilisation
-                                                </p>
-                                            )}
+                                            <div className="mt-10">
+                                                {carte.verrouiller ? (
+                                                    <button type="button" className="mr-10 text-xl bg-black text-white font-bold py-2 px-4 rounded-full w-44" onClick={ClickButton("verrouiller", index)}>Déverrouiller</button>
+                                                ) : (
+                                                    <button type="button" className="mr-10 text-xl bg-black text-white font-bold py-2 px-4 rounded-full w-44" onClick={ClickButton("verrouiller", index)}>Verrouiller</button>
+                                                )}
+                                                {carte.opposition ? (
+                                                    <button type="button" className="text-xl bg-black text-white font-bold py-2 px-4 rounded-full w-56" onClick={ClickButton("opposition", index)}>Annuler l'Opposition</button>
+                                                ) : (
+                                                    <button type="button" className="text-xl bg-black text-white font-bold py-2 px-4 rounded-full w-56" onClick={ClickButton("opposition", index)}>Faire Opposition</button>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
