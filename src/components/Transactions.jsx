@@ -1,74 +1,90 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-function Transaction() {
-  const [transactionData, setTransactionData] = useState({
-    _id: "",
-    destinataire: "",
-    montant: "",
+const TransactionForm = () => {
+  const [formData, setFormData] = useState({
+    sourceAccount: "",
+    destinationAccount: "",
+    amount: 0,
+    currency: "",
+    description: "",
+    type: "",
   });
 
-  const [compte, setCompte] = useState(null);
-  const [error, setError] = useState(null);
-
-  const handleChange = (event) => {
-    setTransactionData({
-      ...transactionData,
-      [event.target.name]: event.target.value,
-    });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await axios.post(
         "http://localhost:3001/transaction",
-        transactionData
+        formData
       );
-      setCompte(response.data.Compte);
-      setError(null);
-    } catch (err) {
-      setError(err.response.data.message);
-      setCompte(null);
+      console.log(response.data); // Do something with the response
+      // Reset form data
+      setFormData({
+        sourceAccount: "",
+        destinationAccount: "",
+        amount: 0,
+        currency: "",
+        description: "",
+        type: "",
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
-    <div>
-      <h1>Transaction</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="destinataire">Destinataire</label>
-          <input
-            type="text"
-            id="destinataire"
-            name="destinataire"
-            onChange={handleChange}
-            value={transactionData.destinataire}
-          />
-        </div>
-        <div>
-          <label htmlFor="montant">Montant</label>
-          <input
-            type="text"
-            id="montant"
-            name="montant"
-            onChange={handleChange}
-            value={transactionData.montant}
-          />
-          <button type="submit">Envoyer</button>
-        </div>
-      </form>
-      {compte && (
-        <div>
-          <p>Compte: {compte._id}</p>
-          <p>Solde: {compte.solde}</p>
-          {/* render other properties of the compte object as needed */}
-        </div>
-      )}
-      {error && <p>{error}</p>}
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="sourceAccount"
+        placeholder="Source Account"
+        value={formData.sourceAccount}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="destinationAccount"
+        placeholder="Destination Account"
+        value={formData.destinationAccount}
+        onChange={handleChange}
+      />
+      <input
+        type="number"
+        name="amount"
+        placeholder="Amount"
+        value={formData.amount}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="currency"
+        placeholder="Currency"
+        value={formData.currency}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="description"
+        placeholder="Description"
+        value={formData.description}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="type"
+        placeholder="Type"
+        value={formData.type}
+        onChange={handleChange}
+      />
+      <button type="submit">Submit</button>
+    </form>
   );
-}
+};
 
-export default Transaction;
+export default TransactionForm;
