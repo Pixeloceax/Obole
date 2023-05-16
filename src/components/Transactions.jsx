@@ -1,25 +1,114 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
-function Transactions() {
+const TransactionForm = () => {
+  const [formData, setFormData] = useState({
+    sourceAccount: "",
+    destinationAccount: "",
+    amount: 0,
+    currency: "",
+    description: "",
+    type: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const _id = sessionStorage.getItem("_id"); // Get _id from sessionStorage
+      const response = await axios.post(
+        "http://localhost:3001/transaction",
+        { ...formData, _id } // Include _id in the request body
+      );
+      console.log(response.data); // Do something with the response
+      // Reset form data
+      setFormData({
+        sourceAccount: "",
+        destinationAccount: "",
+        amount: 0,
+        currency: "",
+        description: "",
+        type: "",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-medium mb-4">Recent Transactions</h2>
-      <div className="flex flex-col">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-500">Payment Received</span>
-          <span className="text-green-500 font-medium">$200</span>
-        </div>
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-500">ATM Withdrawal</span>
-          <span className="text-red-500 font-medium">-$100</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-gray-500">Online Purchase</span>
-          <span className="text-red-500 font-medium">-$50</span>
-        </div>
+    <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
+      <div className="mb-4">
+        <input
+          type="text"
+          name="sourceAccount"
+          placeholder="Source Account"
+          value={formData.sourceAccount}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+        />
       </div>
-    </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          name="destinationAccount"
+          placeholder="Destination Account"
+          value={formData.destinationAccount}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="number"
+          name="amount"
+          placeholder="Amount"
+          value={formData.amount}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          name="currency"
+          placeholder="Currency"
+          value={formData.currency}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          name="description"
+          placeholder="Description"
+          value={formData.description}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          name="type"
+          placeholder="Type"
+          value={formData.type}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <button
+        type="submit"
+        className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+      >
+        Submit
+      </button>
+    </form>
   );
-}
+};
 
-export default Transactions;
+export default TransactionForm;
