@@ -247,9 +247,30 @@ app.post("/transaction", async (req, res) => {
     const sourceBalance = await getAccountBalance(sourceAccount);
     const destinationBalance = await getAccountBalance(destinationAccount);
 
+    // Vérifier l'identité de l'utilisateur connecté
+    const _id = req.body._id;
+    const user = await User.findOne({
+      _id: _id,
+      "Compte.compteNumber": sourceAccount,
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        error: "Vous n'êtes pas autorisé à effectuer cette transaction.",
+      });
+    }
+
     if (sourceBalance < amount) {
       return res.status(400).json({
         error: "Fonds insuffisants pour effectuer le virement.",
+      });
+    }
+
+    // Vérifier si le compte source et le compte destination sont différents
+    if (sourceAccount === destinationAccount) {
+      return res.status(400).json({
+        error:
+          "Le compte source et le compte destination doivent être différents.",
       });
     }
 
