@@ -12,6 +12,7 @@ import Cartes from "./pages/Cartes";
 import Epargne from "./pages/Epargne";
 import Statistic from "./pages/Statistic";
 import Message from "./pages/Message";
+import TransactionForm from "./components/Transactions";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -66,6 +67,7 @@ function App() {
           }
         />
         <Route path="/dashboardAdmin" element={<Dashboard isLoggedIn />} />
+        <Route path="/transaction" element={<TransactionForm />} />
         <Route path="/cartes" element={<Cartes />} />
         <Route path="/epargne" element={<Epargne />} />
         <Route path="/statistic" element={<Statistic />} />

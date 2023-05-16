@@ -1,6 +1,6 @@
 import React from "react";
 import AccountOverview from "../components/AccountOverview";
-import Transactions from "../components/Transactions";
+// import Transactions from "../components/Transactions";
 import Navbar from "../components/Navbar";
 
 const DashBoard = (isLoggedIn) => {
@@ -13,9 +13,9 @@ const DashBoard = (isLoggedIn) => {
         <div className="w-full">
           <AccountOverview />
         </div>
-        <div className="w-3/4 ml-64">
+        {/* <div className="w-3/4 ml-64">
           <Transactions />
-        </div>
+        </div> */}
       </div>
     </div>
   );
