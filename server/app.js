@@ -374,9 +374,25 @@ app.get("/carte", async (req, res) => {
       user.Carte[index].verrouiller = !user.Carte[index].verrouiller;
     } else if (type === "opposition") {
       user.Carte[index].opposition = !user.Carte[index].opposition;
-    }
-    else if (type === "plafond") {
+    } else if (type === "plafond") {
       user.Carte[index].plafond = newPlafond;
+    } else if (type === "ajouter") {
+      const carteNumber = Math.floor(Math.random() * 10000000000000000);
+      const date = new Date();
+      date.setFullYear(date.getFullYear() + 5);
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear().toString().slice(-2);
+      const dateExpiration = `${month.toString().padStart(2, "0")}/${year}`;
+      const code = Math.floor(Math.random() * 10000);
+      const CCV = Math.floor(Math.random() * 1000);
+      user.Carte.push({
+        carteNumber,
+        dateExpiration,
+        code,
+        CCV,
+        plafond: 2000,
+        utilisé: 25,
+      });
     }
 
     const updatedUser = await user.save();
@@ -391,6 +407,5 @@ app.get("/carte", async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
-
 
 module.exports = app;
