@@ -1,8 +1,11 @@
 const express = require("express");
 const Router = express.Router();
-const User = require("../db/userModel");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+
+//import models
+const User = require("../db/userModel");
+const Logs = require("../db/connectionLogModel");
 
 Router.post("/login", (request, response) => {
   // check if email exists
@@ -36,9 +39,19 @@ Router.post("/login", (request, response) => {
           _id: user._id,
           token,
         });
+
+        // save login information
+        const connectionLog = new Logs({
+          _id: user._id,
+          CompteNumber: user.Compte.compteNumber,
+          date: new Date(),
+          ip: request.ip,
+          userAgent: request.headers["user-agent"],
+        });
+        connectionLog.save();
       }
     })
-    // catch error if email does not exist
+    // catch error if CompteNumber does not exist
     .catch((e) => {
       response.status(404).send({
         message: "CompteNumber was not found",
