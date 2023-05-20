@@ -13,6 +13,7 @@ import Epargne from "./pages/Epargne";
 import Statistic from "./pages/Statistic";
 import Message from "./pages/Message";
 import TransactionForm from "./components/Transactions";
+import Payment from "./pages/Payment";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -73,6 +74,7 @@ function App() {
         <Route path="/statistic" element={<Statistic />} />
         <Route path="/message" element={<Message />} />
         <Route path="/*" element={<Page404 />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
   );
