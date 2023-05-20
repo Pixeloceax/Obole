@@ -83,7 +83,7 @@ function CartesBancaires() {
                       <img src={logo} alt="logo" className="h-32" />
                     </div>
                     <p className="text-lg font-medium pt-5">
-                      **** **** **** {carte.carteNumber.toString().slice(0, 4)}
+                      **** **** **** {carte.carteNumber.toString().slice(-4)}
                     </p>
                     <div className="flex justify-between items-center pt-5">
                       <p className="text-lg font-medium">
