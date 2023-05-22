@@ -58,6 +58,22 @@ function CartesBancaires() {
     }
   };
 
+  const handleDelete = (index) => async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/carte?_id=${_id}&type=delete&index=${index}`
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      console.log(response);
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="p-6 bg-white">
       {data ? (
@@ -74,6 +90,7 @@ function CartesBancaires() {
             >
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">{`Carte ${index + 1}`}</h1>
+                <button onClick={handleDelete(index)} className="text-lg bg-black text-white font-bold py-2 px-4 rounded-full">Supprimer</button>
               </div>
               <div className="flex mt-6 justify-around">
                 <div className="bg-black rounded-3xl max-w-md relative shadow-xl border-b-6 border-r-6 text-white border-gray-700 w-[70%]">
