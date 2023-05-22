@@ -1,9 +1,11 @@
 const express = require("express");
 const Router = express.Router();
+
 const User = require("../db/userModel");
+const Payment = require("../db/paymentModel");
 
 Router.get("/payment", async (req, res) => {
-  const { number_carte, date, ccv, montant } = req.query;
+  const { number_carte, date, ccv, montant, type } = req.query;
 
   try {
     const user = await User.findOne({
@@ -29,6 +31,16 @@ Router.get("/payment", async (req, res) => {
           user.Solde.solde = user.Solde.solde - Number(montant);
           await user.save();
 
+          const paymentDonne = new Payment({
+            payment: {
+              _id: user._id,
+              CompteNumber: user.Compte.compteNumber,
+              date: new Date(),
+              type: type,
+              amount: Number(montant),
+            },
+          });
+          paymentDonne.save();
           console.log("Paiement effectué avec succès.");
         } else {
           console.log(

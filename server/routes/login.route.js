@@ -41,14 +41,14 @@ Router.post("/login", (request, response) => {
         });
 
         // save login information
-        const connectionLog = new Logs({
-          _id: user._id,
-          CompteNumber: user.Compte.compteNumber,
-          date: new Date(),
-          ip: request.ip,
-          userAgent: request.headers["user-agent"],
-        });
-        connectionLog.save();
+        // const connectionLog = new Logs({
+        //   _id: user._id,
+        //   CompteNumber: user.Compte.compteNumber,
+        //   date: new Date(),
+        //   ip: request.ip,
+        //   userAgent: request.headers["user-agent"],
+        // });
+        // connectionLog.save();
       }
     })
     // catch error if CompteNumber does not exist

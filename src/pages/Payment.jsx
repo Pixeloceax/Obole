@@ -4,7 +4,20 @@ const Payment = () => {
   // Obtenir les options pour les sélecteurs de mois et d'année
   const getCurrentYear = () => new Date().getFullYear();
   const months = Array.from({ length: 12 }, (_, index) => index + 1);
-  const years = Array.from({ length: 10 }, (_, index) => getCurrentYear() + index);
+  const years = Array.from(
+    { length: 10 },
+    (_, index) => getCurrentYear() + index
+  );
+  const typePayment = [
+    "Loyer",
+    "Nourriture",
+    "Vêtements",
+    "Transport",
+    "Santé",
+    "Loisirs",
+    "Éducation",
+    "Autres",
+  ];
   const [data, setData] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -12,6 +25,7 @@ const Payment = () => {
     month: "",
     year: "",
     ccv: "",
+    type: "",
   });
 
   const handleChange = (e) => {
@@ -20,11 +34,11 @@ const Payment = () => {
 
   const handleClickButton = async () => {
     try {
-      const { number_carte, month, year, ccv } = formData;
-      console.log(number_carte, month, year, ccv);
+      const { number_carte, month, year, ccv, type } = formData;
+      console.log(number_carte, month, year, ccv, type);
       const formattedDate = `${month.padStart(2, "0")}/${year.slice(-2)}`;
       const response = await fetch(
-        `http://localhost:3001/payment?number_carte=${number_carte}&date=${formattedDate}&ccv=${ccv}&montant=100`
+        `http://localhost:3001/payment?number_carte=${number_carte}&date=${formattedDate}&ccv=${ccv}&montant=100&type=${type}`
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -101,6 +115,27 @@ const Payment = () => {
           className="w-full border border-gray-300 px-3 py-2 rounded"
           onChange={handleChange}
         />
+        <br />
+
+        <label htmlFor="ccv" className="block mb-2 mt-4">
+          Type d'achat :
+        </label>
+        <div className="flex">
+          <select
+            id="type"
+            name="type"
+            required
+            className="w-1/2 border border-gray-300 px-3 py-2 rounded mr-2"
+            onChange={handleChange}
+          >
+            <option value="">type d'achat</option>
+            {typePayment.map((typePayments) => (
+              <option key={typePayments} value={typePayments}>
+                {typePayments}
+              </option>
+            ))}
+          </select>
+        </div>
         <br />
 
         <input

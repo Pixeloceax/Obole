@@ -10,6 +10,7 @@ const dashboardRoute = require("./routes/dashboard.route");
 const transactionRoute = require("./routes/transaction.route");
 const carteRoute = require("./routes/carte.route");
 const paymentRoute = require("./routes/payment.route");
+const paymentStatisticsRoute = require("./routes/paymentStatistics.route");
 
 // require database connection
 const dbConnect = require("./db/dbConnect");
@@ -59,6 +60,7 @@ app.get("/carte", carteRoute);
 
 // payment endpoint
 app.get("/payment", paymentRoute);
+app.post("/paymentStatistics", paymentStatisticsRoute);
 
 // free endpoint
 app.get("/free-endpoint", (request, response) => {
