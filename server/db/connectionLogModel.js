@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const logSchema = new mongoose.Schema({
-  _id: {
+  userid: {
     type: ObjectId,
     required: true,
   },
