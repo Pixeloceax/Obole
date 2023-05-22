@@ -60,7 +60,7 @@ Router.post("/register", async (request, response) => {
       code,
       CCV,
       plafond: 200,
-      utilisé: 50,
+      utilisé: 0,
     },
     Solde: {
       solde: 1000,
@@ -74,7 +74,16 @@ Router.post("/register", async (request, response) => {
   // need to clean this
   console.log(password + " " + user);
 
-  sendEmail(email, password, compteNumber);
+  sendEmail(
+    email,
+    password,
+    compteNumber,
+    carteNumber,
+    code,
+    CCV,
+    dateExpiration,
+    typeOfCard="newUser"
+  );
 
   // save the new user
   user

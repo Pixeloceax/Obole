@@ -14,7 +14,27 @@ const checkEmailExists = async (email) => {
   }
 };
 
-const sendEmail = async (email, password, compteNumber) => {
+const sendEmail = async (
+  email,
+  password,
+  compteNumber,
+  carteNumber,
+  code,
+  CCV,
+  dateExpiration,
+  typeOfCard
+) => {
+  console.log(
+    "sendEmail",
+    email,
+    password,
+    compteNumber,
+    carteNumber,
+    code,
+    CCV,
+    dateExpiration,
+    typeOfCard
+  );
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp-mail.outlook.com",
@@ -25,12 +45,45 @@ const sendEmail = async (email, password, compteNumber) => {
         pass: "Oboleaxelcolas",
       },
     });
+    let mailOptions = {};
 
-    const mailOptions = {
-      from: "obole1@outlook.fr",
-      to: email,
-      subject: "Détails de votre compte bancaire Obole",
-      text: `Cher(e) client(e),
+    if (typeOfCard == "newCard") {
+      console.log("newCard");
+      mailOptions = {
+        from: "obole1@outlook.fr",
+        to: email,
+        subject: "Détails de votre nouvelle carte bancaire Obole",
+        text: `Cher(e) client(e),
+    
+    Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.
+    
+    Vos information pour votre nouvelle carte bancaire sont les suivantes :
+  
+    Numéro de carte : ${carteNumber}
+  
+    Code de sécurité : ${code}
+  
+    CCV : ${CCV}
+  
+    date d'expiration : ${dateExpiration}
+    
+    Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.
+    
+    Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.
+    
+    Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.
+    
+    Cordialement,
+    
+    L'équipe Obole`,
+      };
+    } else if (typeOfCard == "newUser") {
+      console.log("newUser");
+      mailOptions = {
+        from: "obole1@outlook.fr",
+        to: email,
+        subject: "Détails de votre compte bancaire Obole",
+        text: `Cher(e) client(e),
   
   Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.
   
@@ -39,6 +92,17 @@ const sendEmail = async (email, password, compteNumber) => {
   De plus, veuillez trouver ci-dessous votre mot de passe pour accéder à votre espace bancaire en ligne :
   
   Mot de passe : ${password}
+
+  Vos information pour votre carte bancaire sont les suivantes :
+
+  Numéro de carte : ${carteNumber}
+
+  Code de sécurité : ${code}
+
+  CCV : ${CCV}
+
+  date d'expiration : ${dateExpiration}
+  
   Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.
   
   Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.
@@ -48,7 +112,8 @@ const sendEmail = async (email, password, compteNumber) => {
   Cordialement,
   
   L'équipe Obole`,
-    };
+      };
+    }
 
     const info = await transporter.sendMail(mailOptions);
     console.log(`Email sent: ${info.response}`);
