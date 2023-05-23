@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import right_icon from "../assets/right-arrow.png";
 import user from "../assets/user.png";
 
+import Loader from "./loader";
+
 function AccountOverview() {
   const _id = sessionStorage.getItem("_id");
   const [data, setData] = useState(null);
@@ -199,7 +201,7 @@ function AccountOverview() {
           </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Loader />
       )}
     </div>
   );

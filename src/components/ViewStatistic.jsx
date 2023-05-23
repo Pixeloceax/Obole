@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart, registerables } from "chart.js";
 import axios from "axios";
+import Loader from "./loader";
 
 const ViewStatistic = () => {
   const chartRef = useRef(null);
@@ -187,37 +188,40 @@ const ViewStatistic = () => {
 
   return (
     <div className="flex justify-center h-full">
-      <div className="overflow-hidden self-center">
-        <div className="flex justify-center mb-10">
-          {lastSixMonths.map((month, index) => (
-            <div key={month} className="mr-4">
-              <input
-                type="radio"
-                id={`month-${index}`}
-                name="month"
-                value={month}
-                className="hidden peer"
-                defaultChecked={index === 0}
-              />
-              <label
-                htmlFor={`month-${index}`}
-                className="inline-flex items-center justify-between w-full p-5 rounded-lg cursor-pointer text-gray-500 peer-checked:text-white bg-black"
-              >
-                <div className="block">
-                  <div className="w-full text-lg font-semibold">{month}</div>
-                </div>
-              </label>
-            </div>
-          ))}
+      {data.length !== 0 ? (
+        <div className="overflow-hidden self-center">
+          <div className="flex justify-center mb-10">
+            {lastSixMonths.map((month, index) => (
+              <div key={month} className="mr-4">
+                <input
+                  type="radio"
+                  id={`month-${index}`}
+                  name="month"
+                  value={month}
+                  className="hidden peer"
+                  defaultChecked={index === 0}
+                />
+                <label
+                  htmlFor={`month-${index}`}
+                  className="inline-flex items-center justify-between w-full p-5 rounded-lg cursor-pointer text-gray-500 peer-checked:text-white bg-black"
+                >
+                  <div className="block">
+                    <div className="w-full text-lg font-semibold">{month}</div>
+                  </div>
+                </label>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center items-center w-[40vw] h-[40vw] relative">
+            <p className="absolute font-bold text-3xl">{totalAmount} €</p>
+            <canvas ref={chartRef} className="w-full h-full" />
+          </div>
         </div>
-        <div className="flex justify-center items-center w-[40vw] h-[40vw] relative">
-          <p className="absolute font-bold text-3xl">{totalAmount} €</p>
-          <canvas ref={chartRef} className="w-full h-full" />
-        </div>
-      </div>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
-  
 };
 
 export default ViewStatistic;
