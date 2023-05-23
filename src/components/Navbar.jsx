@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // images
 import Compte_icon from "../assets/Compte.png";
@@ -11,23 +10,28 @@ import Statistic_icon from "../assets/Statistic.png";
 import Message_icon from "../assets/Message.png";
 //TODO find and add all images for icons in white
 
-//TODO 3
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const location = useLocation();
 
-  const HandleClick = () => {
+  const navLinks = [
+    { path: "/dashboard", icon: Compte_icon, text: "Compte" },
+    { path: "/dashboard/cartes", icon: Cartes_icon, text: "Cartes" },
+    { path: "/dashboard/statistic", icon: Statistic_icon, text: "Statistic" },
+    { path: "/dashboard/epargne", icon: Compte_icon, text: "Epargne" },
+    { path: "/dashboard/message", icon: Message_icon, text: "Message" },
+  ];
+
+  const handleClick = () => {
     setIsOpen(!isOpen);
   };
-
-  const location = useLocation();
 
   return (
     <div className="top-0 left-0 h-screen bg-black text-white">
       <div className="flex flex-col justify-between h-full">
         <div
           className={`${
-            isOpen ? "flex self-center pl-10" : "flex self-center "
+            isOpen ? "flex self-center pl-10" : "flex self-center"
           }`}
         >
           <div className="h-40">
@@ -40,78 +44,30 @@ const Navbar = () => {
           <button
             type="button"
             className={`${isOpen ? "self-start" : "flex self-center"}`}
-            onClick={HandleClick}
+            onClick={handleClick}
           >
-            <img src={Hamburger_icon} alt="" className="h-10 pr-2 pt-2" />{" "}
-            {/*//TODO if click add other view and change hambuger */}
+            <img src={Hamburger_icon} alt="" className="h-10 pr-2 pt-2" />
           </button>
         </div>
-        <div className="flex-grow flex-basis-auto mx-10 flex items-center">
-          <Link
-            className={`flex flex-row items-center ${
-              location.pathname === "/dashboard" ? "pl-10" : "pl-0"
-            }`}
-            to="/dashboard"
-          >
-            {" "}
-            {/*//TODO if on the page add pl-10 style */}
-            <img src={Compte_icon} alt="Compte_icon" className="p-2 w-16" />
-            <div className={`${isOpen ? "text-xl font-bold" : "hidden"}`}>
-              Compte
-            </div>
-          </Link>
-        </div>
-        <div className="flex-grow flex-basis-auto mx-10 flex items-center">
-          <Link
-            className={`flex flex-row items-center ${
-              location.pathname === "/cartes" ? "pl-10" : "pl-0"
-            }`}
-            to="/cartes"
-          >
-            <img src={Cartes_icon} alt="Compte_icon" className="p-2 w-16" />
-            <div className={`${isOpen ? "text-xl font-bold" : "hidden"}`}>
-              Cartes
-            </div>
-          </Link>
-        </div>
-        <div className="flex-grow flex-basis-auto mx-10 flex items-center">
-          <Link
-            className={`flex flex-row items-center ${
-              location.pathname === "/statistic" ? "pl-10" : "pl-0"
-            }`}
-            to="/statistic"
-          >
-            <img src={Statistic_icon} alt="Compte_icon" className="p-2 w-16" />
-            <div className={`${isOpen ? "text-xl font-bold" : "hidden"}`}>
-              Statistic
-            </div>
-          </Link>
-        </div>
-        <div className="flex-grow flex-basis-auto mx-10 flex items-center">
-          <Link
-            className={`flex flex-row items-center ${
-              location.pathname === "/epargne" ? "pl-10" : "pl-0"
-            }`}
-            to="/epargne"
-          >
-            <img src={Compte_icon} alt="Compte_icon" className="p-2 w-16" />
-            <div className={`${isOpen ? "text-xl font-bold" : "hidden"}`}>
-              Epargne
-            </div>
-          </Link>
-        </div>
-        <div className="flex-grow flex-basis-auto mx-10 flex items-center">
-          <Link
-            className={`flex flex-row items-center ${
-              location.pathname === "/message" ? "pl-10" : "pl-0"
-            }`}
-            to="/message"
-          >
-            <img src={Message_icon} alt="Compte_icon" className="p-2 w-16" />
-            <div className={`${isOpen ? "text-xl font-bold" : "hidden"}`}>
-              Message
-            </div>
-          </Link>
+        <div className="flex-grow flex-basis-auto mx-10 flex flex-col items-center space-y-4">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              className={`flex flex-col items-center ${
+                location.pathname === link.path ? "pl-10" : "pl-0"
+              } flex-grow`}
+              to={link.path}
+            >
+              <img
+                src={link.icon}
+                alt={`${link.text}_icon`}
+                className="p-2 w-16"
+              />
+              <div className={`${isOpen ? "text-xl font-bold" : "hidden"}`}>
+                {link.text}
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
