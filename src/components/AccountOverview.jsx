@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -7,6 +8,8 @@ import user from "../assets/user.png";
 function AccountOverview() {
   const _id = sessionStorage.getItem("_id");
   const [data, setData] = useState(null);
+  const [transaction, setTransaction] = useState([]);
+  const [payment, setPayment] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,7 +20,6 @@ function AccountOverview() {
         if (!response.ok) {
           throw new Error("Something went wrong!");
         }
-        console.log(response);
         const result = await response.json();
         setData(result);
       } catch (error) {
@@ -67,9 +69,46 @@ function AccountOverview() {
   //   }
   //   setData(dataConf)
   // }
-  console.log(data);
 
-  // const numberLivret = data ? data.Livret.length : 0;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const _id = sessionStorage.getItem("_id");
+        const response = await axios.post(
+          "http://localhost:3001/paymentStatistics",
+          { _id }
+        );
+        setPayment(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const formattedPayments = payment.map(
+    (payment) => `- ${payment.payment.amount} €`
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const _id = sessionStorage.getItem("_id");
+        const response = await axios.post(
+          "http://localhost:3001/transaction",
+          { _id }
+        );
+        setTransaction(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(transaction);
 
   return (
     <div className="p-6 bg-white">
@@ -183,15 +222,23 @@ function AccountOverview() {
               <div className="flex justify-around">
                 <div class="flex items-center justify-center w-[50%]">
                   <div className="text-center">
-                    <p className="text-white font-bold text-4xl mb-2">
-                      A venir
-                    </p>
+                    <p className="text-white font-bold text-4xl mb-2">Gain</p>
                   </div>
                 </div>
                 <wr class="border-2 border-white" />
                 <div class="flex items-center justify-center w-[50%]">
                   <div className="text-center">
-                    <p className="text-white font-bold text-4xl mb-2">Fait</p>
+                    <p className="text-white font-bold text-4xl mb-2">
+                      Deficit
+                    </p>
+                    {formattedPayments.slice(0, 4).map((payment, index) => (
+                      <p
+                        key={index}
+                        className="text-white font-bold text-2xl mb-2"
+                      >
+                        {payment}
+                      </p>
+                    ))}
                   </div>
                 </div>
               </div>

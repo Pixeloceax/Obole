@@ -7,7 +7,8 @@ const ViewStatistic = () => {
   const [data, setData] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState("week");
   const [selectedPaymentType, setSelectedPaymentType] = useState("all");
-  const [totalAmount, setTotalAmount] = useState(0); // Use state to track the total amount
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,31 +31,15 @@ const ViewStatistic = () => {
   useEffect(() => {
     if (chartRef.current && data.length > 0) {
       const ctx = chartRef.current.getContext("2d");
-
       if (chartRef.current.chart) {
         chartRef.current.chart.destroy();
       }
 
       let filteredData = data;
 
-      if (selectedDateRange === "month") {
-        filteredData = filteredData.filter(
-          (item) =>
-            new Date(item.date) >= getStartOfMonth() &&
-            new Date(item.date) <= getEndOfMonth()
-        );
-      }
-
-      if (selectedPaymentType !== "all") {
-        filteredData = filteredData.filter(
-          (item) => item.type === selectedPaymentType
-        );
-      }
-
       const labels = filteredData.map((item) => item.type);
       const amounts = filteredData.map((item) => item.amount);
 
-      // Calculate the total amount using reduce
       const calculatedTotalAmount = filteredData.reduce(
         (accumulator, item) => accumulator + item.amount,
         0
@@ -129,29 +114,8 @@ const ViewStatistic = () => {
     return transformedData;
   };
 
-  const generateRandomColors = (num) => {
-    const colors = [];
-    for (let i = 0; i < num; i++) {
-      const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(
-        Math.random() * 256
-      )}, ${Math.floor(Math.random() * 256)}, 0.7)`;
-      colors.push(color);
-    }
-    return colors;
-  };
-
-  const getStartOfMonth = () => {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    startOfMonth.setHours(0, 0, 0, 0);
-    return startOfMonth;
-  };
-
-  const getEndOfMonth = () => {
-    const now = new Date();
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-    endOfMonth.setHours(23, 59, 59, 999);
-    return endOfMonth;
+  const handleMonthClick = (month) => () => {
+    setSelectedMonth(month);
   };
 
   const getLastSixMonthsInFrench = () => {
@@ -169,7 +133,6 @@ const ViewStatistic = () => {
       "novembre",
       "décembre",
     ];
-
     const currentDate = new Date();
     const lastSixMonths = [];
 
@@ -189,18 +152,19 @@ const ViewStatistic = () => {
     <div className="flex justify-center h-full">
       <div className="overflow-hidden self-center">
         <div className="flex justify-center mb-10">
-          {lastSixMonths.map((month, index) => (
+          {/* {lastSixMonths.map((month, index) => (
             <div key={month} className="mr-4">
               <input
                 type="radio"
-                id={`month-${index}`}
+                id={index}
                 name="month"
                 value={month}
                 className="hidden peer"
                 defaultChecked={index === 0}
+                onClick={handleMonthClick(month)}
               />
               <label
-                htmlFor={`month-${index}`}
+                htmlFor={index}
                 className="inline-flex items-center justify-between w-full p-5 rounded-lg cursor-pointer text-gray-500 peer-checked:text-white bg-black"
               >
                 <div className="block">
@@ -208,7 +172,7 @@ const ViewStatistic = () => {
                 </div>
               </label>
             </div>
-          ))}
+          ))} */}
         </div>
         <div className="flex justify-center items-center w-[40vw] h-[40vw] relative">
           <p className="absolute font-bold text-3xl">{totalAmount} €</p>
@@ -217,7 +181,6 @@ const ViewStatistic = () => {
       </div>
     </div>
   );
-  
 };
 
 export default ViewStatistic;
