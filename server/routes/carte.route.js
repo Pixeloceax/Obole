@@ -65,6 +65,7 @@ Router.get("/carte", async (req, res) => {
       if (!updatedUser) {
         return res.status(404).json({ message: "Carte non trouvée" });
       }
+      return res.json(updatedUser);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Erreur serveur" });
