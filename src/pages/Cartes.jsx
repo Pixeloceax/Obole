@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import Navbar from '../components/Navbar';
-import ViewCartes from '../components/ViewCartes';
+import Navbar from "../components/Navbar";
+import ViewCartes from "../components/ViewCartes";
 
 const Cartes = () => {
   return (

@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import Navbar from '../components/Navbar';
+import Navbar from "../components/Navbar";
 
 const Epargne = () => {
-    return (
-        <div>
-            <Navbar />
-            Epargne
-        </div>
-    );
+  return (
+    <div>
+      <Navbar />
+      Epargne
+    </div>
+  );
 };
 
 export default Epargne;

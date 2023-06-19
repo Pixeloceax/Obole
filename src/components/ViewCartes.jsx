@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import logo from "../assets/Logo_white_bg_gray.png";
 import plus from "../assets/plus.png";
 
+import Loader from "./loader";
+
 function CartesBancaires() {
   const _id = sessionStorage.getItem("_id");
   const [data, setData] = useState(null);
@@ -72,7 +74,7 @@ function CartesBancaires() {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <div className="p-6 bg-white">
@@ -90,7 +92,12 @@ function CartesBancaires() {
             >
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">{`Carte ${index + 1}`}</h1>
-                <button onClick={handleDelete(index)} className="text-lg bg-black text-white font-bold py-2 px-4 rounded-full">Supprimer</button>
+                <button
+                  onClick={handleDelete(index)}
+                  className="text-lg bg-black text-white font-bold py-2 px-4 rounded-full"
+                >
+                  Supprimer
+                </button>
               </div>
               <div className="flex mt-6 justify-around">
                 <div className="bg-black rounded-3xl max-w-md relative shadow-xl border-b-6 border-r-6 text-white border-gray-700 w-[70%]">
@@ -186,7 +193,7 @@ function CartesBancaires() {
           </div>
         </div>
       ) : (
-        <p>Chargement en cours...</p>
+        <Loader />
       )}
     </div>
   );
