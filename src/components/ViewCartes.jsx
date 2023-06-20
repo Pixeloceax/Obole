@@ -77,7 +77,7 @@ function CartesBancaires() {
   };
 
   return (
-    <div className="p-6 bg-white">
+    <div className="p-6 bg-white h-full">
       {data ? (
         <div className="ml-5">
           <div className="flex justify-between">

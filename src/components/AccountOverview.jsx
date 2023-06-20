@@ -7,6 +7,26 @@ import user from "../assets/user.png";
 
 import Loader from "./loader";
 
+const Modal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed top-20 right-3 m-4 z-50">
+      <div className="bg-white rounded-lg p-6 border-gray border-2 shadow-lg">
+        <h2 className="text-xl font-bold mb-4 border-b-2 pr-16">Mon Compte</h2>
+        <h2 className="text-xl font-bold mb-4 border-b-2">Parametre</h2>
+        <h2 className="text-xl font-bold mb-4 border-b-2">Déconnexion</h2>
+        <button
+          className="mt-2 px-3 py-1 bg-white rounded-lg"
+          onClick={onClose}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
 function AccountOverview() {
   const _id = sessionStorage.getItem("_id");
   const [data, setData] = useState(null);
@@ -97,10 +117,9 @@ function AccountOverview() {
     const fetchData = async () => {
       try {
         const _id = sessionStorage.getItem("_id");
-        const response = await axios.post(
-          "http://localhost:3001/transaction",
-          { _id }
-        );
+        const response = await axios.post("http://localhost:3001/transaction", {
+          _id,
+        });
         setTransaction(response.data);
       } catch (error) {
         console.error(error);
@@ -112,6 +131,20 @@ function AccountOverview() {
 
   console.log(transaction);
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    if (modalOpen === true) {
+      setModalOpen(false);
+    } else {
+      setModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div className="p-6 bg-white">
       {data ? (
@@ -121,7 +154,10 @@ function AccountOverview() {
               Bonjour,{" "}
               <span className="text-purple">{data.Information.nom}</span>
             </h1>
-            <img src={user} alt="account" className="h-14" />
+            <button onClick={openModal}>
+              <img src={user} alt="account" className="h-14" />
+            </button>
+            <Modal isOpen={modalOpen} onClose={closeModal} />
           </div>
           <div className="flex justify-evenly">
             <div class="w-[50%] mt-10 bg-purple rounded-3xl shadow-md p-8">
