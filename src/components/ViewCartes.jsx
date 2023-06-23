@@ -12,7 +12,7 @@ function CartesBancaires() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://obole-back.onrender.com//dashboard?_id=${_id}`
+          `https://obole-back.onrender.com/dashboard?_id=${_id}`
         );
         if (!response.ok) {
           throw new Error("Something went wrong!");
@@ -47,7 +47,7 @@ function CartesBancaires() {
         }
       }
       const response = await fetch(
-        `https://obole-back.onrender.com//carte?_id=${_id}&type=${type}&index=${index}&newPlafond=${newPlafond}`
+        `https://obole-back.onrender.com/carte?_id=${_id}&type=${type}&index=${index}&newPlafond=${newPlafond}`
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -63,7 +63,7 @@ function CartesBancaires() {
   const handleDelete = (index) => async () => {
     try {
       const response = await fetch(
-        `https://obole-back.onrender.com//carte?_id=${_id}&type=delete&index=${index}`
+        `https://obole-back.onrender.com/carte?_id=${_id}&type=delete&index=${index}`
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");

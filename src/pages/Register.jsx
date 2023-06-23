@@ -11,7 +11,7 @@ const Register = () => {
     const formData = new FormData(event.target);
     const formDataJSON = Object.fromEntries(formData.entries());
 
-    const response = await fetch("https://obole-back.onrender.com//register", {
+    const response = await fetch("https://obole-back.onrender.com/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formDataJSON),
