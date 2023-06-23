@@ -1,7 +1,7 @@
-// external imports
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 // routes imports
 const registerRoute = require("./routes/register.route");
@@ -11,7 +11,6 @@ const transactionRoute = require("./routes/transaction.route");
 const carteRoute = require("./routes/carte.route");
 const paymentRoute = require("./routes/payment.route");
 const paymentStatisticsRoute = require("./routes/paymentStatistics.route");
-const cors = require("cors");
 
 // require database connection
 const dbConnect = require("./db/dbConnect");
@@ -20,14 +19,8 @@ const auth = require("./utils/auth");
 // execute database connection
 dbConnect();
 
-// Curb Cores Error by adding a header here
-app.use((req, res, next) => {
-  cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  });
-  next();
-});
+// Enable CORS for all routes
+app.use(cors());
 
 // body parser configuration
 app.use(bodyParser.json());
@@ -43,7 +36,7 @@ app.get("/", (request, response, next) => {
 app.post("/register", registerRoute);
 
 // login endpoint
-app.post("/login", loginRoute, cors());
+app.post("/login", loginRoute);
 
 // dashboard endpoint
 app.get("/dashboard", dashboardRoute);
