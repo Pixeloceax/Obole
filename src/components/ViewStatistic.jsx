@@ -16,7 +16,7 @@ const ViewStatistic = () => {
       try {
         const _id = sessionStorage.getItem("_id");
         const response = await axios.post(
-          "http://localhost:3001/paymentStatistics",
+          "https://obole-back.onrender.com//paymentStatistics",
           { _id }
         );
         const transformedData = transformResponse(response.data);
