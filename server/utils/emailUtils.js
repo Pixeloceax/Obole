@@ -54,28 +54,25 @@ const sendEmail = async (
         to: email,
         subject: "Détails de votre nouvelle carte bancaire Obole",
         text: `Cher(e) client(e),
-    
-    Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.
-    
-    Vos information pour votre nouvelle carte bancaire sont les suivantes :
-  
-    Numéro de carte : ${carteNumber}
-  
-    Code de sécurité : ${code}
-  
-    CCV : ${CCV}
-  
-    date d'expiration : ${dateExpiration}
-    
-    Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.
-    
-    Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.
-    
-    Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.
-    
-    Cordialement,
-    
-    L'équipe Obole`,
+
+        Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.
+
+        Voici les informations pour votre nouvelle carte bancaire :
+
+        - Numéro de carte : ${carteNumber}
+        - Code de sécurité : ${code}
+        - CCV : ${CCV}
+        - Date d'expiration : ${dateExpiration}
+
+        Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.
+
+        Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.
+
+        Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.
+
+        Cordialement,
+
+        L'équipe Obole`,
       };
     } else if (typeOfCard == "newUser") {
       console.log("newUser");
@@ -84,34 +81,30 @@ const sendEmail = async (
         to: email,
         subject: "Détails de votre compte bancaire Obole",
         text: `Cher(e) client(e),
-  
-  Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.
-  
-  Votre numéro de compte est le suivant : ${compteNumber}. Veuillez conserver cette information en lieu sûr et ne jamais la divulguer à quiconque.
-  
-  De plus, veuillez trouver ci-dessous votre mot de passe pour accéder à votre espace bancaire en ligne :
-  
-  Mot de passe : ${password}
 
-  Vos information pour votre carte bancaire sont les suivantes :
-
-  Numéro de carte : ${carteNumber}
-
-  Code de sécurité : ${code}
-
-  CCV : ${CCV}
-
-  date d'expiration : ${dateExpiration}
-  
-  Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.
-  
-  Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.
-  
-  Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.
-  
-  Cordialement,
-  
-  L'équipe Obole`,
+        Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.
+        
+        Voici les détails de votre compte bancaire :
+        
+        - Numéro de compte : ${compteNumber}
+        - Mot de passe : ${password}
+        
+        Vos informations pour votre carte bancaire sont les suivantes :
+        
+        - Numéro de carte : ${carteNumber}
+        - Code de sécurité : ${code}
+        - CCV : ${CCV}
+        - Date d'expiration : ${dateExpiration}
+        
+        Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.
+        
+        Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.
+        
+        Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.
+        
+        Cordialement,
+        
+        L'équipe Obole`,
       };
     }
 
