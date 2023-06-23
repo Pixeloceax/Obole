@@ -24,6 +24,7 @@ dbConnect();
 app.use((req, res, next) => {
   cors({
     origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   });
 
   next();
