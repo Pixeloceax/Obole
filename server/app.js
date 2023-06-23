@@ -1,7 +1,7 @@
-// external imports
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 // routes imports
 const registerRoute = require("./routes/register.route");
@@ -19,19 +19,8 @@ const auth = require("./utils/auth");
 // execute database connection
 dbConnect();
 
-// Curb Cores Error by adding a header here
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  next();
-});
+// Enable CORS for all routes
+app.use(cors());
 
 // body parser configuration
 app.use(bodyParser.json());

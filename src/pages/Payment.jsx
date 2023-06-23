@@ -38,7 +38,7 @@ const Payment = () => {
       console.log(number_carte, month, year, ccv, type);
       const formattedDate = `${month.padStart(2, "0")}/${year.slice(-2)}`;
       const response = await fetch(
-        `http://localhost:3001/payment?number_carte=${number_carte}&date=${formattedDate}&ccv=${ccv}&montant=100&type=${type}`
+        `https://obole-back.onrender.com/payment?number_carte=${number_carte}&date=${formattedDate}&ccv=${ccv}&montant=100&type=${type}`
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");

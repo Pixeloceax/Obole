@@ -37,7 +37,7 @@ function AccountOverview() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/dashboard?_id=${_id}`
+          `https://obole-back.onrender.com/dashboard?_id=${_id}`
         );
         if (!response.ok) {
           throw new Error("Something went wrong!");
@@ -97,7 +97,7 @@ function AccountOverview() {
       try {
         const _id = sessionStorage.getItem("_id");
         const response = await axios.post(
-          "http://localhost:3001/paymentStatistics",
+          "https://obole-back.onrender.com/paymentStatistics",
           { _id }
         );
         setPayment(response.data);
@@ -117,9 +117,12 @@ function AccountOverview() {
     const fetchData = async () => {
       try {
         const _id = sessionStorage.getItem("_id");
-        const response = await axios.post("http://localhost:3001/transaction", {
-          _id,
-        });
+        const response = await axios.post(
+          "https://obole-back.onrender.com/transaction",
+          {
+            _id,
+          }
+        );
         setTransaction(response.data);
       } catch (error) {
         console.error(error);

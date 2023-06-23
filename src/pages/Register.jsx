@@ -11,7 +11,7 @@ const Register = () => {
     const formData = new FormData(event.target);
     const formDataJSON = Object.fromEntries(formData.entries());
 
-    const response = await fetch("http://localhost:3001/register", {
+    const response = await fetch("https://obole-back.onrender.com/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formDataJSON),
@@ -42,7 +42,10 @@ const Register = () => {
               Register
             </h2>
           </div>
-          <form className="md:mt-2 mt-0 md:space-y-8 space-y-2" onSubmit={handleFormSubmit}>
+          <form
+            className="md:mt-2 mt-0 md:space-y-8 space-y-2"
+            onSubmit={handleFormSubmit}
+          >
             <div class="md:flex justify-center">
               <div class="justify-center md:p-0 p-5">
                 <div class="mb-5">
@@ -79,7 +82,9 @@ const Register = () => {
                   />
                 </div>
                 <div className="h-2 pt-2">
-                  <div id="alert" className="text-red-500 text-center hidden">L'email est deja utiliser</div>
+                  <div id="alert" className="text-red-500 text-center hidden">
+                    L'email est deja utiliser
+                  </div>
                 </div>
               </div>
               <div class="justify-center md:p-0 p-5 md:ml-5">
@@ -109,11 +114,21 @@ const Register = () => {
             </div>
             <div class="flex items-center text-white justify-center">
               <label class="inline-flex items-center">
-                <input type="radio" class="form-radio text-blue-500" name="genre" value="male" />
+                <input
+                  type="radio"
+                  class="form-radio text-blue-500"
+                  name="genre"
+                  value="male"
+                />
                 <span class="ml-2">Homme</span>
               </label>
               <label class="inline-flex items-center ml-12">
-                <input type="radio" class="form-radio text-pink-500" name="genre" value="female" />
+                <input
+                  type="radio"
+                  class="form-radio text-pink-500"
+                  name="genre"
+                  value="female"
+                />
                 <span class="ml-2">Femme</span>
               </label>
             </div>
