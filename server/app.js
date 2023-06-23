@@ -26,7 +26,6 @@ app.use((req, res, next) => {
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   });
-
   next();
 });
 
@@ -44,7 +43,7 @@ app.get("/", (request, response, next) => {
 app.post("/register", registerRoute);
 
 // login endpoint
-app.post("/login", loginRoute);
+app.post("/login", loginRoute, cors());
 
 // dashboard endpoint
 app.get("/dashboard", dashboardRoute);
