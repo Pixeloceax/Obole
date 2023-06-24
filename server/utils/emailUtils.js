@@ -53,26 +53,92 @@ const sendEmail = async (
         from: "obole1@outlook.fr",
         to: email,
         subject: "Détails de votre nouvelle carte bancaire Obole",
-        text: `Cher(e) client(e),
-
-        Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.
-
-        Voici les informations pour votre nouvelle carte bancaire :
-
-        - Numéro de carte : ${carteNumber}
-        - Code de sécurité : ${code}
-        - CCV : ${CCV}
-        - Date d'expiration : ${dateExpiration}
-
-        Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.
-
-        Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.
-
-        Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.
-
-        Cordialement,
-
-        L'équipe Obole`,
+        html: `<!DOCTYPE html>
+        <html lang="en">
+        
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Obole - Confirmation Email</title>
+          <style>
+            body,
+            body * {
+              box-sizing: border-box;
+              margin: 0;
+              padding: 0;
+            }
+        
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+              color: #272A31;
+            }
+        
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #F3F3FF;
+            }
+        
+            h1 {
+              font-size: 24px;
+              margin-bottom: 20px;
+              color: #7089C2;
+            }
+        
+            p {
+              margin-bottom: 20px;
+            }
+        
+            .card-info {
+              background-color: #5F65AB;
+              color: #F3F3FF;
+              padding: 10px;
+              margin-bottom: 20px;
+            }
+        
+            .card-info p {
+              margin-bottom: 10px;
+            }
+        
+            .customer-service {
+              background-color: #334777;
+              color: #F3F3FF;
+              padding: 10px;
+            }
+        
+            .customer-service a {
+              color: #F3F3FF;
+              text-decoration: underline;
+            }
+          </style>
+        </head>
+        
+        <body>
+          <div class="container">
+            <h1>Cher(e) client(e),</h1>
+            <p>Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.</p>
+            <div class="card-info">
+              <p>Voici les informations pour votre nouvelle carte bancaire :</p>
+              <p>- Numéro de carte : ${carteNumber}</p>
+              <p>- Code de sécurité : ${code}</p>
+              <p>- CCV : ${CCV}</p>
+              <p>- Date d'expiration : ${dateExpiration}</p>
+            </div>
+            <p>Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.</p>
+            <p>Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.</p>
+            <p>Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.</p>
+            <p>Cordialement,</p>
+            <p>L'équipe Obole</p>
+            <div class="customer-service">
+              <p>Pour toute assistance, veuillez contacter notre <a href="#">service clientèle</a>.</p>
+            </div>
+          </div>
+        </body>
+        
+        </html>
+        `,
       };
     } else if (typeOfCard == "newUser") {
       console.log("newUser");
@@ -80,31 +146,108 @@ const sendEmail = async (
         from: "obole1@outlook.fr",
         to: email,
         subject: "Détails de votre compte bancaire Obole",
-        text: `Cher(e) client(e),
-
-        Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.
+        html: `<!DOCTYPE html>
+        <html lang="en">
         
-        Voici les détails de votre compte bancaire :
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Obole - Confirmation Email</title>
+          <style>
+            body,
+            body * {
+              box-sizing: border-box;
+              margin: 0;
+              padding: 0;
+            }
         
-        - Numéro de compte : ${compteNumber}
-        - Mot de passe : ${password}
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+              color: #272A31;
+            }
         
-        Vos informations pour votre carte bancaire sont les suivantes :
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #F3F3FF;
+            }
         
-        - Numéro de carte : ${carteNumber}
-        - Code de sécurité : ${code}
-        - CCV : ${CCV}
-        - Date d'expiration : ${dateExpiration}
+            h1 {
+              font-size: 24px;
+              margin-bottom: 20px;
+              color: #7089C2;
+            }
         
-        Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.
+            p {
+              margin-bottom: 20px;
+            }
         
-        Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.
+            .account-details {
+              background-color: #5F65AB;
+              color: #F3F3FF;
+              padding: 10px;
+              margin-bottom: 20px;
+            }
         
-        Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.
+            .account-details p {
+              margin-bottom: 10px;
+            }
         
-        Cordialement,
+            .card-info {
+              background-color: #334777;
+              color: #F3F3FF;
+              padding: 10px;
+              margin-bottom: 20px;
+            }
         
-        L'équipe Obole`,
+            .card-info p {
+              margin-bottom: 10px;
+            }
+        
+            .customer-service {
+              background-color: #272A31;
+              color: #F3F3FF;
+              padding: 10px;
+            }
+        
+            .customer-service a {
+              color: #F3F3FF;
+              text-decoration: underline;
+            }
+          </style>
+        </head>
+        
+        <body>
+          <div class="container">
+            <h1>Cher(e) client(e),</h1>
+            <p>Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.</p>
+            <div class="account-details">
+              <p>Voici les détails de votre compte bancaire :</p>
+              <p>- Numéro de compte : ${compteNumber}</p>
+              <p>- Mot de passe : ${password}</p>
+            </div>
+            <div class="card-info">
+              <p>Vos informations pour votre carte bancaire sont les suivantes :</p>
+              <p>- Numéro de carte : ${carteNumber}</p>
+              <p>- Code de sécurité : ${code}</p>
+              <p>- CCV : ${CCV}</p>
+              <p>- Date d'expiration : ${dateExpiration}</p>
+            </div>
+            <p>Nous vous recommandons de changer régulièrement votre mot de passe pour garantir la sécurité de votre compte. Nous vous conseillons également de ne jamais divulguer votre mot de passe à quiconque.</p>
+            <p>Si vous rencontrez des problèmes pour accéder à votre compte bancaire en ligne, n'hésitez pas à contacter notre service clientèle disponible 24 heures sur 24 et 7 jours sur 7.</p>
+            <p>Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.</p>
+            <p>Cordialement,</p>
+            <p>L'équipe Obole</p>
+            <div class="customer-service">
+              <p>Pour toute assistance, veuillez contacter notre <a href="#">service clientèle</a>.</p>
+            </div>
+          </div>
+        </body>
+        
+        </html>
+        `,
       };
     }
 
