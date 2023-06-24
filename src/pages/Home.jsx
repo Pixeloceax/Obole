@@ -1,77 +1,88 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col h-screen">
-      {/* Header */}
-      <header className="flex justify-between items-center bg-white py-4 px-6">
-        <h1 className="text-gray-800 font-bold text-3xl">My Bank</h1>
-        <nav>
-          <ul className="flex">
-            <li className="mx-2">
-              <a href="#" className="text-gray-600 hover:text-gray-800">Home</a>
-            </li>
-            <li className="mx-2">
-              <a href="#" className="text-gray-600 hover:text-gray-800">About</a>
-            </li>
-            <li className="mx-2">
-              <a href="#" className="text-gray-600 hover:text-gray-800">Contact</a>
-            </li>
-          </ul>
-        </nav>
+    <div className="flex flex-col min-h-screen">
+      <header className="bg-purple_clair py-6">
+        <div className="container mx-auto flex justify-between items-center px-4">
+          <h1 className="text-5xl font-bold text-white">Obole</h1>
+          <nav>
+            <Link
+              to="/register"
+              className="text-white text-xl font-bold mr-4 hover:text-purple_foncer"
+            >
+              Register
+            </Link>
+            <Link
+              to="/login"
+              className="text-white text-xl font-bold mr-4 hover:text-purple_foncer"
+            >
+              Login
+            </Link>
+          </nav>
+        </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 bg-gray-100">
-        <div className="container mx-auto py-10">
-          <h2 className="text-3xl font-bold mb-4 text-gray-800">Invest in your future</h2>
-          <p className="mb-4 text-gray-700">With My Bank, you can invest your money in a wide range of funds, stocks, and cryptocurrencies with just a few clicks. Our platform is secure, transparent, and easy to use, so you can start building your portfolio today.</p>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full">Open an Account</button>
+      <main className="container mx-auto flex-grow px-4 py-12 text-center">
+        <h2 className="text-4xl font-bold mb-6">Welcome to Your Bank</h2>
+        <p className="text-lg mb-6">
+          We're redefining online banking with our innovative approach and
+          seamless user experience.
+        </p>
+        <p className="text-lg mb-6">
+          Manage your finances, make secure transactions, and stay in control of
+          your money, all in one place.
+        </p>
+      </main>
 
-          <h3 className="text-2xl font-bold my-8 text-gray-800">Why choose My Bank?</h3>
-          <div className="flex flex-col md:flex-row md:justify-between mb-8">
-            <div className="w-full md:w-1/3 p-4 bg-white rounded-md shadow-md">
-              <h4 className="text-lg font-bold mb-2 text-gray-800">Easy to use</h4>
-              <p className="text-gray-700">Our platform is designed to be user-friendly and intuitive, so you can manage your investments with ease.</p>
+      <section className="bg-purple flex-grow py-12">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-bold text-white mb-6">
+            Why Choose Your Bank?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-black rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-4">
+                Seamless Online Banking
+              </h3>
+              <p className="text-lg text-white">
+                Experience a seamless online banking service with advanced
+                features and a user-friendly interface.
+              </p>
             </div>
-            <div className="w-full md:w-1/3 p-4 bg-white rounded-md shadow-md mt-4 md:mt-0">
-              <h4 className="text-lg font-bold mb-2 text-gray-800">Secure and transparent</h4>
-              <p className="text-gray-700">We use state-of-the-art security measures and provide full transparency into your investments, so you can trust us with your money.</p>
+            <div className="bg-black rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-4">
+                Secure Transactions
+              </h3>
+              <p className="text-lg text-white">
+                Rest assured that your transactions are protected with
+                industry-standard security measures and protocols.
+              </p>
             </div>
-            <div className="w-full md:w-1/3 p-4 bg-white rounded-md shadow-md mt-4 md:mt-0">
-              <h4 className="text-lg font-bold mb-2 text-gray-800">Diverse investment options</h4>
-              <p className="text-gray-700">We offer a wide range of investment options, from traditional stocks and funds to cutting-edge cryptocurrencies, so you can build a portfolio that suits your needs.</p>
+            <div className="bg-black rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-4">
+                Personalized Experience
+              </h3>
+              <p className="text-lg text-white">
+                Enjoy a personalized banking experience tailored to your needs
+                and preferences.
+              </p>
+            </div>
+            <div className="bg-black rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-4">
+                24/7 Customer Support
+              </h3>
+              <p className="text-lg text-white">
+                Get round-the-clock support from our dedicated customer service
+                team, ready to assist you at any time.
+              </p>
             </div>
           </div>
-
-          <h3 className="text-2xl font-bold my-8 text-gray-800">What our customers say</h3>
-          <div className="flex flex-col md:flex-row md:justify-between">
-            <div className="w-full md:w-1/3 p-4 bg-white rounded-md shadow-md">
-<blockquote className="text-lg italic text-gray-700 mb-4">"I've been using My Bank for over a year now and I'm extremely happy with the platform. It's easy to use, the fees are reasonable, and the customer support is excellent."</blockquote>
-<cite className="text-gray-800 font-bold">John Smith</cite>
-<p className="text-gray-700">Accountant</p>
-</div>
-<div className="w-full md:w-1/3 p-4 bg-white rounded-md shadow-md mt-4 md:mt-0">
-<blockquote className="text-lg italic text-gray-700 mb-4">"My Bank is the perfect platform for new investors like myself. The interface is simple and easy to use, and the investment options are diverse and accessible."</blockquote>
-<cite className="text-gray-800 font-bold">Jane Doe</cite>
-<p className="text-gray-700">Entrepreneur</p>
-</div>
-<div className="w-full md:w-1/3 p-4 bg-white rounded-md shadow-md mt-4 md:mt-0">
-<blockquote className="text-lg italic text-gray-700 mb-4">"I was skeptical about investing in cryptocurrencies, but My Bank made it easy and straightforward. I've seen great returns on my investments and I'm excited to continue using the platform."</blockquote>
-<cite className="text-gray-800 font-bold">Mark Johnson</cite>
-<p className="text-gray-700">Software Engineer</p>
-</div>
-</div>
-</div>
-</main>
-
-  {/* Footer */}
-  <footer className="bg-gray-800 text-white py-4 px-6">
-    <p>&copy; 2023 My Bank</p>
-  </footer>
-</div>
-
-);
+        </div>
+      </section>
+    </div>
+  );
 };
 
 export default HomePage;

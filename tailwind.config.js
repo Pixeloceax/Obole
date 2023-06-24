@@ -8,6 +8,8 @@ module.exports = {
         black: "#272A31",
         purple: "#5F65AB",
         gray: "#8D8F98",
+        purple_clair: "#7089C2",
+        purple_foncer: "#334777",
       },
     },
   },
