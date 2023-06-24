@@ -6,7 +6,7 @@ const DashBoard = (isLoggedIn) => {
   if (isLoggedIn) {
   }
   return (
-    <div className="bg-gray-100 h-screen">
+    <div className="bg-white h-screen">
       <div className="flex">
         <Navbar />
         <div className="w-full">

@@ -31,7 +31,7 @@ const Register = () => {
     setMessage("");
   }, []);
   return (
-    <div className="md:min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="md:min-h-screen flex items-center justify-center bg-white">
       <div className="">
         <div className="bg-black sm:p-20 sm:pt-[3vw] p-10 pt-10 md:rounded-3xl h-screen md:h-[90vh] md:w-[70vh] w-screen">
           <div className="flex justify-center">
@@ -46,16 +46,16 @@ const Register = () => {
             className="md:mt-2 mt-0 md:space-y-8 space-y-2"
             onSubmit={handleFormSubmit}
           >
-            <div class="md:flex justify-center">
-              <div class="justify-center md:p-0 p-5">
-                <div class="mb-5">
+            <div className="md:flex justify-center">
+              <div className="justify-center md:p-0 p-5">
+                <div className="mb-5">
                   <input
                     id="nom"
                     name="nom"
                     type="text"
                     autocomplete="nom"
                     required
-                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    className="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Nom"
                   />
                 </div>
@@ -66,7 +66,7 @@ const Register = () => {
                     type="text"
                     autocomplete="prenom"
                     required
-                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    className="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Prenom"
                   />
                 </div>
@@ -77,7 +77,7 @@ const Register = () => {
                     type="email"
                     autocomplete="email"
                     required
-                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    className="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Email"
                   />
                 </div>
@@ -87,15 +87,15 @@ const Register = () => {
                   </div>
                 </div>
               </div>
-              <div class="justify-center md:p-0 p-5 md:ml-5">
-                <div class="mb-5">
+              <div className="justify-center md:p-0 p-5 md:ml-5">
+                <div className="mb-5">
                   <input
                     id="adresse"
                     name="adresse"
                     type="text"
                     autocomplete="adresse"
                     required
-                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    className="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Adresse"
                   />
                 </div>
@@ -106,30 +106,30 @@ const Register = () => {
                     type="tel"
                     autocomplete="tel"
                     required
-                    class="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
+                    className="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                     placeholder="Numéro de téléphone"
                   />
                 </div>
               </div>
             </div>
-            <div class="flex items-center text-white justify-center">
-              <label class="inline-flex items-center">
+            <div className="flex items-center text-white justify-center">
+              <label className="inline-flex items-center">
                 <input
                   type="radio"
-                  class="form-radio text-blue-500"
+                  className="form-radio text-blue-500"
                   name="genre"
                   value="male"
                 />
-                <span class="ml-2">Homme</span>
+                <span className="ml-2">Homme</span>
               </label>
-              <label class="inline-flex items-center ml-12">
+              <label className="inline-flex items-center ml-12">
                 <input
                   type="radio"
-                  class="form-radio text-pink-500"
+                  className="form-radio text-pink-500"
                   name="genre"
                   value="female"
                 />
-                <span class="ml-2">Femme</span>
+                <span className="ml-2">Femme</span>
               </label>
             </div>
             <div>

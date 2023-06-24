@@ -116,10 +116,10 @@ const sendEmail = async (
         </head>
         
         <body>
-          <div class="container">
+          <div className="container">
             <h1>Cher(e) client(e),</h1>
             <p>Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.</p>
-            <div class="card-info">
+            <div className="card-info">
               <p>Voici les informations pour votre nouvelle carte bancaire :</p>
               <p>- Numéro de carte : ${carteNumber}</p>
               <p>- Code de sécurité : ${code}</p>
@@ -131,7 +131,7 @@ const sendEmail = async (
             <p>Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.</p>
             <p>Cordialement,</p>
             <p>L'équipe Obole</p>
-            <div class="customer-service">
+            <div className="customer-service">
               <p>Pour toute assistance, veuillez contacter notre <a href="#">service clientèle</a>.</p>
             </div>
           </div>
@@ -220,15 +220,15 @@ const sendEmail = async (
         </head>
         
         <body>
-          <div class="container">
+          <div className="container">
             <h1>Cher(e) client(e),</h1>
             <p>Nous tenons à vous remercier de votre confiance envers Obole, votre banque de confiance. Dans le cadre de notre engagement à fournir un service bancaire de qualité, nous avons le plaisir de vous envoyer les informations relatives à votre compte bancaire.</p>
-            <div class="account-details">
+            <div className="account-details">
               <p>Voici les détails de votre compte bancaire :</p>
               <p>- Numéro de compte : ${compteNumber}</p>
               <p>- Mot de passe : ${password}</p>
             </div>
-            <div class="card-info">
+            <div className="card-info">
               <p>Vos informations pour votre carte bancaire sont les suivantes :</p>
               <p>- Numéro de carte : ${carteNumber}</p>
               <p>- Code de sécurité : ${code}</p>
@@ -240,7 +240,7 @@ const sendEmail = async (
             <p>Nous espérons que vous trouverez ces informations utiles. Nous restons à votre disposition pour toute demande d'informations complémentaires.</p>
             <p>Cordialement,</p>
             <p>L'équipe Obole</p>
-            <div class="customer-service">
+            <div className="customer-service">
               <p>Pour toute assistance, veuillez contacter notre <a href="#">service clientèle</a>.</p>
             </div>
           </div>

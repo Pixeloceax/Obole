@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white">
       <header className="bg-purple_clair py-6">
         <div className="container mx-auto flex justify-between items-center px-4">
           <h1 className="text-5xl font-bold text-white">Obole</h1>

@@ -163,52 +163,52 @@ function AccountOverview() {
             <Modal isOpen={modalOpen} onClose={closeModal} />
           </div>
           <div className="flex justify-evenly">
-            <div class="w-[50%] mt-10 bg-purple rounded-3xl shadow-md p-8">
-              <h1 class="text-white font-bold text-4xl mb-12">
+            <div className="w-[50%] mt-10 bg-purple rounded-3xl shadow-md p-8">
+              <h1 className="text-white font-bold text-4xl mb-12">
                 Compte Courant
               </h1>
-              <div class="flex justify-between items-center mb-8">
+              <div className="flex justify-between items-center mb-8">
                 <h2 className="text-white font-bold text-xl">
                   {" "}
                   N° **** {data.Compte.compteNumber.toString().slice(-4)}
                 </h2>
-                <p class="text-white font-bold text-3xl">
+                <p className="text-white font-bold text-3xl">
                   {data.Solde.solde} €
                 </p>
               </div>
-              <hr class="border-2 border-white mb-8" />
+              <hr className="border-2 border-white mb-8" />
               <div className="flex justify-between items-center">
                 <div>
-                  <div class="flex justify-between items-center">
-                    <p class="text-white font-bold text-3xl">CB VISA</p>
+                  <div className="flex justify-between items-center">
+                    <p className="text-white font-bold text-3xl">CB VISA</p>
                   </div>
-                  <p class="text-white font-bold text-xl mt-12">
+                  <p className="text-white font-bold text-xl mt-12">
                     N° **** {data.Carte[0].carteNumber.toString().slice(-4)}
                   </p>
                 </div>
                 <Link to="/test">
-                  <img src={right_icon} alt="icon" class="h-16" />
+                  <img src={right_icon} alt="icon" className="h-16" />
                 </Link>
               </div>
             </div>
-            <div class="w-[40%] mt-10 bg-black rounded-3xl shadow-md p-8">
-              <h1 class="text-white font-bold text-4xl mb-12 justify-center flex">
+            <div className="w-[40%] mt-10 bg-black rounded-3xl shadow-md p-8">
+              <h1 className="text-white font-bold text-4xl mb-12 justify-center flex">
                 Information
               </h1>
             </div>
           </div>
           <div className="flex justify-evenly">
-            <div class="w-[45%] mt-10 bg-purple rounded-3xl shadow-md p-8">
+            <div className="w-[45%] mt-10 bg-purple rounded-3xl shadow-md p-8">
               <div className="flex justify-center">
-                <h1 class="text-white font-bold text-4xl mb-12 flex-1 flex justify-center">
+                <h1 className="text-white font-bold text-4xl mb-12 flex-1 flex justify-center">
                   Livrets
                 </h1>
                 <Link to="/test">
-                  <img src={right_icon} alt="icon" class="h-16" />
+                  <img src={right_icon} alt="icon" className="h-16" />
                 </Link>
               </div>
               {/* <div className="flex justify-around">
-                <div class="flex items-center justify-center w-[50%]">
+                <div className="flex items-center justify-center w-[50%]">
                   <div className="text-center">
                     <p className="text-white font-bold text-4xl mb-2">
                       {data.Livret[0].type}
@@ -234,8 +234,8 @@ function AccountOverview() {
                 </div>
                 {numberLivret > 1 && (
                   <>
-                    <wr class="border-2 border-white" />
-                    <div class="flex items-center justify-center w-[50%]">
+                    <wr className="border-2 border-white" />
+                    <div className="flex items-center justify-center w-[50%]">
                       <div className="text-center">
                         <p className="text-white font-bold text-4xl mb-2">
                           {data.Livret[1].type}
@@ -256,18 +256,18 @@ function AccountOverview() {
                 )}
               </div> */}
             </div>
-            <div class="w-[45%] mt-10 bg-black rounded-3xl shadow-md p-8">
-              <h1 class="text-white font-bold text-4xl mb-12 justify-center flex">
+            <div className="w-[45%] mt-10 bg-black rounded-3xl shadow-md p-8">
+              <h1 className="text-white font-bold text-4xl mb-12 justify-center flex">
                 Transaction
               </h1>
               <div className="flex justify-around">
-                <div class="flex items-center justify-center w-[50%]">
+                <div className="flex items-center justify-center w-[50%]">
                   <div className="text-center">
                     <p className="text-white font-bold text-4xl mb-2">Gain</p>
                   </div>
                 </div>
-                <wr class="border-2 border-white" />
-                <div class="flex items-center justify-center w-[50%]">
+                <wr className="border-2 border-white" />
+                <div className="flex items-center justify-center w-[50%]">
                   <div className="text-center">
                     <p className="text-white font-bold text-4xl mb-2">
                       Deficit

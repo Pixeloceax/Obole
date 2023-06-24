@@ -53,7 +53,7 @@ const Login = ({ handleLogin }) => {
   }, []);
 
   return (
-    <div className="md:min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="md:min-h-screen flex items-center justify-center bg-white">
       <div className="md:max-w-lg md:w-[80%] md:space-y-8">
         <div className="bg-black sm:p-20 p-10 pt-20 md:rounded-3xl h-screen md:h-fit md:w-fit w-screen">
           <div className="flex justify-center">
