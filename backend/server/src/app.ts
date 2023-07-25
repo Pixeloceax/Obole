@@ -5,6 +5,7 @@ import cors from "cors";
 import loginRouter from "./routes/login.route";
 import registerRouter from "./routes/register.route";
 import cardRouter from "./routes/card.route";
+import transactionRouter from "./routes/transaction.route";
 
 import dbConnect from "./database/dbConnect";
 import { authenticateToken } from "./middleware/auth";
@@ -28,6 +29,7 @@ app.post("/register", registerRouter);
 
 app.get("/user", authenticateToken, getUserInfo);
 app.use("/card", authenticateToken, cardRouter);
+app.use("/transaction", authenticateToken, transactionRouter);
 
 app.get("/free-endpoint", (req: Request, res: Response) => {
   res.json({ message: "You are free to access me anytime" });
