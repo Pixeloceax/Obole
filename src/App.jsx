@@ -69,11 +69,11 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            isLoggedIn ? (
+            // isLoggedIn ? (
               <Dashboard handleLogout={handleLogout} />
-            ) : (
-              <Navigate to="/login" />
-            )
+            // ) : (
+            //   <Navigate to="/login" />
+            // )
           }
         />
         <Route
@@ -82,7 +82,7 @@ function App() {
         />
         <Route
           path="/dashboard/cartes"
-          element={checkAuth() ? <Cartes /> : <Navigate to="/login" />}
+          element={<Cartes />}
         />
         <Route
           path="/dashboard/epargne"

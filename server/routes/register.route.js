@@ -52,7 +52,7 @@ Router.post("/register", async (request, response) => {
     },
     Compte: {
       compteNumber,
-      hashpassword,
+      password,
     },
     Carte: {
       carteNumber,

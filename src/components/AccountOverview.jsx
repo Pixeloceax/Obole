@@ -7,15 +7,18 @@ import user from "../assets/user.png";
 
 import Loader from "./loader";
 
-const Modal = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose, deconexion }) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed top-20 right-3 m-4 z-50">
       <div className="bg-white rounded-lg p-6 border-gray border-2 shadow-lg">
-        <h2 className="text-xl font-bold mb-4 border-b-2 pr-16">Mon Compte</h2>
-        <h2 className="text-xl font-bold mb-4 border-b-2">Parametre</h2>
-        <h2 className="text-xl font-bold mb-4 border-b-2">Déconnexion</h2>
+        <h2
+          className="text-xl font-bold mb-4 border-b-2"
+          onClick={deconexion}
+        >
+          Déconnexion
+        </h2>
         <button
           className="mt-2 px-3 py-1 bg-white rounded-lg"
           onClick={onClose}
@@ -51,45 +54,61 @@ function AccountOverview() {
     fetchData();
   }, [_id]);
 
-  //! si on veux test data sans db
   // if (!data) {
   //   const dataConf = {
-  //     "Information": {
-  //       "nom": "Colos",
-  //       "prenom": "Ranard",
-  //       "tel": "0624348782",
-  //       "email": "2@gmail.com",
-  //       "genre": "male",
-  //       "adresse": "365 rue des pyrennes"
+  //     _id: "64bfb35c4de9f5b216b4f339",
+  //     Information: {
+  //       name: "Colas",
+  //       lastName: "Renard",
+  //       phone: "1234567890",
+  //       email: "john.doe@example.com",
+  //       gender: "Male",
+  //       address: "123 Main Street",
+  //       country: "FR",
+  //       date_of_birth: {
+  //         day: 10,
+  //         month: 5,
+  //         year: 1996,
+  //       },
   //     },
-  //     "Compte": {
-  //       "compteNumber": 372709220879,
-  //       "hashpassword": "737f2ddac3a6894264adf67313f9c6c08705345c8eed1101651e8072f10a094c"
+  //     Account: {
+  //       accountNumber: 373519802352.0,
+  //       hashPassword:
+  //         "$2b$10$9ddqPbLEzZ.LB7ip4IuP7erLvvcgczGDb1vd9kst/SLrACV7c9Y/e",
   //     },
-  //     "Solde": {
-  //       "solde": 1000
-  //     },
-  //     "_id": "644922f53561216e0014d659",
-  //     "Carte": [
+  //     Card: [
   //       {
-  //         "verrouiller": false,
-  //         "opposition": false,
-  //         "_id": "644922f53561216e0014d65a",
-  //         "carteNumber": 8945198484733698,
-  //         "dateExpiration": "04/28",
-  //         "code": 2220,
-  //         "CCV": 253,
-  //         "plafond": 200
-  //       }
+  //         cardNumber: 3539347942394868.0,
+  //         expirationDate: "07/28",
+  //         code: 6295,
+  //         CCV: 171,
+  //         locked: false,
+  //         opposition: false,
+  //         limit: 1000,
+  //         used: 0,
+  //         _id: "64bfb35c4de9f5b216b4f33a",
+  //       },
   //     ],
-  //     "Livret": [{
-  //       "_id": "644bb6ed89d2e0a984392983",
-  //       "type": "A",
-  //       "soldeLivret": 1000
-  //     }],
-  //     "__v": 0
-  //   }
-  //   setData(dataConf)
+  //     Balance: {
+  //       balance: 1000,
+  //     },
+  //     SavingsAccount: [
+  //       {
+  //         type: "Jeune",
+  //         savingsBalance: 1000,
+  //         _id: "64bfb35c4de9f5b216b4f33b",
+  //       },
+  //       {
+  //         type: "Jeune",
+  //         savingsBalance: 1000,
+  //         _id: "64bfb35c4de9f5b216b4f33b",
+  //       },
+  //     ],
+  //     __v: {
+  //       $numberInt: "0",
+  //     },
+  //   };
+  //   setData(dataConf);
   // }
 
   useEffect(() => {
@@ -145,13 +164,20 @@ function AccountOverview() {
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    if (modalOpen === true) {
+      setModalOpen(false);
+    }
+  };
+
+  const deconexion = () => {
+    sessionStorage.clear();
+    window.location.href = "/login";
   };
 
   return (
     <div className="p-6 bg-white">
       {data ? (
-        <div className="ml-5">
+        <div className="ml-5" onClick={closeModal}>
           <div className="flex justify-between">
             <h1 className="text-3xl font-extrabold underline underline-offset-4">
               Bonjour,{" "}
@@ -160,7 +186,7 @@ function AccountOverview() {
             <button onClick={openModal}>
               <img src={user} alt="account" className="h-14" />
             </button>
-            <Modal isOpen={modalOpen} onClose={closeModal} />
+            <Modal isOpen={modalOpen} onClose={closeModal} deconexion={() => {deconexion()}} />
           </div>
           <div className="flex justify-evenly">
             <div className="w-[50%] mt-10 bg-purple rounded-3xl shadow-md p-8">
@@ -170,10 +196,10 @@ function AccountOverview() {
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-white font-bold text-xl">
                   {" "}
-                  N° **** {data.Compte.compteNumber.toString().slice(-4)}
+                  N° **** {data.Account.accountNumber.toString().slice(-4)}
                 </h2>
                 <p className="text-white font-bold text-3xl">
-                  {data.Solde.solde} €
+                  {data.Balance.balance} €
                 </p>
               </div>
               <hr className="border-2 border-white mb-8" />
@@ -183,7 +209,7 @@ function AccountOverview() {
                     <p className="text-white font-bold text-3xl">CB VISA</p>
                   </div>
                   <p className="text-white font-bold text-xl mt-12">
-                    N° **** {data.Carte[0].carteNumber.toString().slice(-4)}
+                    N° **** {data.Card[0].cardNumber.toString().slice(-4)}
                   </p>
                 </div>
                 <Link to="/test">
@@ -207,54 +233,39 @@ function AccountOverview() {
                   <img src={right_icon} alt="icon" className="h-16" />
                 </Link>
               </div>
-              {/* <div className="flex justify-around">
-                <div className="flex items-center justify-center w-[50%]">
-                  <div className="text-center">
-                    <p className="text-white font-bold text-4xl mb-2">
-                      {data.Livret[0].type}
-                    </p>
-                    <p className="text-white font-bold text-4xl mb-4">
-                      {data.Livret[0].soldeLivret} €
-                    </p>
-                    <p className="text-white font-bold text-4xl mb-2">
-                      Previsionelle
-                    </p>
-                    <div className="flex justify-between mb-4">
-                      <p className="text-white font-bold text-4xl">
-                        {data.Livret[0].type === "A"
-                          ? (2 / 100) * data.Livret[0].soldeLivret
-                          : (3 / 100) * data.Livret[0].soldeLivret}{" "}
-                        €
+              <div className="flex justify-around">
+                {data.SavingsAccount.map((livret, index) => (
+                  <div
+                    className={`flex items-center justify-center w-[50%] ${
+                      index === 0 ? "border-r-2 border-white" : ""
+                    }`}
+                  >
+                    {console.log(livret.type)}
+                    <div className="text-center">
+                      <p className="text-white font-bold text-4xl mb-2">
+                        {livret.type}
                       </p>
-                      <p className="text-white font-bold text-4xl">
-                        {data.Livret[0].type === "A" ? "2%" : "3%"}
+                      <p className="text-white font-bold text-4xl mb-4">
+                        {livret.savingsBalance} €
                       </p>
-                    </div>
-                  </div>
-                </div>
-                {numberLivret > 1 && (
-                  <>
-                    <wr className="border-2 border-white" />
-                    <div className="flex items-center justify-center w-[50%]">
-                      <div className="text-center">
-                        <p className="text-white font-bold text-4xl mb-2">
-                          {data.Livret[1].type}
+                      <p className="text-white font-bold text-4xl mb-2">
+                        Previsionelle
+                      </p>
+                      <div className="flex justify-between mb-4">
+                        <p className="text-white font-bold text-4xl">
+                          {livret.type === "A"
+                            ? (2 / 100) * livret.savingsBalance
+                            : (3 / 100) * livret.savingsBalance}{" "}
+                          €
                         </p>
-                        <p className="text-white font-bold text-4xl mb-4">
-                          XXXX€
+                        <p className="text-white font-bold text-4xl">
+                          {livret.type === "A" ? "2%" : "3%"}
                         </p>
-                        <p className="text-white font-bold text-4xl mb-2">
-                          Previsionelle
-                        </p>
-                        <div className="flex justify-between mb-4">
-                          <p className="text-white font-bold text-4xl">XX,X€</p>
-                          <p className="text-white font-bold text-4xl">X%</p>
-                        </div>
                       </div>
                     </div>
-                  </>
-                )}
-              </div> */}
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="w-[45%] mt-10 bg-black rounded-3xl shadow-md p-8">
               <h1 className="text-white font-bold text-4xl mb-12 justify-center flex">

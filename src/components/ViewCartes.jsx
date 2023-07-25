@@ -27,6 +27,58 @@ function CartesBancaires() {
     fetchData();
   }, [_id]);
 
+  // if (!data) {
+  //   const dataConf = {
+  //     _id: "64bfb35c4de9f5b216b4f339",
+  //     Information: {
+  //       name: "Colas",
+  //       lastName: "Renard",
+  //       phone: "1234567890",
+  //       email: "john.doe@example.com",
+  //       gender: "Male",
+  //       address: "123 Main Street",
+  //       country: "FR",
+  //       date_of_birth: {
+  //         day: 10,
+  //         month: 5,
+  //         year: 1996,
+  //       },
+  //     },
+  //     Account: {
+  //       accountNumber: 373519802352.0,
+  //       hashPassword:
+  //         "$2b$10$9ddqPbLEzZ.LB7ip4IuP7erLvvcgczGDb1vd9kst/SLrACV7c9Y/e",
+  //     },
+  //     Card: [
+  //       {
+  //         cardNumber: 3539347942394868.0,
+  //         expirationDate: "07/28",
+  //         code: 6295,
+  //         CCV: 171,
+  //         locked: false,
+  //         opposition: false,
+  //         limit: 1000,
+  //         used: 0,
+  //         _id: "64bfb35c4de9f5b216b4f33a",
+  //       },
+  //     ],
+  //     Balance: {
+  //       balance: 1000,
+  //     },
+  //     SavingsAccount: [
+  //       {
+  //         type: "Jeune",
+  //         savingsBalance: 1000,
+  //         _id: "64bfb35c4de9f5b216b4f33b",
+  //       },
+  //     ],
+  //     __v: {
+  //       $numberInt: "0",
+  //     },
+  //   };
+  //   setData(dataConf);
+  // }
+
   const handleClickButton = (type, index) => async () => {
     try {
       let newPlafond;
@@ -36,7 +88,7 @@ function CartesBancaires() {
         );
         while (
           !/^[0-9]+$/.test(newPlafond) ||
-          newPlafond < data.Carte[index].utilisé
+          newPlafond < data.Card[index].used
         ) {
           alert(
             "Veuillez entrer uniquement des nombres et un montant supérieur à votre dépense effectuée."
@@ -52,9 +104,10 @@ function CartesBancaires() {
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
-      console.log(response);
+      console.log(response, "new");
       const result = await response.json();
       setData(result);
+      window.location.reload(false);
     } catch (error) {
       console.error(error);
     }
@@ -85,7 +138,7 @@ function CartesBancaires() {
               Cartes bancaires
             </h1>
           </div>
-          {data.Carte.map((carte, index) => (
+          {data.Card.map((carte, index) => (
             <div
               key={carte._id}
               className="bg-purple rounded-3xl relative shadow-xl border-b-6 border-r-6 border-gray-700 p-6 mb-6"
@@ -106,7 +159,7 @@ function CartesBancaires() {
                       <img src={logo} alt="logo" className="h-32" />
                     </div>
                     <p className="text-lg font-medium pt-5">
-                      **** **** **** {carte.carteNumber.toString().slice(-4)}
+                      **** **** **** {carte.cardNumber.toString().slice(-4)}
                     </p>
                     <div className="flex justify-between items-center pt-5">
                       <p className="text-lg font-medium">
@@ -133,21 +186,21 @@ function CartesBancaires() {
                       </div>
                       <div className="text-right">
                         <span className="text-xl font-semibold inline-block">
-                          {carte.utilisé} € / {carte.plafond} €
+                          {carte.used} € / {carte.limit} €
                         </span>
                       </div>
                     </div>
                     <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-red-200">
                       <div
                         style={{
-                          width: `${(carte.utilisé / carte.plafond) * 100}%`,
+                          width: `${(carte.used / carte.limit) * 100}%`,
                         }}
                         className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
                       ></div>
                     </div>
                   </div>
                   <div className="mt-10">
-                    {carte.verrouiller ? (
+                    {carte.locked ? (
                       <button
                         type="button"
                         className="mr-10 text-xl bg-black text-white font-bold py-2 px-4 rounded-full w-44"
