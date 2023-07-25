@@ -90,3 +90,54 @@ export async function createTransaction(req: Request, res: Response) {
     });
   }
 }
+
+export async function cancelTransaction(req: Request, res: Response) {
+  try {
+    const transactionId = req.params.transactionId;
+    const updatedTransaction = await Transaction.findByIdAndUpdate(
+      transactionId,
+      { status: "cancelled" },
+      { new: true }
+    );
+
+    if (!updatedTransaction) {
+      return res.status(404).json({
+        error: "Transaction not found.",
+      });
+    }
+
+    res.json({ message: "Transaction cancelled successfully." });
+  } catch (error: string | any) {
+    res.status(500).json({
+      error: `Failed to cancel transaction: ${error.message}`,
+    });
+  }
+}
+
+export async function getAllTransactions(req: Request, res: Response) {
+  try {
+    const transactions = await Transaction.find();
+    res.json(transactions);
+  } catch (error: string | any) {
+    res.status(500).json({
+      error: `Failed to get transactions: ${error.message}`,
+    });
+  }
+}
+
+export async function getAllAccountTransactions(req: Request, res: Response) {
+  try {
+    const accountNumber = req.params.accountNumber;
+    const transactions = await Transaction.find({
+      $or: [
+        { sourceAccount: accountNumber },
+        { destinationAccount: accountNumber },
+      ],
+    });
+    res.json(transactions);
+  } catch (error: string | any) {
+    res.status(500).json({
+      error: `Failed to get transactions: ${error.message}`,
+    });
+  }
+}
