@@ -7,5 +7,8 @@ const express_1 = __importDefault(require("express"));
 const transactionController_1 = require("../controllers/transactionController");
 const router = express_1.default.Router();
 router.post("/:sourceAccount/:destinationAccount", transactionController_1.createTransaction);
+router.put("/:transactionId/cancel", transactionController_1.cancelTransaction);
+// router.get("/", getAllTransactions);
+router.get("/:accountNumber", transactionController_1.getAllAccountTransactions);
 exports.default = router;
 //# sourceMappingURL=transaction.route.js.map
