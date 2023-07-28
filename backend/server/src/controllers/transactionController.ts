@@ -145,9 +145,6 @@ export async function createTransaction(req: Request, res: Response) {
     const newSourceBalance = sourceBalance - amount;
     const newDestinationBalance = destinationBalance + amount;
 
-    await updateAccountBalance(sourceAccount, newSourceBalance);
-    await updateAccountBalance(destinationAccount, newDestinationBalance);
-
     const newTransaction = new Transaction({
       sourceAccount,
       destinationAccount,
@@ -160,7 +157,15 @@ export async function createTransaction(req: Request, res: Response) {
     const savedTransaction = await newTransaction.save();
 
     setTimeout(() => {
+      updateAccountBalance(sourceAccount, newSourceBalance);
+      updateAccountBalance(destinationAccount, newDestinationBalance);
       checkPendingTransactionStatus(savedTransaction._id.toString());
+      console.log("sourceBalance", sourceBalance, newSourceBalance);
+      console.log(
+        "destinationBalance",
+        destinationBalance,
+        newDestinationBalance
+      );
     }, 5 * 60 * 1000);
 
     res.status(201).json(savedTransaction);
@@ -172,10 +177,6 @@ export async function createTransaction(req: Request, res: Response) {
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export async function cancelTransaction(req: Request, res: Response) {
   try {
     const transactionId = req.params.transactionId;

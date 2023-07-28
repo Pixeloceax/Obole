@@ -119,8 +119,6 @@ async function createTransaction(req, res) {
         }
         const newSourceBalance = sourceBalance - amount;
         const newDestinationBalance = destinationBalance + amount;
-        await updateAccountBalance(sourceAccount, newSourceBalance);
-        await updateAccountBalance(destinationAccount, newDestinationBalance);
         const newTransaction = new transaction_model_1.default({
             sourceAccount,
             destinationAccount,
@@ -131,7 +129,11 @@ async function createTransaction(req, res) {
         });
         const savedTransaction = await newTransaction.save();
         setTimeout(() => {
+            updateAccountBalance(sourceAccount, newSourceBalance);
+            updateAccountBalance(destinationAccount, newDestinationBalance);
             checkPendingTransactionStatus(savedTransaction._id.toString());
+            console.log("sourceBalance", sourceBalance, newSourceBalance);
+            console.log("destinationBalance", destinationBalance, newDestinationBalance);
         }, 5 * 60 * 1000);
         res.status(201).json(savedTransaction);
     }
