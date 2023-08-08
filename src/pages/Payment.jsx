@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 const Payment = () => {
-  // Obtenir les options pour les sélecteurs de mois et d'année
   const getCurrentYear = () => new Date().getFullYear();
   const months = Array.from({ length: 12 }, (_, index) => index + 1);
   const years = Array.from(
@@ -26,6 +25,7 @@ const Payment = () => {
     year: "",
     ccv: "",
     type: "",
+    prix: "",
   });
 
   const handleChange = (e) => {
@@ -34,11 +34,11 @@ const Payment = () => {
 
   const handleClickButton = async () => {
     try {
-      const { number_carte, month, year, ccv, type } = formData;
-      console.log(number_carte, month, year, ccv, type);
+      const { number_carte, month, year, ccv, type, prix } = formData;
+      console.log(number_carte, month, year, ccv, type, prix);
       const formattedDate = `${month.padStart(2, "0")}/${year.slice(-2)}`;
       const response = await fetch(
-        `https://obole-back.onrender.com/payment?number_carte=${number_carte}&date=${formattedDate}&ccv=${ccv}&montant=100&type=${type}`
+        `https://obole-back.onrender.com/payment?number_carte=${number_carte}&date=${formattedDate}&ccv=${ccv}&montant=${prix}&type=${type}`
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -52,8 +52,8 @@ const Payment = () => {
   };
 
   return (
-    <div className="p-4">
-      <form className="max-w-md mx-auto bg-white p-8 shadow-md rounded">
+    <div className="bg-white h-screen flex items-center justify-center">
+      <form className="w-96 bg-[#fff] p-8 shadow-md rounded h-[36rem]">
         <label htmlFor="card_number" className="block mb-2">
           Numéro de carte :
         </label>
@@ -136,6 +136,19 @@ const Payment = () => {
             ))}
           </select>
         </div>
+        <br />
+
+        <label htmlFor="prix" className="block mb-2 mt-4">
+          Montant :
+        </label>
+        <input
+          type="Number"
+          id="prix"
+          name="prix"
+          required
+          className="w-full border border-gray-300 px-3 py-2 rounded"
+          onChange={handleChange}
+        />
         <br />
 
         <input

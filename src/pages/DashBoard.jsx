@@ -9,7 +9,7 @@ const DashBoard = (isLoggedIn) => {
     <div className="bg-white h-screen">
       <div className="flex">
         <Navbar />
-        <div className="w-full">
+        <div className="w-full md:pl-40 pl-20">
           <AccountOverview />
         </div>
       </div>

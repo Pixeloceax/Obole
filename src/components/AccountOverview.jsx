@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import right_icon from "../assets/right-arrow.png";
-import user from "../assets/user.png";
-
 import Loader from "./loader";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Modal = ({ isOpen, onClose, deconexion }) => {
   if (!isOpen) return null;
@@ -13,10 +13,7 @@ const Modal = ({ isOpen, onClose, deconexion }) => {
   return (
     <div className="fixed top-20 right-3 m-4 z-50">
       <div className="bg-white rounded-lg p-6 border-gray border-2 shadow-lg">
-        <h2
-          className="text-xl font-bold mb-4 border-b-2"
-          onClick={deconexion}
-        >
+        <h2 className="text-xl font-bold mb-4 border-b-2" onClick={deconexion}>
           Déconnexion
         </h2>
         <button
@@ -175,30 +172,36 @@ function AccountOverview() {
   };
 
   return (
-    <div className="p-6 bg-white">
+    <div className="p-4 bg-white">
       {data ? (
         <div className="ml-5" onClick={closeModal}>
           <div className="flex justify-between">
-            <h1 className="text-3xl font-extrabold underline underline-offset-4">
+            <h1 className="md:text-3xl text-2xl font-extrabold underline underline-offset-4">
               Bonjour,{" "}
-              <span className="text-purple">{data.Information.nom}</span>
+              <span className="text-purple">{data.Information.name}</span>
             </h1>
             <button onClick={openModal}>
-              <img src={user} alt="account" className="h-14" />
+              <FontAwesomeIcon icon={faUserCircle} className="text-5xl" />
             </button>
-            <Modal isOpen={modalOpen} onClose={closeModal} deconexion={() => {deconexion()}} />
+            <Modal
+              isOpen={modalOpen}
+              onClose={closeModal}
+              deconexion={() => {
+                deconexion();
+              }}
+            />
           </div>
-          <div className="flex justify-evenly">
-            <div className="w-[50%] mt-10 bg-purple rounded-3xl shadow-md p-8">
-              <h1 className="text-white font-bold text-4xl mb-12">
+          <div className="lg:flex block justify-evenly">
+            <div className="lg:w-[50%] mt-10 bg-purple rounded-3xl shadow-md p-8 w-full">
+              <h1 className="text-white font-bold md:text-4xl text-xl md:mb-12 mb-6">
                 Compte Courant
               </h1>
               <div className="flex justify-between items-center mb-8">
-                <h2 className="text-white font-bold text-xl">
+                <h2 className="text-white font-bold md:text-xl text-md">
                   {" "}
                   N° **** {data.Account.accountNumber.toString().slice(-4)}
                 </h2>
-                <p className="text-white font-bold text-3xl">
+                <p className="text-white font-bold md:text-3xl text-lg">
                   {data.Balance.balance} €
                 </p>
               </div>
@@ -206,59 +209,63 @@ function AccountOverview() {
               <div className="flex justify-between items-center">
                 <div>
                   <div className="flex justify-between items-center">
-                    <p className="text-white font-bold text-3xl">CB VISA</p>
+                    <p className="text-white font-bold md:text-3xl text-xl">
+                      CB VISA
+                    </p>
                   </div>
-                  <p className="text-white font-bold text-xl mt-12">
+                  <p className="text-white font-bold md:text-xl text-md md:mt-12 mt-8">
                     N° **** {data.Card[0].cardNumber.toString().slice(-4)}
                   </p>
                 </div>
-                <Link to="/test">
-                  <img src={right_icon} alt="icon" className="h-16" />
+                <Link to="/dashboard/cartes">
+                  <FontAwesomeIcon icon={faArrowRight} className="text-5xl" />
                 </Link>
               </div>
             </div>
-            <div className="w-[40%] mt-10 bg-black rounded-3xl shadow-md p-8">
-              <h1 className="text-white font-bold text-4xl mb-12 justify-center flex">
+            <div className="lg:w-[40%] w-full mt-10 bg-black rounded-3xl shadow-md p-8">
+              <h1 className="text-white font-bold md:text-4xl text-xl md:mb-12 mb-8 justify-center flex">
                 Information
               </h1>
             </div>
           </div>
-          <div className="flex justify-evenly">
-            <div className="w-[45%] mt-10 bg-purple rounded-3xl shadow-md p-8">
+          <div className="lg:flex block justify-evenly">
+            <div className="lg:w-[45%] w-full mt-10 bg-purple rounded-3xl shadow-md p-8">
               <div className="flex justify-center">
-                <h1 className="text-white font-bold text-4xl mb-12 flex-1 flex justify-center">
+                <h1 className="text-white font-bold md:text-4xl text-xl md:mb-12 mb-8 flex-1 flex justify-center">
                   Livrets
                 </h1>
-                <Link to="/test">
-                  <img src={right_icon} alt="icon" className="h-16" />
+                <Link to="/dashboard/epargne">
+                  <FontAwesomeIcon icon={faArrowRight} className="text-5xl" />
                 </Link>
               </div>
-              <div className="flex justify-around">
+              <div className="flex justify-around flex-col md:flex-row">
                 {data.SavingsAccount.map((livret, index) => (
                   <div
-                    className={`flex items-center justify-center w-[50%] ${
-                      index === 0 ? "border-r-2 border-white" : ""
+                    className={`flex items-center justify-center md:w-[50%] ${
+                      index === 0
+                        ? "md:border-r-2 border-b-2 md:border-b-0 border-white"
+                        : ""
                     }`}
                   >
                     {console.log(livret.type)}
                     <div className="text-center">
-                      <p className="text-white font-bold text-4xl mb-2">
+                      <p className="text-white font-bold md:text-4xl text-xl mb-2">
                         {livret.type}
                       </p>
-                      <p className="text-white font-bold text-4xl mb-4">
+                      <p className="text-white font-bold md:text-4xl text-xl mb-4">
                         {livret.savingsBalance} €
                       </p>
-                      <p className="text-white font-bold text-4xl mb-2">
+                      <p className="text-white font-bold md:text-4xl text-xl mb-2">
                         Previsionelle
                       </p>
                       <div className="flex justify-between mb-4">
-                        <p className="text-white font-bold text-4xl">
+                        <p className="text-white font-bold md:text-4xl text-xl">
                           {livret.type === "A"
                             ? (2 / 100) * livret.savingsBalance
                             : (3 / 100) * livret.savingsBalance}{" "}
                           €
                         </p>
-                        <p className="text-white font-bold text-4xl">
+                        <p className="text-white font-bold md:text-4xl text-xl">
                           {livret.type === "A" ? "2%" : "3%"}
                         </p>
                       </div>
@@ -267,26 +274,28 @@ function AccountOverview() {
                 ))}
               </div>
             </div>
-            <div className="w-[45%] mt-10 bg-black rounded-3xl shadow-md p-8">
-              <h1 className="text-white font-bold text-4xl mb-12 justify-center flex">
+            <div className="lg:w-[45%] w-full mt-10 bg-black rounded-3xl shadow-md p-8">
+              <h1 className="text-white font-bold md:text-4xl text-xl mb-12 justify-center flex">
                 Transaction
               </h1>
               <div className="flex justify-around">
                 <div className="flex items-center justify-center w-[50%]">
                   <div className="text-center">
-                    <p className="text-white font-bold text-4xl mb-2">Gain</p>
+                    <p className="text-white font-bold md:text-4xl text-xl mb-2">
+                      Gain
+                    </p>
                   </div>
                 </div>
                 <wr className="border-2 border-white" />
                 <div className="flex items-center justify-center w-[50%]">
                   <div className="text-center">
-                    <p className="text-white font-bold text-4xl mb-2">
+                    <p className="text-white font-bold md:text-4xl text-xl mb-2">
                       Deficit
                     </p>
                     {formattedPayments.slice(0, 4).map((payment, index) => (
                       <p
                         key={index}
-                        className="text-white font-bold text-2xl mb-2"
+                        className="text-white font-bold md:text-2xl text-lg mb-2"
                       >
                         {payment}
                       </p>

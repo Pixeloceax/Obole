@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/Logo_white_bg_gray.png";
-import plus from "../assets/plus.png";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrashCan,
+  faLock,
+  faLockOpen,
+  faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 import Loader from "./loader";
 
@@ -132,7 +139,7 @@ function CartesBancaires() {
   return (
     <div className="p-6 bg-white h-full">
       {data ? (
-        <div className="ml-5">
+        <div className="ml-5 overflow-y-auto">
           <div className="flex justify-between">
             <h1 className="text-3xl font-extrabold text-gray-900">
               Cartes bancaires
@@ -141,19 +148,25 @@ function CartesBancaires() {
           {data.Card.map((carte, index) => (
             <div
               key={carte._id}
-              className="bg-purple rounded-3xl relative shadow-xl border-b-6 border-r-6 border-gray-700 p-6 mb-6"
+              className="bg-purple rounded-3xl shadow-xl border-b-6 border-r-6 border-gray-700 p-6 mb-6"
             >
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">{`Carte ${index + 1}`}</h1>
                 <button
                   onClick={handleDelete(index)}
-                  className="text-lg bg-black text-white font-bold py-2 px-4 rounded-full"
+                  className="text-lg bg-black text-white font-bold py-2 px-4 rounded-full md:block hidden"
                 >
                   Supprimer
                 </button>
+                <button
+                  onClick={handleDelete(index)}
+                  className="text-lg bg-black text-white font-bold py-2 px-4 rounded-full md:hidden block"
+                >
+                  <FontAwesomeIcon icon={faTrashCan} className="text-xl" />
+                </button>
               </div>
               <div className="flex mt-6 justify-around">
-                <div className="bg-black rounded-3xl max-w-md relative shadow-xl border-b-6 border-r-6 text-white border-gray-700 w-[70%]">
+                <div className="bg-black rounded-3xl max-w-md relative shadow-xl border-b-6 border-r-6 text-white border-gray-700 w-[70%] md:block hidden">
                   <div className="relative h-full p-5">
                     <div>
                       <img src={logo} alt="logo" className="h-32" />
@@ -169,8 +182,13 @@ function CartesBancaires() {
                   </div>
                 </div>
                 <div className="flex flex-col text-center">
+                  <div className="md:hidden flex justify-center">
+                    <p className="text-lg font-medium">
+                      **** **** **** {carte.cardNumber.toString().slice(-4)}
+                    </p>
+                  </div>
                   <div className="relative">
-                    <div className="text-right">
+                    <div className="md:text-right text-center">
                       <button
                         className="text-lg bg-black text-white font-bold py-2 px-4 rounded-full"
                         onClick={handleClickButton("plafond", index)}
@@ -178,14 +196,14 @@ function CartesBancaires() {
                         Modifier le plafond
                       </button>
                     </div>
-                    <div className="flex mb-2 items-center justify-between mt-10">
+                    <div className="md:flex mb-2 items-center justify-between mt-10">
                       <div>
-                        <span className="text-xl font-semibold inline-block py-1 px-2 uppercase rounded-full">
+                        <span className="md:text-xl text-sm font-semibold inline-block sm:py-1 sm:px-2 uppercase">
                           Plafond utilisé
                         </span>
                       </div>
-                      <div className="text-right">
-                        <span className="text-xl font-semibold inline-block">
+                      <div className="md:text-right">
+                        <span className="md:text-xl text-sm font-semibold inline-block">
                           {carte.used} € / {carte.limit} €
                         </span>
                       </div>
@@ -199,7 +217,7 @@ function CartesBancaires() {
                       ></div>
                     </div>
                   </div>
-                  <div className="mt-10">
+                  <div className="mt-10 md:block hidden">
                     {carte.locked ? (
                       <button
                         type="button"
@@ -235,13 +253,52 @@ function CartesBancaires() {
                       </button>
                     )}
                   </div>
+                  <div className="mt-5 md:hidden flex">
+                    {carte.locked ? (
+                      <button
+                        type="button"
+                        className="mr-5 text-xl bg-black text-white font-bold py-2 px-4 rounded-full"
+                        onClick={handleClickButton("verrouiller", index)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faLockOpen}
+                          className="text-sm"
+                        />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="mr-5 text-xl bg-black text-white font-bold py-2 px-4 rounded-full"
+                        onClick={handleClickButton("verrouiller", index)}
+                      >
+                        <FontAwesomeIcon icon={faLock} className="text-sm" />
+                      </button>
+                    )}
+                    {carte.opposition ? (
+                      <button
+                        type="button"
+                        className="text-md bg-black text-white font-bold py-2 px-4 rounded-full w-44"
+                        onClick={handleClickButton("opposition", index)}
+                      >
+                        Annuler l'Opposition
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="text-md bg-black text-white font-bold py-2 px-4 rounded-full w-44"
+                        onClick={handleClickButton("opposition", index)}
+                      >
+                        Faire Opposition
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           ))}
           <div className="flex justify-center py-10">
             <button onClick={handleClickButton("ajouter", 0)}>
-              <img src={plus} alt="plus_carte" className="w-20" />
+              <FontAwesomeIcon icon={faCirclePlus} className="text-6xl" />
             </button>
           </div>
         </div>
