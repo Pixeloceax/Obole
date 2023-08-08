@@ -27,7 +27,7 @@ const Login = ({ handleLogin }) => {
 
       if (
         response.status === 200 &&
-        response.data.message === "Login Successful"
+        response.data.message === "Login successful"
       ) {
         const token = response.data.token;
         const _id = response.data._id;

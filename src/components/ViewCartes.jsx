@@ -18,9 +18,11 @@ function CartesBancaires() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://obole-back.onrender.com/dashboard?_id=${_id}`
-        );
+        const response = await fetch(`http://localhost:5000/card/${_id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         if (!response.ok) {
           throw new Error("Something went wrong!");
         }

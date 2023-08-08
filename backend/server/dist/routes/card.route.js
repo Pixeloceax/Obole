@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cardController_1 = require("../controllers/cardController");
 const router = express_1.default.Router();
-router.post("/:accountNumber", cardController_1.addCard);
-router.get("/:accountNumber", cardController_1.getAllCards);
-router.put("/:accountNumber/:cardNumber", cardController_1.updateCard);
-router.delete("/:accountNumber/:cardNumber", cardController_1.deleteCard);
+router.post("/", cardController_1.addCard);
+router.get("/", cardController_1.getAllCards);
+router.put("/:cardNumber", cardController_1.updateCard);
+router.delete("/:cardNumber", cardController_1.deleteCard);
 exports.default = router;
 //# sourceMappingURL=card.route.js.map

@@ -8,9 +8,10 @@ import {
 
 const router = express.Router();
 
-router.post("/:accountNumber", addCard);
-router.get("/:accountNumber", getAllCards);
-router.put("/:accountNumber/:cardNumber", updateCard);
-router.delete("/:accountNumber/:cardNumber", deleteCard);
+
+router.post("/", addCard);
+router.get("/", getAllCards);
+router.put("/:cardNumber", updateCard);
+router.delete("/:cardNumber", deleteCard);
 
 export default router;

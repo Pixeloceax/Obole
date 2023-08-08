@@ -32,81 +32,28 @@ function AccountOverview() {
   const [data, setData] = useState(null);
   const [transaction, setTransaction] = useState([]);
   const [payment, setPayment] = useState([]);
+  const [id, setId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://obole-back.onrender.com/dashboard?_id=${_id}`
-        );
+        const response = await fetch(`http://localhost:5000/user`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         if (!response.ok) {
           throw new Error("Something went wrong!");
         }
         const result = await response.json();
         setData(result);
+        setId(result._id);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
   }, [_id]);
-
-  // if (!data) {
-  //   const dataConf = {
-  //     _id: "64bfb35c4de9f5b216b4f339",
-  //     Information: {
-  //       name: "Colas",
-  //       lastName: "Renard",
-  //       phone: "1234567890",
-  //       email: "john.doe@example.com",
-  //       gender: "Male",
-  //       address: "123 Main Street",
-  //       country: "FR",
-  //       date_of_birth: {
-  //         day: 10,
-  //         month: 5,
-  //         year: 1996,
-  //       },
-  //     },
-  //     Account: {
-  //       accountNumber: 373519802352.0,
-  //       hashPassword:
-  //         "$2b$10$9ddqPbLEzZ.LB7ip4IuP7erLvvcgczGDb1vd9kst/SLrACV7c9Y/e",
-  //     },
-  //     Card: [
-  //       {
-  //         cardNumber: 3539347942394868.0,
-  //         expirationDate: "07/28",
-  //         code: 6295,
-  //         CCV: 171,
-  //         locked: false,
-  //         opposition: false,
-  //         limit: 1000,
-  //         used: 0,
-  //         _id: "64bfb35c4de9f5b216b4f33a",
-  //       },
-  //     ],
-  //     Balance: {
-  //       balance: 1000,
-  //     },
-  //     SavingsAccount: [
-  //       {
-  //         type: "Jeune",
-  //         savingsBalance: 1000,
-  //         _id: "64bfb35c4de9f5b216b4f33b",
-  //       },
-  //       {
-  //         type: "Jeune",
-  //         savingsBalance: 1000,
-  //         _id: "64bfb35c4de9f5b216b4f33b",
-  //       },
-  //     ],
-  //     __v: {
-  //       $numberInt: "0",
-  //     },
-  //   };
-  //   setData(dataConf);
-  // }
 
   useEffect(() => {
     const fetchData = async () => {

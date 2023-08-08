@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import User from "../models/user.model";
+import { getAccount } from "../utils/getaccountNumber.utils";
+
 
 export async function addCard(req: Request, res: Response) {
+
   try {
-    const accountNumber = req.params.accountNumber;
+    const accountNumber = await getAccount(req, res);
     const user = await User.findOne({ "Account.accountNumber": accountNumber });
 
     if (!user) {
@@ -44,7 +48,8 @@ export async function addCard(req: Request, res: Response) {
 
 export async function getAllCards(req: Request, res: Response) {
   try {
-    const accountNumber = req.params.accountNumber;
+    const accountNumber = await getAccount(req, res);
+    console.log(accountNumber);
 
     const user = await User.findOne({ "Account.accountNumber": accountNumber });
 
@@ -61,7 +66,7 @@ export async function getAllCards(req: Request, res: Response) {
 
 export async function updateCard(req: Request, res: Response) {
   try {
-    const accountNumber = req.params.accountNumber;
+    const accountNumber = await getAccount(req, res);
     const cardNumber = req.params.cardNumber;
     const { locked, opposition, limit } = req.body;
 
@@ -101,7 +106,7 @@ export async function updateCard(req: Request, res: Response) {
 
 export async function deleteCard(req: Request, res: Response) {
   try {
-    const accountNumber = req.params.accountNumber;
+    const accountNumber = await getAccount(req, res);
     const cardNumber = req.params.cardNumber;
 
     const user = await User.findOne({ "Account.accountNumber": accountNumber });

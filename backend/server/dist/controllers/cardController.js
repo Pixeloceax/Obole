@@ -5,9 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCard = exports.updateCard = exports.getAllCards = exports.addCard = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
+const getaccountNumber_utils_1 = require("../utils/getaccountNumber.utils");
 async function addCard(req, res) {
     try {
-        const accountNumber = req.params.accountNumber;
+        const accountNumber = await (0, getaccountNumber_utils_1.getAccount)(req, res);
         const user = await user_model_1.default.findOne({ "Account.accountNumber": accountNumber });
         if (!user) {
             return res.status(404).json({ error: "User not found." });
@@ -43,7 +44,8 @@ async function addCard(req, res) {
 exports.addCard = addCard;
 async function getAllCards(req, res) {
     try {
-        const accountNumber = req.params.accountNumber;
+        const accountNumber = await (0, getaccountNumber_utils_1.getAccount)(req, res);
+        console.log(accountNumber);
         const user = await user_model_1.default.findOne({ "Account.accountNumber": accountNumber });
         if (!user) {
             return res.status(404).json({ error: "User not found." });
@@ -58,7 +60,7 @@ async function getAllCards(req, res) {
 exports.getAllCards = getAllCards;
 async function updateCard(req, res) {
     try {
-        const accountNumber = req.params.accountNumber;
+        const accountNumber = await (0, getaccountNumber_utils_1.getAccount)(req, res);
         const cardNumber = req.params.cardNumber;
         const { locked, opposition, limit } = req.body;
         const user = await user_model_1.default.findOne({ "Account.accountNumber": accountNumber });
@@ -88,7 +90,7 @@ async function updateCard(req, res) {
 exports.updateCard = updateCard;
 async function deleteCard(req, res) {
     try {
-        const accountNumber = req.params.accountNumber;
+        const accountNumber = await (0, getaccountNumber_utils_1.getAccount)(req, res);
         const cardNumber = req.params.cardNumber;
         const user = await user_model_1.default.findOne({ "Account.accountNumber": accountNumber });
         if (!user) {
