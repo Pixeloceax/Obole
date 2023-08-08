@@ -88,6 +88,8 @@ async function checkValidTransactionAccounts(
   return isDestinationAccountValid;
 }
 
+let transactionTimeout: NodeJS.Timeout | null = null;
+
 export async function createTransaction(req: Request, res: Response) {
   try {
     const { amount, currency, description, type } = req.body;
@@ -156,7 +158,7 @@ export async function createTransaction(req: Request, res: Response) {
 
     const savedTransaction = await newTransaction.save();
 
-    setTimeout(() => {
+    transactionTimeout = setTimeout(() => {
       updateAccountBalance(sourceAccount, newSourceBalance);
       updateAccountBalance(destinationAccount, newDestinationBalance);
       checkPendingTransactionStatus(savedTransaction._id.toString());
@@ -193,6 +195,11 @@ export async function cancelTransaction(req: Request, res: Response) {
       return res.status(400).json({
         error: "Transaction is already cancelled.",
       });
+    }
+
+    if (transactionTimeout) {
+      clearTimeout(transactionTimeout);
+      console.log("Transaction timeout cleared.");
     }
 
     const updatedTransaction = await Transaction.findByIdAndUpdate(

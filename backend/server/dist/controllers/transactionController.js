@@ -75,6 +75,7 @@ async function checkValidTransactionAccounts(sourceAccountFromToken, destination
     const isDestinationAccountValid = sourceAccountFromToken !== destinationAccount;
     return isDestinationAccountValid;
 }
+let transactionTimeout = null;
 async function createTransaction(req, res) {
     var _a;
     try {
@@ -128,7 +129,7 @@ async function createTransaction(req, res) {
             type,
         });
         const savedTransaction = await newTransaction.save();
-        setTimeout(() => {
+        transactionTimeout = setTimeout(() => {
             updateAccountBalance(sourceAccount, newSourceBalance);
             updateAccountBalance(destinationAccount, newDestinationBalance);
             checkPendingTransactionStatus(savedTransaction._id.toString());
@@ -145,10 +146,6 @@ async function createTransaction(req, res) {
     }
 }
 exports.createTransaction = createTransaction;
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 async function cancelTransaction(req, res) {
     try {
         const transactionId = req.params.transactionId;
@@ -162,6 +159,10 @@ async function cancelTransaction(req, res) {
             return res.status(400).json({
                 error: "Transaction is already cancelled.",
             });
+        }
+        if (transactionTimeout) {
+            clearTimeout(transactionTimeout);
+            console.log("Transaction timeout cleared.");
         }
         const updatedTransaction = await transaction_model_1.default.findByIdAndUpdate(transactionId, { status: "cancelled" }, { new: true });
         if (!updatedTransaction) {
