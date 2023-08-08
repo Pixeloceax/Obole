@@ -1,36 +1,9 @@
 import { Request, Response } from "express";
 import Transaction from "../models/transaction.model";
-import UserModel from "../models/user.model";
-
-async function getAccountBalance(accountNumber: string) {
-  try {
-    const user = await UserModel.findOne({
-      "Account.accountNumber": accountNumber,
-    });
-    if (!user) {
-      throw new Error("Account not found.");
-    }
-    return user.Balance?.balance;
-  } catch (error: string | any) {
-    throw new Error(`Error while getting account balance: ${error.message}`);
-  }
-}
-
-async function updateAccountBalance(accountNumber: string, newBalance: number) {
-  try {
-    const user = await UserModel.findOneAndUpdate(
-      { "Account.accountNumber": accountNumber },
-      { $set: { "Balance.balance": newBalance } },
-      { new: true, useFindAndModify: false }
-    );
-
-    if (!user) {
-      throw new Error("Account not found.");
-    }
-  } catch (error: string | any) {
-    throw new Error(`Error while updating account balance: ${error.message}`);
-  }
-}
+import {
+  getAccountBalance,
+  updateAccountBalance,
+} from "../utils/accountBalance.utils";
 
 async function getStatusTransaction(transactionId: string) {
   try {
