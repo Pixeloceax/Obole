@@ -6,19 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserInfo = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = __importDefault(require("../models/user.model"));
+const getaccountNumber_utils_1 = require("../utils/getaccountNumber.utils");
 async function getUserInfo(req, res) {
-    var _a;
-    const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
-    if (!token) {
-        return res.status(401).json({ error: "No access token provided." });
-    }
     try {
-        const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
-        if (!secretKey) {
-            return res.status(500).json({ error: "Server error" });
-        }
-        const decodedToken = jsonwebtoken_1.default.verify(token, secretKey);
-        const accountNumber = decodedToken.accountNumber;
+        const accountNumber = await (0, getaccountNumber_utils_1.getAccount)(req, res);
         const userInfo = await user_model_1.default.findOne({
             "Account.accountNumber": accountNumber,
         });

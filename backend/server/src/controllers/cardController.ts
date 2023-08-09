@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import User from "../models/user.model";
 import { getAccount } from "../utils/getaccountNumber.utils";
 
-
 export async function addCard(req: Request, res: Response) {
-
   try {
     const accountNumber = await getAccount(req, res);
     const user = await User.findOne({ "Account.accountNumber": accountNumber });
