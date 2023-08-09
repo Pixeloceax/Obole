@@ -21,7 +21,7 @@ const Login = ({ handleLogin }) => {
 
     try {
       const response = await axios.post(
-        "https://obole-back.onrender.com/login",
+        "http://localhost:5000/login",
         formDataJSON
       );
 
@@ -44,6 +44,7 @@ const Login = ({ handleLogin }) => {
       }
     } catch (error) {
       console.error(error);
+      console.log(error.response);
       setMessage("An error occurred while logging in.");
     }
   };
@@ -68,10 +69,10 @@ const Login = ({ handleLogin }) => {
             <div className="justify-center md:p-0 p-5">
               <div className="mb-5">
                 <input
-                  id="compteNumber"
-                  name="compteNumber"
+                  id="accountNumber"
+                  name="accountNumber"
                   type="number"
-                  autoComplete="compteNumber"
+                  autoComplete="accountNumber"
                   required
                   className="input appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                   placeholder="Numero de Compte"
