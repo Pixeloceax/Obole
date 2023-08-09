@@ -8,9 +8,9 @@ import {
 
 const router = express.Router();
 
-router.post("/:sourceAccount/:destinationAccount", createTransaction);
+router.post("/:destinationAccount", createTransaction);
 router.put("/:transactionId/cancel", cancelTransaction);
 // router.get("/", getAllTransactions);
-router.get("/:accountNumber", getAllAccountTransactions);
+router.get("/", getAllAccountTransactions);
 
 export default router;

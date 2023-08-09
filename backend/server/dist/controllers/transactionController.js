@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllAccountTransactions = exports.cancelTransaction = exports.createTransaction = void 0;
 const transaction_model_1 = __importDefault(require("../models/transaction.model"));
 const accountBalance_utils_1 = require("../utils/accountBalance.utils");
+const getaccountNumber_utils_1 = require("../utils/getaccountNumber.utils");
 async function getStatusTransaction(transactionId) {
     try {
         const transaction = await transaction_model_1.default.findById(transactionId);
@@ -55,7 +56,7 @@ async function createTransaction(req, res) {
     try {
         const { amount, currency, description, type } = req.body;
         const tokenAccountNumber = (_a = req.user) === null || _a === void 0 ? void 0 : _a.accountNumber;
-        const sourceAccount = req.params.sourceAccount;
+        const sourceAccount = (await (0, getaccountNumber_utils_1.getAccount)(req, res)).toString();
         const destinationAccount = req.params.destinationAccount;
         if (!checkValidTransactionAccounts(sourceAccount, destinationAccount)) {
             return res.status(400).json({
@@ -123,7 +124,20 @@ exports.createTransaction = createTransaction;
 async function cancelTransaction(req, res) {
     try {
         const transactionId = req.params.transactionId;
+        const accountNumber = (await (0, getaccountNumber_utils_1.getAccount)(req, res)).toString();
+        const sourceAccount = (await (0, getaccountNumber_utils_1.getAccount)(req, res)).toString();
         const currentStatus = await getStatusTransaction(transactionId);
+        const transaction = await transaction_model_1.default.findById(transactionId);
+        if (!transaction) {
+            return res.status(404).json({
+                error: "Transaction not found.",
+            });
+        }
+        if (sourceAccount !== accountNumber) {
+            return res.status(403).json({
+                error: "You are not authorized to cancel this transaction.",
+            });
+        }
         if (currentStatus === "completed") {
             return res.status(400).json({
                 error: "Cannot cancel a completed transaction.",
@@ -166,7 +180,7 @@ exports.cancelTransaction = cancelTransaction;
 // }
 async function getAllAccountTransactions(req, res) {
     try {
-        const accountNumber = req.params.accountNumber;
+        const accountNumber = (await (0, getaccountNumber_utils_1.getAccount)(req, res)).toString();
         const transactions = await transaction_model_1.default.find({
             $or: [
                 { sourceAccount: accountNumber },

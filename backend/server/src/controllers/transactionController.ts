@@ -4,6 +4,7 @@ import {
   getAccountBalance,
   updateAccountBalance,
 } from "../utils/accountBalance.utils";
+import { getAccount } from "../utils/getaccountNumber.utils";
 
 async function getStatusTransaction(transactionId: string) {
   try {
@@ -68,7 +69,7 @@ export async function createTransaction(req: Request, res: Response) {
     const { amount, currency, description, type } = req.body;
 
     const tokenAccountNumber = req.user?.accountNumber;
-    const sourceAccount = req.params.sourceAccount;
+    const sourceAccount = (await getAccount(req, res)).toString();
     const destinationAccount = req.params.destinationAccount;
 
     if (!checkValidTransactionAccounts(sourceAccount, destinationAccount)) {
@@ -155,8 +156,23 @@ export async function createTransaction(req: Request, res: Response) {
 export async function cancelTransaction(req: Request, res: Response) {
   try {
     const transactionId = req.params.transactionId;
-
+    const accountNumber = (await getAccount(req, res)).toString();
+    const sourceAccount = (await getAccount(req, res)).toString();
     const currentStatus = await getStatusTransaction(transactionId);
+
+    const transaction = await Transaction.findById(transactionId);
+
+    if (!transaction) {
+      return res.status(404).json({
+        error: "Transaction not found.",
+      });
+    }
+
+    if (sourceAccount !== accountNumber) {
+      return res.status(403).json({
+        error: "You are not authorized to cancel this transaction.",
+      });
+    }
 
     if (currentStatus === "completed") {
       return res.status(400).json({
@@ -186,7 +202,6 @@ export async function cancelTransaction(req: Request, res: Response) {
         error: "Transaction not found.",
       });
     }
-
     res.json({ message: "Transaction cancelled successfully." });
   } catch (error: string | any) {
     res.status(500).json({
@@ -209,7 +224,7 @@ export async function cancelTransaction(req: Request, res: Response) {
 
 export async function getAllAccountTransactions(req: Request, res: Response) {
   try {
-    const accountNumber = req.params.accountNumber;
+    const accountNumber = (await getAccount(req, res)).toString();
     const transactions = await Transaction.find({
       $or: [
         { sourceAccount: accountNumber },
