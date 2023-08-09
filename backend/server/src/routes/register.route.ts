@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import User from "../models/user.model";
-// import { sendEmail, checkEmailExist } from "../utils/email.utils";
+import { sendEmail, checkEmailExist } from "../utils/email.utils";
 
 const router = express.Router();
 
@@ -34,16 +34,15 @@ router.post("/register", async (req, res) => {
     year,
   } = req.body;
 
-  // const emailExists = await checkEmailExist(email);
-  // if (emailExists) {
-  //   return res.status(400).send({
-  //     message: "Email already exists",
-  //   });
-  // }
+  const emailExists = await checkEmailExist(email);
+  if (emailExists) {
+    return res.status(400).send({
+      message: "Email already exists",
+    });
+  }
 
   let accountNumber = Math.floor(Math.random() * 1000000000000);
 
-  // Generate a new account number until a unique one is found
   while (await User.exists({ "Account.accountNumber": accountNumber })) {
     accountNumber = Math.floor(Math.random() * 1000000000000);
   }
@@ -104,16 +103,16 @@ router.post("/register", async (req, res) => {
     ],
   });
 
-  // sendEmail(
-  //   email,
-  //   password,
-  //   accountNumber,
-  //   cardNumber,
-  //   code,
-  //   CCV,
-  //   expirationDate,
-  //   typeOfCard
-  // );
+  sendEmail(
+    email,
+    password,
+    accountNumber,
+    cardNumber,
+    code,
+    CCV,
+    expirationDate,
+    typeOfCard
+  );
 
   console.log("accountNumber", accountNumber, "password", password);
 

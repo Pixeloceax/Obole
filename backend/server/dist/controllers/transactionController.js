@@ -5,33 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllAccountTransactions = exports.cancelTransaction = exports.createTransaction = void 0;
 const transaction_model_1 = __importDefault(require("../models/transaction.model"));
-const user_model_1 = __importDefault(require("../models/user.model"));
-async function getAccountBalance(accountNumber) {
-    var _a;
-    try {
-        const user = await user_model_1.default.findOne({
-            "Account.accountNumber": accountNumber,
-        });
-        if (!user) {
-            throw new Error("Account not found.");
-        }
-        return (_a = user.Balance) === null || _a === void 0 ? void 0 : _a.balance;
-    }
-    catch (error) {
-        throw new Error(`Error while getting account balance: ${error.message}`);
-    }
-}
-async function updateAccountBalance(accountNumber, newBalance) {
-    try {
-        const user = await user_model_1.default.findOneAndUpdate({ "Account.accountNumber": accountNumber }, { $set: { "Balance.balance": newBalance } }, { new: true, useFindAndModify: false });
-        if (!user) {
-            throw new Error("Account not found.");
-        }
-    }
-    catch (error) {
-        throw new Error(`Error while updating account balance: ${error.message}`);
-    }
-}
+const accountBalance_utils_1 = require("../utils/accountBalance.utils");
 async function getStatusTransaction(transactionId) {
     try {
         const transaction = await transaction_model_1.default.findById(transactionId);
@@ -88,8 +62,8 @@ async function createTransaction(req, res) {
                 error: "Invalid transaction accounts. Please check the source and destination accounts.",
             });
         }
-        const sourceBalance = await getAccountBalance(sourceAccount);
-        const destinationBalance = await getAccountBalance(destinationAccount);
+        const sourceBalance = await (0, accountBalance_utils_1.getAccountBalance)(sourceAccount);
+        const destinationBalance = await (0, accountBalance_utils_1.getAccountBalance)(destinationAccount);
         console.log("tokenAccountNumber", tokenAccountNumber);
         console.log("sourceBalance", sourceBalance);
         console.log("destinationBalance", destinationBalance);
@@ -130,8 +104,8 @@ async function createTransaction(req, res) {
         });
         const savedTransaction = await newTransaction.save();
         transactionTimeout = setTimeout(() => {
-            updateAccountBalance(sourceAccount, newSourceBalance);
-            updateAccountBalance(destinationAccount, newDestinationBalance);
+            (0, accountBalance_utils_1.updateAccountBalance)(sourceAccount, newSourceBalance);
+            (0, accountBalance_utils_1.updateAccountBalance)(destinationAccount, newDestinationBalance);
             checkPendingTransactionStatus(savedTransaction._id.toString());
             console.log("sourceBalance", sourceBalance, newSourceBalance);
             console.log("destinationBalance", destinationBalance, newDestinationBalance);
