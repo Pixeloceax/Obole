@@ -35,15 +35,25 @@ const Payment = () => {
   const handleClickButton = async () => {
     try {
       const { number_carte, month, year, ccv, type, prix } = formData;
-      console.log(number_carte, month, year, ccv, type, prix);
       const formattedDate = `${month.padStart(2, "0")}/${year.slice(-2)}`;
-      const response = await fetch(
-        `https://obole-back.onrender.com/payment?number_carte=${number_carte}&date=${formattedDate}&ccv=${ccv}&montant=${prix}&type=${type}`
-      );
+
+      const paymentBody = {
+        cardNumber: number_carte,
+        expirationDate: formattedDate,
+        CCV: ccv,
+        paymentAmount: prix,
+        categorie: type,
+      };
+      const response = await fetch(`http://localhost:5000/payment`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(paymentBody),
+      });
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
-      console.log(response);
       const result = await response.json();
       setData(result);
     } catch (error) {
