@@ -6,6 +6,7 @@ import {
   updateAccountBalance,
   checkAccountBalance,
 } from "../utils/accountBalance.utils";
+import { getAccount } from "../utils/getaccountNumber.utils";
 
 async function validateCreditCardNumber(cardNumber: number): Promise<boolean> {
   try {
@@ -31,7 +32,10 @@ async function validateExpirationDate(
       "Card.expirationDate": expirationDate,
     });
     const date = new Date();
-    const currentDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    const currentDate = date.toLocaleDateString("en-US", {
+      month: "2-digit",
+      year: "2-digit",
+    });
     if (expirationDate < currentDate) {
       throw new Error(`The expiration date ${expirationDate} is not valid.`);
     } else if (!user) {
@@ -43,16 +47,25 @@ async function validateExpirationDate(
   }
 }
 
-async function validateCCV(CCV: string): Promise<boolean> {
+async function validateCCV(CCV: number, cardNumber: number): Promise<boolean> {
   try {
     const user = await UserModel.findOne({
-      "Card.CCV": CCV,
+      "Card.cardNumber": cardNumber,
     });
-    if (CCV.length != 3) {
-      throw new Error(`The CCV ${CCV} is not valid.`);
-    } else if (!user) {
-      throw new Error(`The CCV ${CCV} was not found.`);
+
+    if (!user) {
+      throw new Error(`The card number ${cardNumber} was not found.`);
     }
+
+    const card = user.Card.find((card) => card.cardNumber === cardNumber);
+    if (!card) {
+      throw new Error(`The card number ${cardNumber} was not found.`);
+    }
+
+    if (card.CCV !== CCV) {
+      throw new Error(`The CCV ${CCV} is not valid.`);
+    }
+
     return true;
   } catch (error: any) {
     throw new Error(`Error while validating CCV: ${error.message}`);
@@ -64,7 +77,7 @@ async function validateCardHolderName(
 ): Promise<boolean> {
   try {
     const user = await UserModel.findOne({
-      "Card.cardHolderName": cardHolderName,
+      "Information.name": cardHolderName,
     });
     if (!user) {
       throw new Error(`The card holder name ${cardHolderName} was not found.`);
@@ -77,31 +90,138 @@ async function validateCardHolderName(
   }
 }
 
-async function validSatus(status: string): Promise<boolean> {
+async function validStatus(cardNumber: number): Promise<boolean> {
   try {
-    if (status != "locked" && status != "opposition") {
-      throw new Error(`The status ${status} is not valid.`);
+    const user = await UserModel.findOne({
+      "Card.cardNumber": cardNumber,
+    });
+    if (!user) {
+      throw new Error(`User not found.`);
     }
+    const card = user.Card[0];
+    if (card.locked === true) {
+      throw new Error(`The card is locked.`);
+    }
+    if (card.opposition === true) {
+      throw new Error(`The card is opposition.`);
+    }
+
     return true;
   } catch (error: any) {
-    throw new Error(`Error while validating status: ${error.message}`);
+    throw new Error(`Error while check status: ${error.message}`);
   }
 }
 
-export async function processPayment(amount: number, accountNumber: string) {
+async function getAccountNumberFromCardNumber(cardNumber: number) {
   try {
-    const currentBalance = await getAccountBalance(accountNumber);
-    if (currentBalance === undefined) {
-      throw new Error("Balance not available.");
+    const user = await UserModel.findOne({
+      "Card.cardNumber": cardNumber,
+    });
+
+    if (!user) {
+      throw new Error(`No user found with card number ${cardNumber}`);
     }
-    if (currentBalance < amount) {
-      throw new Error("Insufficient funds.");
+
+    if (!user.Account) {
+      throw new Error(
+        `No account found for user with card number ${cardNumber}`
+      );
     }
-    const newBalance = currentBalance - amount;
-    await updateAccountBalance(accountNumber, newBalance);
-  } catch (error: string | any) {
-    throw new Error(`Error while processing payment: ${error.message}`);
+    const accountNumber = user.Account.accountNumber;
+
+    return accountNumber;
+  } catch (error: any) {
+    throw new Error(`Error while retrieving account number: ${error.message}`);
   }
 }
 
-export async function processRefund(transactionId: string, amount: number) {}
+async function updateUsedCard(cardNumber: number, paymentAmount: number) {
+  try {
+    const user = await UserModel.findOne({
+      "Card.cardNumber": cardNumber,
+    });
+
+    if (!user) {
+      throw new Error(`No user found with card number ${cardNumber}`);
+    }
+
+    const card = user.Card.find((card) => card.cardNumber === cardNumber);
+
+    if (!card) {
+      throw new Error(`No card found for user with card number ${cardNumber}`);
+    }
+
+    if (card.used === undefined) {
+      card.used = 0;
+    }
+
+    if (card.limit === undefined) {
+      throw new Error(`No limit found for card with card number ${cardNumber}`);
+    }
+
+    if (card.used + paymentAmount <= card.limit) {
+      card.used += paymentAmount;
+      await user.save();
+    } else {
+      throw new Error(`The limit is exceeded.`);
+    }
+  } catch (error: any) {
+    throw new Error(`Error while updating used card: ${error.message}`);
+  }
+}
+
+export async function getAllAccountPayments(req: Request, res: Response) {
+  try {
+    const accountNumber = await getAccount(req, res);
+
+    const payments = await Payment.find({
+      accountNumber,
+    });
+
+    res.json(payments);
+  } catch (error: any) {
+    res.status(500).json({ error: `Failed to get payments: ${error.message}` });
+  }
+}
+
+export async function processPayment(req: Request, res: Response) {
+  try {
+    const cardNumber = req.body.cardNumber;
+    const CCV = req.body.CCV;
+    const expirationDate = req.body.expirationDate;
+    const cardHolderName = req.body.cardHolderName;
+    const paymentAmount = req.body.amount;
+    const categorie = req.body.categorie;
+    await validateCreditCardNumber(cardNumber);
+    await validateExpirationDate(expirationDate);
+    await validateCCV(CCV, cardNumber);
+    await validateCardHolderName(cardHolderName);
+    await validStatus(cardNumber);
+    const accountNumber = await getAccountNumberFromCardNumber(cardNumber);
+    if (accountNumber === undefined) {
+      throw new Error("Account number is undefined");
+    }
+    await updateUsedCard(cardNumber, paymentAmount);
+    await getAccountBalance(accountNumber);
+    await checkAccountBalance(accountNumber, paymentAmount);
+    await updateAccountBalance(accountNumber, paymentAmount, "subtract");
+
+    const payment = new Payment({
+      accountNumber,
+      cardNumber,
+      cardHolderName,
+      amount: paymentAmount,
+      categorie,
+    });
+
+    await payment.save();
+
+    res.json(payment);
+  } catch (error: string | any) {
+    res
+      .status(500)
+      .json({ error: `Failed to process payment: ${error.message}` });
+  }
+}
+
+export async function processRefund(req: Request, res: Response) {}

@@ -53,8 +53,8 @@ async function checkPendingTransactionStatus(transactionId: string) {
 }
 
 async function checkValidTransactionAccounts(
-  sourceAccountFromToken: string,
-  destinationAccount: string
+  sourceAccountFromToken: number,
+  destinationAccount: number
 ): Promise<boolean> {
   const isDestinationAccountValid =
     sourceAccountFromToken !== destinationAccount;
@@ -69,10 +69,12 @@ export async function createTransaction(req: Request, res: Response) {
     const { amount, currency, description, type } = req.body;
 
     const tokenAccountNumber = req.user?.accountNumber;
-    const sourceAccount = (await getAccount(req, res)).toString();
-    const destinationAccount = req.params.destinationAccount;
+    const sourceAccount = await getAccount(req, res);
+    const destinationAccount = parseInt(req.params.destinationAccount);
 
-    if (!checkValidTransactionAccounts(sourceAccount, destinationAccount)) {
+    if (
+      !(await checkValidTransactionAccounts(sourceAccount, destinationAccount))
+    ) {
       return res.status(400).json({
         error:
           "Invalid transaction accounts. Please check the source and destination accounts.",
@@ -133,8 +135,8 @@ export async function createTransaction(req: Request, res: Response) {
     const savedTransaction = await newTransaction.save();
 
     transactionTimeout = setTimeout(() => {
-      updateAccountBalance(sourceAccount, newSourceBalance);
-      updateAccountBalance(destinationAccount, newDestinationBalance);
+      updateAccountBalance(sourceAccount, newSourceBalance, "subtract");
+      updateAccountBalance(destinationAccount, newDestinationBalance, "add");
       checkPendingTransactionStatus(savedTransaction._id.toString());
       console.log("sourceBalance", sourceBalance, newSourceBalance);
       console.log(

@@ -1,6 +1,6 @@
 import UserModel from "../models/user.model";
 
-export async function getAccountBalance(accountNumber: string) {
+export async function getAccountBalance(accountNumber: number) {
   try {
     const user = await UserModel.findOne({
       "Account.accountNumber": accountNumber,
@@ -15,26 +15,36 @@ export async function getAccountBalance(accountNumber: string) {
 }
 
 export async function updateAccountBalance(
-  accountNumber: string,
-  newBalance: number
-) {
+  accountNumber: number,
+  amount: number,
+  operation: "add" | "subtract"
+): Promise<void> {
   try {
+    const updateQuery: any = {};
+    if (operation === "add") {
+      updateQuery.$inc = { "Balance.balance": amount };
+    } else if (operation === "subtract") {
+      updateQuery.$inc = { "Balance.balance": -amount };
+    } else {
+      throw new Error("Invalid operation.");
+    }
+
     const user = await UserModel.findOneAndUpdate(
       { "Account.accountNumber": accountNumber },
-      { $set: { "Balance.balance": newBalance } },
+      updateQuery,
       { new: true, useFindAndModify: false }
     );
 
     if (!user) {
       throw new Error("Account not found.");
     }
-  } catch (error: string | any) {
+  } catch (error: any) {
     throw new Error(`Error while updating account balance: ${error.message}`);
   }
 }
 
 export async function checkAccountBalance(
-  accountNumber: string,
+  accountNumber: number,
   amount: number
 ): Promise<boolean> {
   try {

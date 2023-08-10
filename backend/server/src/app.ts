@@ -31,7 +31,7 @@ app.post("/register", registerRouter);
 app.get("/user", authenticateToken, getUserInfo);
 app.use("/card", authenticateToken, cardRouter);
 app.use("/transaction", authenticateToken, transactionRouter);
-app.use("/payment", authenticateToken, paymentRouter);
+app.use("/payment", paymentRouter);
 
 app.get("/free-endpoint", (req: Request, res: Response) => {
   res.json({ message: "You are free to access me anytime" });
