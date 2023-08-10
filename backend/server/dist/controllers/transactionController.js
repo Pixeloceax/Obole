@@ -56,9 +56,9 @@ async function createTransaction(req, res) {
     try {
         const { amount, currency, description, type } = req.body;
         const tokenAccountNumber = (_a = req.user) === null || _a === void 0 ? void 0 : _a.accountNumber;
-        const sourceAccount = (await (0, getaccountNumber_utils_1.getAccount)(req, res)).toString();
-        const destinationAccount = req.params.destinationAccount;
-        if (!checkValidTransactionAccounts(sourceAccount, destinationAccount)) {
+        const sourceAccount = await (0, getaccountNumber_utils_1.getAccount)(req, res);
+        const destinationAccount = parseInt(req.params.destinationAccount);
+        if (!(await checkValidTransactionAccounts(sourceAccount, destinationAccount))) {
             return res.status(400).json({
                 error: "Invalid transaction accounts. Please check the source and destination accounts.",
             });
@@ -105,8 +105,8 @@ async function createTransaction(req, res) {
         });
         const savedTransaction = await newTransaction.save();
         transactionTimeout = setTimeout(() => {
-            (0, accountBalance_utils_1.updateAccountBalance)(sourceAccount, newSourceBalance);
-            (0, accountBalance_utils_1.updateAccountBalance)(destinationAccount, newDestinationBalance);
+            (0, accountBalance_utils_1.updateAccountBalance)(sourceAccount, newSourceBalance, "subtract");
+            (0, accountBalance_utils_1.updateAccountBalance)(destinationAccount, newDestinationBalance, "add");
             checkPendingTransactionStatus(savedTransaction._id.toString());
             console.log("sourceBalance", sourceBalance, newSourceBalance);
             console.log("destinationBalance", destinationBalance, newDestinationBalance);

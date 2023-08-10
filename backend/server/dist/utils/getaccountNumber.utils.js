@@ -10,11 +10,11 @@ async function getAccount(req, res) {
     try {
         const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
         if (!token) {
-            return res.status(401).json({ error: "No access token provided." });
+            throw new Error("No access token provided.");
         }
         const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
         if (!secretKey) {
-            return res.status(500).json({ error: "Server error" });
+            throw new Error("Secret key not found.");
         }
         const decodedToken = jsonwebtoken_1.default.verify(token, secretKey);
         const accountNumber = decodedToken.accountNumber;
@@ -22,10 +22,10 @@ async function getAccount(req, res) {
     }
     catch (error) {
         if (error instanceof jsonwebtoken_1.default.JsonWebTokenError) {
-            return res.status(403).json({ error: "Invalid access token." });
+            throw new Error("Invalid access token.");
         }
         else {
-            return res.status(500).json({ error: "Server error" });
+            throw error;
         }
     }
 }

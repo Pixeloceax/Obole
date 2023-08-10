@@ -1,36 +1,48 @@
 import mongoose from "mongoose";
 declare const _default: mongoose.Model<{
-    payment?: {
-        required?: unknown;
-        type?: string | undefined;
-    } | undefined;
+    date: Date;
+    accountNumber: number;
+    cardNumber: number;
+    amount: number;
+    cardHolderName: string;
+    categorie: string;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
-    payment?: {
-        required?: unknown;
-        type?: string | undefined;
-    } | undefined;
+    date: Date;
+    accountNumber: number;
+    cardNumber: number;
+    amount: number;
+    cardHolderName: string;
+    categorie: string;
 }> & Omit<{
-    payment?: {
-        required?: unknown;
-        type?: string | undefined;
-    } | undefined;
+    date: Date;
+    accountNumber: number;
+    cardNumber: number;
+    amount: number;
+    cardHolderName: string;
+    categorie: string;
 } & {
     _id: mongoose.Types.ObjectId;
 }, never>, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
-    payment?: {
-        required?: unknown;
-        type?: string | undefined;
-    } | undefined;
+    date: Date;
+    accountNumber: number;
+    cardNumber: number;
+    amount: number;
+    cardHolderName: string;
+    categorie: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
-    payment?: {
-        required?: unknown;
-        type?: string | undefined;
-    } | undefined;
+    date: Date;
+    accountNumber: number;
+    cardNumber: number;
+    amount: number;
+    cardHolderName: string;
+    categorie: string;
 }>> & Omit<mongoose.FlatRecord<{
-    payment?: {
-        required?: unknown;
-        type?: string | undefined;
-    } | undefined;
+    date: Date;
+    accountNumber: number;
+    cardNumber: number;
+    amount: number;
+    cardHolderName: string;
+    categorie: string;
 }> & {
     _id: mongoose.Types.ObjectId;
 }, never>>>;

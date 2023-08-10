@@ -21,9 +21,19 @@ async function getAccountBalance(accountNumber) {
     }
 }
 exports.getAccountBalance = getAccountBalance;
-async function updateAccountBalance(accountNumber, newBalance) {
+async function updateAccountBalance(accountNumber, amount, operation) {
     try {
-        const user = await user_model_1.default.findOneAndUpdate({ "Account.accountNumber": accountNumber }, { $set: { "Balance.balance": newBalance } }, { new: true, useFindAndModify: false });
+        const updateQuery = {};
+        if (operation === "add") {
+            updateQuery.$inc = { "Balance.balance": amount };
+        }
+        else if (operation === "subtract") {
+            updateQuery.$inc = { "Balance.balance": -amount };
+        }
+        else {
+            throw new Error("Invalid operation.");
+        }
+        const user = await user_model_1.default.findOneAndUpdate({ "Account.accountNumber": accountNumber }, updateQuery, { new: true, useFindAndModify: false });
         if (!user) {
             throw new Error("Account not found.");
         }
