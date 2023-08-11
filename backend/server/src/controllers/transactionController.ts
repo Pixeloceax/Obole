@@ -43,12 +43,12 @@ async function checkPendingTransactionStatus(transactionId: string) {
     if (transactionStatus === "pending") {
       await updateTransactionStatus(transactionId, "completed");
     } else if (transactionStatus === "completed") {
-      console.log(
-        "Transaction is already completed; the status cannot be changed."
-      );
+      throw new Error("Transaction already completed.");
     }
   } catch (error: string | any) {
-    console.error(error);
+    throw new Error(
+      `Error while checking pending transaction status: ${error.message}`
+    );
   }
 }
 
@@ -84,10 +84,6 @@ export async function createTransaction(req: Request, res: Response) {
     const sourceBalance = await getAccountBalance(sourceAccount);
     const destinationBalance = await getAccountBalance(destinationAccount);
 
-    console.log("tokenAccountNumber", tokenAccountNumber);
-    console.log("sourceBalance", sourceBalance);
-    console.log("destinationBalance", destinationBalance);
-
     if (amount <= 0) {
       return res.status(400).json({
         error:
@@ -120,9 +116,6 @@ export async function createTransaction(req: Request, res: Response) {
       });
     }
 
-    const newSourceBalance = sourceBalance - amount;
-    const newDestinationBalance = destinationBalance + amount;
-
     const newTransaction = new Transaction({
       sourceAccount,
       destinationAccount,
@@ -135,20 +128,13 @@ export async function createTransaction(req: Request, res: Response) {
     const savedTransaction = await newTransaction.save();
 
     transactionTimeout = setTimeout(() => {
-      updateAccountBalance(sourceAccount, newSourceBalance, "subtract");
-      updateAccountBalance(destinationAccount, newDestinationBalance, "add");
+      updateAccountBalance(sourceAccount, amount, "subtract");
+      updateAccountBalance(destinationAccount, amount, "add");
       checkPendingTransactionStatus(savedTransaction._id.toString());
-      console.log("sourceBalance", sourceBalance, newSourceBalance);
-      console.log(
-        "destinationBalance",
-        destinationBalance,
-        newDestinationBalance
-      );
-    }, 5 * 60 * 1000);
+    }, 30 * 1000);
 
     res.status(201).json(savedTransaction);
   } catch (error: string | any) {
-    console.error(error);
     res.status(500).json({
       error: `Failed to create transaction: ${error.message}`,
     });
@@ -158,8 +144,8 @@ export async function createTransaction(req: Request, res: Response) {
 export async function cancelTransaction(req: Request, res: Response) {
   try {
     const transactionId = req.params.transactionId;
-    const accountNumber = (await getAccount(req, res)).toString();
-    const sourceAccount = (await getAccount(req, res)).toString();
+    const accountNumber = await getAccount(req, res);
+    const sourceAccount = await getAccount(req, res);
     const currentStatus = await getStatusTransaction(transactionId);
 
     const transaction = await Transaction.findById(transactionId);
@@ -190,7 +176,6 @@ export async function cancelTransaction(req: Request, res: Response) {
 
     if (transactionTimeout) {
       clearTimeout(transactionTimeout);
-      console.log("Transaction timeout cleared.");
     }
 
     const updatedTransaction = await Transaction.findByIdAndUpdate(
@@ -226,7 +211,7 @@ export async function cancelTransaction(req: Request, res: Response) {
 
 export async function getAllAccountTransactions(req: Request, res: Response) {
   try {
-    const accountNumber = (await getAccount(req, res)).toString();
+    const accountNumber = await getAccount(req, res);
     const transactions = await Transaction.find({
       $or: [
         { sourceAccount: accountNumber },
