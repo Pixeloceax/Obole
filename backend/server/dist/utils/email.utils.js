@@ -5,24 +5,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = exports.checkEmailExist = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const getaccountNumber_utils_1 = require("./getaccountNumber.utils");
 const user_model_1 = __importDefault(require("../models/user.model"));
-const checkEmailExist = async (email) => {
+async function getEmailAccount(req, res) {
+    var _a;
+    try {
+        const accountNumber = await (0, getaccountNumber_utils_1.getAccount)(req, res);
+        const user = await user_model_1.default.findOne({ "Account.accountNumber": accountNumber });
+        const emailAccount = (_a = user === null || user === void 0 ? void 0 : user.Information) === null || _a === void 0 ? void 0 : _a.email;
+        if (!emailAccount) {
+            throw new Error("Email account not found");
+        }
+        console.log("emailAccount", emailAccount);
+        return emailAccount;
+    }
+    catch (err) {
+        throw new Error(`Error getting email account: ${err}`);
+    }
+}
+async function checkEmailExist(email) {
     try {
         const user = await user_model_1.default.findOne({ "Information.email": email });
-        if (user) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return Boolean(user);
     }
     catch (err) {
         throw new Error(`Error checking if email exists: ${err}`);
     }
-};
+}
 exports.checkEmailExist = checkEmailExist;
 const sendEmail = async (email, password, accountNumber, cardNumber, code, CCV, expirationDate, typeOfCard) => {
-    console.log("sendEmail", email, password, accountNumber, cardNumber, code, CCV, expirationDate, typeOfCard);
     try {
         const transporter = nodemailer_1.default.createTransport({
             host: "smtp-mail.outlook.com",
@@ -38,7 +49,7 @@ const sendEmail = async (email, password, accountNumber, cardNumber, code, CCV, 
             console.log("newCard");
             mailOptions = {
                 from: "obole1@outlook.fr",
-                to: email,
+                to: getEmailAccount,
                 subject: "Détails de votre nouvelle carte bancaire Obole",
                 html: `<!DOCTYPE html>
         <!DOCTYPE html>

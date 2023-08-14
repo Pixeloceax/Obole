@@ -12,7 +12,9 @@ declare const _default: mongoose.Model<{
     }[];
     SavingsAccount: {
         type?: string | undefined;
+        savingAccountNumber?: number | undefined;
         savingsBalance?: number | undefined;
+        interestRate?: number | undefined;
     }[];
     Information?: {
         address?: string | undefined;
@@ -48,7 +50,9 @@ declare const _default: mongoose.Model<{
     }[];
     SavingsAccount: {
         type?: string | undefined;
+        savingAccountNumber?: number | undefined;
         savingsBalance?: number | undefined;
+        interestRate?: number | undefined;
     }[];
     Information?: {
         address?: string | undefined;
@@ -84,7 +88,9 @@ declare const _default: mongoose.Model<{
     }[];
     SavingsAccount: {
         type?: string | undefined;
+        savingAccountNumber?: number | undefined;
         savingsBalance?: number | undefined;
+        interestRate?: number | undefined;
     }[];
     Information?: {
         address?: string | undefined;
@@ -122,7 +128,9 @@ declare const _default: mongoose.Model<{
     }[];
     SavingsAccount: {
         type?: string | undefined;
+        savingAccountNumber?: number | undefined;
         savingsBalance?: number | undefined;
+        interestRate?: number | undefined;
     }[];
     Information?: {
         address?: string | undefined;
@@ -158,7 +166,9 @@ declare const _default: mongoose.Model<{
     }[];
     SavingsAccount: {
         type?: string | undefined;
+        savingAccountNumber?: number | undefined;
         savingsBalance?: number | undefined;
+        interestRate?: number | undefined;
     }[];
     Information?: {
         address?: string | undefined;
@@ -194,7 +204,9 @@ declare const _default: mongoose.Model<{
     }[];
     SavingsAccount: {
         type?: string | undefined;
+        savingAccountNumber?: number | undefined;
         savingsBalance?: number | undefined;
+        interestRate?: number | undefined;
     }[];
     Information?: {
         address?: string | undefined;

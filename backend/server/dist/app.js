@@ -11,6 +11,8 @@ const register_route_1 = __importDefault(require("./routes/register.route"));
 const card_route_1 = __importDefault(require("./routes/card.route"));
 const transaction_route_1 = __importDefault(require("./routes/transaction.route"));
 const payment_route_1 = __importDefault(require("./routes/payment.route"));
+const stats_route_1 = __importDefault(require("./routes/stats.route"));
+const saving_route_1 = __importDefault(require("./routes/saving.route"));
 const dbConnect_1 = __importDefault(require("./database/dbConnect"));
 const auth_1 = require("./middleware/auth");
 const userController_1 = require("./controllers/userController");
@@ -29,6 +31,8 @@ app.get("/user", auth_1.authenticateToken, userController_1.getUserInfo);
 app.use("/card", auth_1.authenticateToken, card_route_1.default);
 app.use("/transaction", auth_1.authenticateToken, transaction_route_1.default);
 app.use("/payment", payment_route_1.default);
+app.use("/stats", auth_1.authenticateToken, stats_route_1.default);
+app.use("/saving", auth_1.authenticateToken, saving_route_1.default);
 app.get("/free-endpoint", (req, res) => {
     res.json({ message: "You are free to access me anytime" });
 });

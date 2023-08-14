@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllAccountTransactions = exports.cancelTransaction = exports.createTransaction = void 0;
+exports.getAllAccountTransactions = exports.transferFromSavingAccount = exports.transferToSavingAccount = exports.cancelTransaction = exports.createTransaction = void 0;
 const transaction_model_1 = __importDefault(require("../models/transaction.model"));
+const user_model_1 = __importDefault(require("../models/user.model"));
 const accountBalance_utils_1 = require("../utils/accountBalance.utils");
 const getaccountNumber_utils_1 = require("../utils/getaccountNumber.utils");
 async function getStatusTransaction(transactionId) {
@@ -39,11 +40,11 @@ async function checkPendingTransactionStatus(transactionId) {
             await updateTransactionStatus(transactionId, "completed");
         }
         else if (transactionStatus === "completed") {
-            console.log("Transaction is already completed; the status cannot be changed.");
+            throw new Error("Transaction already completed.");
         }
     }
     catch (error) {
-        console.error(error);
+        throw new Error(`Error while checking pending transaction status: ${error.message}`);
     }
 }
 async function checkValidTransactionAccounts(sourceAccountFromToken, destinationAccount) {
@@ -65,9 +66,6 @@ async function createTransaction(req, res) {
         }
         const sourceBalance = await (0, accountBalance_utils_1.getAccountBalance)(sourceAccount);
         const destinationBalance = await (0, accountBalance_utils_1.getAccountBalance)(destinationAccount);
-        console.log("tokenAccountNumber", tokenAccountNumber);
-        console.log("sourceBalance", sourceBalance);
-        console.log("destinationBalance", destinationBalance);
         if (amount <= 0) {
             return res.status(400).json({
                 error: "You cannot perform a transaction with a negative or null amount.",
@@ -93,8 +91,6 @@ async function createTransaction(req, res) {
                 error: "You cannot perform a transaction from another account.",
             });
         }
-        const newSourceBalance = sourceBalance - amount;
-        const newDestinationBalance = destinationBalance + amount;
         const newTransaction = new transaction_model_1.default({
             sourceAccount,
             destinationAccount,
@@ -105,16 +101,13 @@ async function createTransaction(req, res) {
         });
         const savedTransaction = await newTransaction.save();
         transactionTimeout = setTimeout(() => {
-            (0, accountBalance_utils_1.updateAccountBalance)(sourceAccount, newSourceBalance, "subtract");
-            (0, accountBalance_utils_1.updateAccountBalance)(destinationAccount, newDestinationBalance, "add");
+            (0, accountBalance_utils_1.updateAccountBalance)(sourceAccount, amount, "subtract");
+            (0, accountBalance_utils_1.updateAccountBalance)(destinationAccount, amount, "add");
             checkPendingTransactionStatus(savedTransaction._id.toString());
-            console.log("sourceBalance", sourceBalance, newSourceBalance);
-            console.log("destinationBalance", destinationBalance, newDestinationBalance);
-        }, 5 * 60 * 1000);
+        }, 30 * 1000);
         res.status(201).json(savedTransaction);
     }
     catch (error) {
-        console.error(error);
         res.status(500).json({
             error: `Failed to create transaction: ${error.message}`,
         });
@@ -124,8 +117,8 @@ exports.createTransaction = createTransaction;
 async function cancelTransaction(req, res) {
     try {
         const transactionId = req.params.transactionId;
-        const accountNumber = (await (0, getaccountNumber_utils_1.getAccount)(req, res)).toString();
-        const sourceAccount = (await (0, getaccountNumber_utils_1.getAccount)(req, res)).toString();
+        const accountNumber = await (0, getaccountNumber_utils_1.getAccount)(req, res);
+        const sourceAccount = await (0, getaccountNumber_utils_1.getAccount)(req, res);
         const currentStatus = await getStatusTransaction(transactionId);
         const transaction = await transaction_model_1.default.findById(transactionId);
         if (!transaction) {
@@ -150,7 +143,6 @@ async function cancelTransaction(req, res) {
         }
         if (transactionTimeout) {
             clearTimeout(transactionTimeout);
-            console.log("Transaction timeout cleared.");
         }
         const updatedTransaction = await transaction_model_1.default.findByIdAndUpdate(transactionId, { status: "cancelled" }, { new: true });
         if (!updatedTransaction) {
@@ -178,9 +170,141 @@ exports.cancelTransaction = cancelTransaction;
 //     });
 //   }
 // }
+// Ajoutez cette fonction à votre code existant
+async function transferToSavingAccount(req, res) {
+    var _a;
+    try {
+        const { amount, destinationAccountType } = req.body;
+        const sourceAccount = await (0, getaccountNumber_utils_1.getAccount)(req, res);
+        const user = await user_model_1.default.findOne({ "Account.accountNumber": sourceAccount });
+        const destinationAccount = (_a = user === null || user === void 0 ? void 0 : user.SavingsAccount.find((account) => account.type === destinationAccountType)) === null || _a === void 0 ? void 0 : _a.savingAccountNumber;
+        console.log(destinationAccount);
+        if (!destinationAccount) {
+            return res.status(400).json({
+                error: "The destination account does not exist.",
+            });
+        }
+        if (!user) {
+            return res.status(404).json({
+                error: "User not found.",
+            });
+        }
+        const sourceBalance = await (0, accountBalance_utils_1.getAccountBalance)(sourceAccount);
+        const destinationBalance = await (0, accountBalance_utils_1.getSavingAccountBalance)(destinationAccount);
+        if (amount <= 0) {
+            return res.status(400).json({
+                error: "You cannot perform a transaction with a negative or null amount.",
+            });
+        }
+        if (!sourceBalance || sourceBalance < amount) {
+            return res.status(400).json({
+                error: "The source account does not have enough balance.",
+            });
+        }
+        if (sourceAccount === destinationAccount) {
+            return res.status(400).json({
+                error: "You cannot perform a transaction from an account to the same account.",
+            });
+        }
+        if (!destinationBalance) {
+            return res.status(400).json({
+                error: "The destination account does not exist.",
+            });
+        }
+        const newTransaction = new transaction_model_1.default({
+            sourceAccount,
+            destinationAccount: destinationAccount,
+            amount,
+            currency: "EUR",
+            description: "Transfer to savings account",
+            type: "Transfer",
+        });
+        const savedTransaction = await newTransaction.save();
+        transactionTimeout = setTimeout(() => {
+            (0, accountBalance_utils_1.updateAccountBalance)(sourceAccount, amount, "subtract");
+            (0, accountBalance_utils_1.updateSavingAccountBalance)(destinationAccount, amount, "add");
+            checkPendingTransactionStatus(savedTransaction._id.toString());
+        }, 30 * 1000);
+        await user.save();
+        res.status(201).json(savedTransaction);
+    }
+    catch (error) {
+        res.status(500).json({
+            error: `Failed to perform transfer: ${error.message}`,
+        });
+    }
+}
+exports.transferToSavingAccount = transferToSavingAccount;
+async function transferFromSavingAccount(req, res) {
+    var _a;
+    try {
+        const { amount, sourceAccountType } = req.body;
+        const destinationAccount = await (0, getaccountNumber_utils_1.getAccount)(req, res);
+        const user = await user_model_1.default.findOne({
+            "Account.accountNumber": destinationAccount,
+        });
+        const sourceAccount = (_a = user === null || user === void 0 ? void 0 : user.SavingsAccount.find((account) => account.type === sourceAccountType)) === null || _a === void 0 ? void 0 : _a.savingAccountNumber;
+        console.log(sourceAccount);
+        if (!sourceAccount) {
+            return res.status(400).json({
+                error: "The source account does not exist.",
+            });
+        }
+        if (!user) {
+            return res.status(404).json({
+                error: "User not found.",
+            });
+        }
+        const destinationBalance = await (0, accountBalance_utils_1.getAccountBalance)(destinationAccount);
+        const sourceBalance = await (0, accountBalance_utils_1.getSavingAccountBalance)(sourceAccount);
+        if (amount <= 0) {
+            return res.status(400).json({
+                error: "You cannot perform a transaction with a negative or null amount.",
+            });
+        }
+        if (!sourceBalance || sourceBalance < amount) {
+            return res.status(400).json({
+                error: "The source account does not have enough balance.",
+            });
+        }
+        if (sourceAccount === destinationAccount) {
+            return res.status(400).json({
+                error: "You cannot perform a transaction from an account to the same account.",
+            });
+        }
+        if (!destinationBalance) {
+            return res.status(400).json({
+                error: "The destination account does not exist.",
+            });
+        }
+        const newTransaction = new transaction_model_1.default({
+            sourceAccount: sourceAccount,
+            destinationAccount,
+            amount,
+            currency: "EUR",
+            description: "Transfer from savings account",
+            type: "Transfer",
+        });
+        const savedTransaction = await newTransaction.save();
+        transactionTimeout = setTimeout(() => {
+            (0, accountBalance_utils_1.updateSavingAccountBalance)(sourceAccount, amount, "subtract");
+            (0, accountBalance_utils_1.updateAccountBalance)(destinationAccount, amount, "add");
+            checkPendingTransactionStatus(savedTransaction._id.toString());
+            console.log("timeout");
+        }, 30 * 1000);
+        await user.save();
+        res.status(201).json(savedTransaction);
+    }
+    catch (error) {
+        res.status(500).json({
+            error: `Failed to perform transfer: ${error.message}`,
+        });
+    }
+}
+exports.transferFromSavingAccount = transferFromSavingAccount;
 async function getAllAccountTransactions(req, res) {
     try {
-        const accountNumber = (await (0, getaccountNumber_utils_1.getAccount)(req, res)).toString();
+        const accountNumber = await (0, getaccountNumber_utils_1.getAccount)(req, res);
         const transactions = await transaction_model_1.default.find({
             $or: [
                 { sourceAccount: accountNumber },
