@@ -4,9 +4,11 @@ import Navbar from "../components/Navbar";
 
 const Epargne = () => {
   return (
-    <div>
-      <Navbar />
-      Epargne
+    <div className="flex bg-white">
+      <Navbar className="fixed top-0 w-full z-50" />
+      <div className="w-full md:pl-40 pl-20">
+        Epargne
+      </div>
     </div>
   );
 };

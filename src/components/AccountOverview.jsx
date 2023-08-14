@@ -95,8 +95,6 @@ function AccountOverview() {
     fetchData();
   }, []);
 
-  console.log(transaction);
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -114,7 +112,7 @@ function AccountOverview() {
   };
 
   const deconexion = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     window.location.href = "/login";
   };
 
@@ -189,12 +187,11 @@ function AccountOverview() {
                 {data.SavingsAccount.map((livret, index) => (
                   <div
                     className={`flex items-center justify-center md:w-[50%] ${
-                      index === 0
+                      index != 0
                         ? "md:border-r-2 border-b-2 md:border-b-0 border-white"
                         : ""
                     }`}
                   >
-                    {console.log(livret.type)}
                     <div className="text-center">
                       <p className="text-white font-bold md:text-4xl text-xl mb-2">
                         {livret.type}

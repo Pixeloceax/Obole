@@ -25,7 +25,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="top-0 left-0 h-screen text-white">
+    <div className="top-0 left-0 text-white">
       <div className="flex flex-col justify-between h-full md:w-40 w-20 fixed bg-black">
         <div className="flex self-center">
           <div className="h-36">
