@@ -9,6 +9,7 @@ const DEFAULT_BALANCE = 1000;
 const DEFAULT_LIMIT = 1000;
 const DEFAULT_USED = 0;
 const CARD_TYPES = ["A", "Jeune"];
+const DEFAULT_INTEREST_RATE = 1;
 
 const generateRandomPassword = () => {
   return Math.floor(Math.random() * 10000000000);
@@ -57,8 +58,10 @@ router.post("/register", async (req, res) => {
   const expirationDate = `${setmonth.toString().padStart(2, "0")}/${setyear}`;
   const code = Math.floor(Math.random() * 10000);
   const CCV = Math.floor(Math.random() * 1000);
+  const savingAccountNumber = Math.floor(Math.random() * 1000000000000);
   const type = CARD_TYPES[Math.floor(Math.random() * CARD_TYPES.length)];
   const savingsBalance = DEFAULT_BALANCE;
+  const interestRate = DEFAULT_INTEREST_RATE;
   let typeOfCard = "newAccount";
 
   const user = new User({
@@ -97,8 +100,10 @@ router.post("/register", async (req, res) => {
     },
     SavingsAccount: [
       {
+        savingAccountNumber,
         type,
         savingsBalance,
+        interestRate,
       },
     ],
   });

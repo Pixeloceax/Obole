@@ -30,7 +30,6 @@ router.post("/login", async (req, res) => {
       return res.status(500).json({ message: "Server error" });
     }
 
-    // Compare the password with the stored hashed password
     const isMatch = await bcrypt.compare(password, hashPassword);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid password" });
