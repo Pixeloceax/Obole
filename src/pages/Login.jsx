@@ -17,7 +17,12 @@ const Login = ({ handleLogin }) => {
     event.preventDefault();
 
     const formData = new FormData(event.target);
+
     const formDataJSON = Object.fromEntries(formData.entries());
+    if (formDataJSON.bot) {
+      setMessage("An error occurred while logging in.");
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -87,6 +92,15 @@ const Login = ({ handleLogin }) => {
                   required
                   className="input appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
                   placeholder="Mots De Passe"
+                />
+              </div>
+              <div>
+                <input
+                  id="bot"
+                  name="bot"
+                  type="bot"
+                  autoComplete="bot"
+                  className="hidden"
                 />
               </div>
             </div>
