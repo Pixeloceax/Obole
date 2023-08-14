@@ -28,7 +28,7 @@ app.post("/register", register_route_1.default);
 app.get("/user", auth_1.authenticateToken, userController_1.getUserInfo);
 app.use("/card", auth_1.authenticateToken, card_route_1.default);
 app.use("/transaction", auth_1.authenticateToken, transaction_route_1.default);
-app.use("/payment", auth_1.authenticateToken, payment_route_1.default);
+app.use("/payment", payment_route_1.default);
 app.get("/free-endpoint", (req, res) => {
     res.json({ message: "You are free to access me anytime" });
 });

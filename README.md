@@ -4,7 +4,7 @@
 
 ## About the Developers
 
-Hi, we are Colas and Axel, the developers of this project. We are passionate software engineers with a focus on web development. We have experience in building interactive and user-friendly web applications. Connect with us on [LinkedIn](https://www.linkedin.com/in/colasrenard) and [LinkedIn](https://www.linkedin.com/in/axelvalentin) to know more about our professional backgrounds. You can also find us on [Twitter](https://twitter.com/colasdev) and [Twitter](https://twitter.com/axeldev) for updates and discussions related to programming.
+Hi, we are Colas and Axel, the developers of this project. We are passionate software engineers with a focus on web development. We have experience in building interactive and user-friendly web applications. Connect with us on [LinkedIn](https://www.linkedin.com/in/colasrenard) and [LinkedIn](https://www.linkedin.com/in/axelvalentin) to know more about our professional backgrounds. You can also find us on [Twitter](https://twitter.com/) and [Twitter](https://twitter.com/) for updates and discussions related to programming.
 
 ## Project Description
 

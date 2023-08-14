@@ -7,6 +7,7 @@ import registerRouter from "./routes/register.route";
 import cardRouter from "./routes/card.route";
 import transactionRouter from "./routes/transaction.route";
 import paymentRouter from "./routes/payment.route";
+import statsRouter from "./routes/stats.route";
 
 import dbConnect from "./database/dbConnect";
 import { authenticateToken } from "./middleware/auth";
@@ -31,7 +32,8 @@ app.post("/register", registerRouter);
 app.get("/user", authenticateToken, getUserInfo);
 app.use("/card", authenticateToken, cardRouter);
 app.use("/transaction", authenticateToken, transactionRouter);
-app.use("/payment", authenticateToken, paymentRouter);
+app.use("/payment", paymentRouter);
+app.use("/stats", authenticateToken, statsRouter);
 
 app.get("/free-endpoint", (req: Request, res: Response) => {
   res.json({ message: "You are free to access me anytime" });
