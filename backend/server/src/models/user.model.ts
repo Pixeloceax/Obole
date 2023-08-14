@@ -101,6 +101,10 @@ const userSchema = new mongoose.Schema({
   },
   SavingsAccount: [
     {
+      savingAccountNumber: {
+        type: Number,
+        required: [true, "Please provide a saving account number!"],
+      },
       type: {
         type: String,
         required: [true, "Please provide a type!"],
@@ -108,6 +112,10 @@ const userSchema = new mongoose.Schema({
       savingsBalance: {
         type: Number,
         required: [true, "Please provide a balance!"],
+      },
+      interestRate: {
+        type: Number,
+        required: [true, "Please provide an interest rate!"],
       },
     },
   ],
