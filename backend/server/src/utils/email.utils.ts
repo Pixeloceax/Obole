@@ -1,19 +1,32 @@
 import nodemailer, { TransportOptions } from "nodemailer";
-
+import { Request, Response } from "express";
+import { getAccount } from "./getaccountNumber.utils";
 import User from "../models/user.model";
 
-const checkEmailExist = async (email: string) => {
+async function getEmailAccount(req: Request, res: Response) {
+  try {
+    const accountNumber = await getAccount(req, res);
+    const user = await User.findOne({ "Account.accountNumber": accountNumber });
+
+    const emailAccount = user?.Information?.email;
+    if (!emailAccount) {
+      throw new Error("Email account not found");
+    }
+    console.log("emailAccount", emailAccount);
+    return emailAccount;
+  } catch (err) {
+    throw new Error(`Error getting email account: ${err}`);
+  }
+}
+
+export async function checkEmailExist(email: string): Promise<boolean> {
   try {
     const user = await User.findOne({ "Information.email": email });
-    if (user) {
-      return true;
-    } else {
-      return false;
-    }
+    return Boolean(user);
   } catch (err) {
     throw new Error(`Error checking if email exists: ${err}`);
   }
-};
+}
 
 const sendEmail = async (
   email: string,
@@ -25,18 +38,6 @@ const sendEmail = async (
   expirationDate: string,
   typeOfCard: string
 ) => {
-  console.log(
-    "sendEmail",
-    email,
-    password,
-    accountNumber,
-    cardNumber,
-    code,
-    CCV,
-    expirationDate,
-    typeOfCard
-  );
-
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp-mail.outlook.com",
@@ -54,7 +55,7 @@ const sendEmail = async (
       console.log("newCard");
       mailOptions = {
         from: "obole1@outlook.fr",
-        to: email,
+        to: getEmailAccount,
         subject: "Détails de votre nouvelle carte bancaire Obole",
         html: `<!DOCTYPE html>
         <!DOCTYPE html>
@@ -262,4 +263,4 @@ const sendEmail = async (
   }
 };
 
-export { checkEmailExist, sendEmail };
+export { sendEmail };
