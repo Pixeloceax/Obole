@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import User from "../models/user.model";
-import { sendEmail, checkEmailExist } from "../utils/email.utils";
+import { sendNewAccountEmail, checkEmailExist } from "../utils/email.utils";
 
 const router = express.Router();
 
@@ -62,7 +62,6 @@ router.post("/register", async (req, res) => {
   const type = CARD_TYPES[Math.floor(Math.random() * CARD_TYPES.length)];
   const savingsBalance = DEFAULT_BALANCE;
   const interestRate = DEFAULT_INTEREST_RATE;
-  let typeOfCard = "newAccount";
 
   const user = new User({
     Information: {
@@ -108,15 +107,14 @@ router.post("/register", async (req, res) => {
     ],
   });
 
-  sendEmail(
+  sendNewAccountEmail(
     email,
     password,
     accountNumber,
     cardNumber,
     code,
     CCV,
-    expirationDate,
-    typeOfCard
+    expirationDate
   );
 
   console.log("accountNumber", accountNumber, "password", password);
