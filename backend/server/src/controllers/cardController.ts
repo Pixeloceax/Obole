@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/user.model";
 import { getAccount } from "../utils/getaccountNumber.utils";
+import { sendNewCardEmail } from "../utils/email.utils";
 
 export async function addCard(req: Request, res: Response) {
   try {
@@ -32,6 +33,16 @@ export async function addCard(req: Request, res: Response) {
       limit,
       used,
     };
+
+    if (user.Information?.email) {
+      sendNewCardEmail(
+        user.Information.email,
+        cardNumber,
+        code,
+        CCV,
+        expirationDate
+      );
+    }
 
     user.Card.push(cardData);
 
