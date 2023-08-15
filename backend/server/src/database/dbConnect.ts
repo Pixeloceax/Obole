@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 async function dbConnect() {
   try {
-    await mongoose.connect(
-      process.env.MONGODB_URI ||
-        "mongodb+srv://obole:1YUM76QQgyYnfcbc@obole.dqfi0yz.mongodb.net/authDB?retryWrites=true&w=majority"
-    );
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI is not defined");
+    }
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log("Successfully connected to MongoDB Atlas!");
   } catch (error) {
     console.log("Unable to connect to MongoDB Atlas!");
