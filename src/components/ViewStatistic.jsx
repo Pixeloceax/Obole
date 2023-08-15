@@ -14,13 +14,14 @@ const ViewStatistic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const _id = sessionStorage.getItem("_id");
-        const response = await axios.post(
-          "https://obole-back.onrender.com/paymentStatistics",
-          { _id }
-        );
+        const response = await axios.get("http://localhost:5000/stats", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const transformedData = transformResponse(response.data);
         setData(transformedData);
+        console.log(transformedData);
       } catch (error) {
         console.error(error);
       }
