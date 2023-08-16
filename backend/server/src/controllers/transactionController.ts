@@ -200,20 +200,6 @@ export async function cancelTransaction(req: Request, res: Response) {
   }
 }
 
-// unsafe for the moment
-// export async function getAllTransactions(req: Request, res: Response) {
-//   try {
-//     const transactions = await Transaction.find();
-//     res.json(transactions);
-//   } catch (error: string | any) {
-//     res.status(500).json({
-//       error: `Failed to get transactions: ${error.message}`,
-//     });
-//   }
-// }
-
-// Ajoutez cette fonction à votre code existant
-
 export async function transferToSavingAccount(req: Request, res: Response) {
   try {
     const { amount, destinationAccountType } = req.body;
