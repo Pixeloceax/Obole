@@ -108,6 +108,7 @@ const userSchema = new mongoose.Schema({
       type: {
         type: String,
         required: [true, "Please provide a type!"],
+        enum: ["A", "jeune"],
       },
       savingsBalance: {
         type: Number,
