@@ -223,5 +223,3 @@ export async function processPayment(req: Request, res: Response) {
       .json({ error: `Failed to process payment: ${error.message}` });
   }
 }
-
-export async function processRefund(req: Request, res: Response) {}
