@@ -25,3 +25,6 @@ yarn-error.log*
 # dependencies
 package-lock.json
 node_modules
+
+.env
+/backend/server/dist
