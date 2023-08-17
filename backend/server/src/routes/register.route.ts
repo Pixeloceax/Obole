@@ -8,7 +8,7 @@ const router = express.Router();
 const DEFAULT_BALANCE = 1000;
 const DEFAULT_LIMIT = 1000;
 const DEFAULT_USED = 0;
-const CARD_TYPES = ["A", "Jeune"];
+const CARD_TYPES = ["A", "jeune"];
 const DEFAULT_INTEREST_RATE = 1;
 
 const generateRandomPassword = () => {
