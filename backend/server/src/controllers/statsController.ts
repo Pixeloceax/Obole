@@ -11,7 +11,7 @@ async function formattedDate(inputDate: Date): Promise<string> {
   return `${year}/${month}/${day}`;
 }
 
-async function getAllAccountTransactions(req: Request, res: Response) {
+export async function getAllAccountTransactions(req: Request, res: Response) {
   try {
     const accountNumber = await getAccount(req, res);
     const transactions = await Transaction.find({
@@ -28,7 +28,7 @@ async function getAllAccountTransactions(req: Request, res: Response) {
   }
 }
 
-async function getAllAccountPayments(req: Request, res: Response) {
+export async function getAllAccountPayments(req: Request, res: Response) {
   try {
     const accountNumber = await getAccount(req, res);
     const payments = await Payment.find({
@@ -40,7 +40,7 @@ async function getAllAccountPayments(req: Request, res: Response) {
   }
 }
 
-async function formattedTransactions(req: Request, res: Response) {
+export async function formattedTransactions(req: Request, res: Response) {
   const transactionsData = await getAllAccountTransactions(req, res);
   if (!transactionsData) {
     throw new Error("Failed to get transactions");
@@ -63,7 +63,7 @@ async function formattedTransactions(req: Request, res: Response) {
   return completedTransactions;
 }
 
-async function formattedPayments(req: Request, res: Response) {
+export async function formattedPayments(req: Request, res: Response) {
   const paymentsData = await getAllAccountPayments(req, res);
   if (!paymentsData) {
     throw new Error("Failed to get payments");
