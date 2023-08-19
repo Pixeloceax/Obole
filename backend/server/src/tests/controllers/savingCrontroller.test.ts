@@ -11,9 +11,7 @@ describe("Saving Controller Unit Tests", () => {
   let mockResponse: Partial<Response>;
 
   beforeEach(() => {
-    mockRequest = {
-      body: {},
-    };
+    mockRequest = {};
     mockResponse = {
       status: jest.fn((code: number) => mockResponse),
       json: jest.fn(),
@@ -24,35 +22,52 @@ describe("Saving Controller Unit Tests", () => {
     jest.clearAllMocks();
   });
 
-  it("should open a saving account successfully", async () => {
-    // Mock necessary dependencies
-    (getAccount as jest.Mock).mockResolvedValue("account123");
+  it("should open a new saving account successfully", async () => {
+    (getAccount as jest.Mock).mockResolvedValue("mockedAccountNumber");
     (User.findOne as jest.Mock).mockResolvedValue({
       SavingsAccount: [],
       save: jest.fn(),
     });
 
-    // Provide required request body data
-    mockRequest.body.type = "A";
+    mockRequest.body = { type: "A" };
 
     await openSaving(mockRequest as Request, mockResponse as Response);
 
     expect(mockResponse.status).toHaveBeenCalledWith(201);
-    expect(mockResponse.json).toHaveBeenCalledWith(expect.any(Array));
+    expect(mockResponse.json).toHaveBeenCalledWith([
+      {
+        savingAccountNumber: expect.any(Number),
+        type: "A",
+        savingsBalance: 0,
+        interestRate: 1,
+      },
+    ]);
   });
 
   it("should get saving accounts successfully", async () => {
-    // Mock necessary dependencies
-    (getAccount as jest.Mock).mockResolvedValue("account123");
+    (getAccount as jest.Mock).mockResolvedValue("mockedAccountNumber");
     (User.findOne as jest.Mock).mockResolvedValue({
-      SavingsAccount: [{ type: "A", savingsBalance: 100 }],
+      SavingsAccount: [
+        {
+          type: "A",
+          interestRate: 1,
+          savingAccountNumber: 123456,
+          savingsBalance: 100,
+        },
+      ],
+      save: jest.fn(),
     });
 
     await getSaving(mockRequest as Request, mockResponse as Response);
 
     expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockResponse.json).toHaveBeenCalledWith(expect.any(Array));
+    expect(mockResponse.json).toHaveBeenCalledWith([
+      {
+        savingAccountNumber: 123456,
+        type: "A",
+        savingsBalance: 100,
+        interestRate: 1,
+      },
+    ]);
   });
-
-  // Add tests for updatePrevisional function if it's exported and required
 });
