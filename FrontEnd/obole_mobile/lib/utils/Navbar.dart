@@ -42,34 +42,79 @@ class _NavbarComponentsState extends State<NavbarComponents>
                   padding: const EdgeInsets.only(top: 30),
                   child: Image.asset('lib/assets/Logo_white_bg_gray.png'),
                 ),
-                const Expanded(
+                Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(
-                        Icons.wallet,
-                        color: CustomColors.white,
-                        size: 50,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/dashboard');
+                        },
+                        child: const Icon(
+                          Icons.wallet,
+                          color: CustomColors.white,
+                          size: 50,
+                        ),
                       ),
-                      Icon(
-                        Icons.credit_card,
-                        color: CustomColors.white,
-                        size: 50,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/card');
+                        },
+                        child: const Icon(
+                          Icons.credit_card,
+                          color: CustomColors.white,
+                          size: 50,
+                        ),
                       ),
-                      Icon(
-                        Icons.line_axis,
-                        color: CustomColors.white,
-                        size: 50,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/card');
+                        },
+                        child: const Icon(
+                          Icons.line_axis,
+                          color: CustomColors.white,
+                          size: 50,
+                        ),
                       ),
-                      Icon(
-                        Icons.savings,
-                        color: CustomColors.white,
-                        size: 50,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/card');
+                        },
+                        child: const Icon(
+                          Icons.savings,
+                          color: CustomColors.white,
+                          size: 50,
+                        ),
                       ),
-                      Icon(
-                        Icons.message,
-                        color: CustomColors.white,
-                        size: 50,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/card');
+                        },
+                        child: const Icon(
+                          Icons.message,
+                          color: CustomColors.white,
+                          size: 50,
+                        ),
                       ),
                     ],
                   ),

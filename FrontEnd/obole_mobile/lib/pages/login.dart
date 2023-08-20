@@ -38,23 +38,70 @@ class _LoginPageState extends State<LoginPage> {
         if (data["message"] == "Login successful") {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('token', data["token"]);
+          prefs.setInt('tokenTimestamp', DateTime.now().millisecondsSinceEpoch);
 
-          // ignore: use_build_context_synchronously
-          Navigator.push(
+          // Navigate to Dashboard
+          Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const DashboardPage()),
+            MaterialPageRoute(builder: (context) => DashboardPage()),
           );
         } else {
-          message = "An error occurred while logging in.";
+          setState(() {
+            message = "An error occurred while logging in.";
+          });
         }
       } else {
-        message = "An error occurred while logging in.";
+        setState(() {
+          message = "An error occurred while logging in.";
+        });
       }
     } catch (error) {
-      // ignore: avoid_print
       print(error);
-      message = "An error occurred while logging in.";
+      setState(() {
+        message = "An error occurred while logging in.";
+      });
     }
+  }
+
+  Future<void> checkTokenValidity() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final tokenTimestamp = prefs.getInt('tokenTimestamp');
+
+    if (token != null && tokenTimestamp != null) {
+      final currentTime = DateTime.now().millisecondsSinceEpoch;
+      const fiveMinutesInMillis = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+      if (currentTime - tokenTimestamp <= fiveMinutesInMillis) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardPage()),
+        );
+      }
+    }
+  }
+
+  Future<void> clearExpiredToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final tokenTimestamp = prefs.getInt('tokenTimestamp');
+
+    if (tokenTimestamp != null) {
+      final currentTime = DateTime.now().millisecondsSinceEpoch;
+      const fiveMinutesInMillis = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+      if (currentTime - tokenTimestamp > fiveMinutesInMillis) {
+        // Clear token and timestamp
+        prefs.remove('token');
+        prefs.remove('tokenTimestamp');
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkTokenValidity();
+    clearExpiredToken();
   }
 
   @override

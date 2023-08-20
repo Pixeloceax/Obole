@@ -6,7 +6,9 @@ import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
 const ViewSavings = () => {
   const [data, setData] = useState([]);
-  console.log(data)
+  const [error, setError] = useState(null);
+  const [selectedType, setSelectedType] = useState("A");
+  console.log(data);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,31 +19,14 @@ const ViewSavings = () => {
           },
         });
         setData(response.data);
-        setData([
-          {
-            savingAccountNumber: 435064872023,
-            type: "A",
-            savingsBalance: 1600,
-            interestRate: 1,
-            _id: "64da0e036e6f599ac3782ce9",
-          },
-        ]);
       } catch (error) {
         console.error(error);
       }
     };
-
     fetchData();
   }, []);
 
-  const handleSaving = async () => {
-    const selected = document.querySelector("select");
-    const type = selected.options[selected.selectedIndex].value;
-    console.log(type)
-    if (type == data[0].type) {
-      alert("Vous avez déjà un compte de ce type");
-      return;
-    }
+  const handleSaving = async (type) => {
     try {
       const response = await fetch(`http://localhost:5000/saving`, {
         method: "POST",
@@ -52,13 +37,16 @@ const ViewSavings = () => {
         body: JSON.stringify({ type: type }),
       });
       if (!response.ok) {
-        throw new Error("Something went wrong!");
+        const errorData = await response.json();
+        throw new Error(errorData.error);
       }
       const result = await response.json();
       setData(result);
       window.location.reload(true);
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
+      setError(error.message);
+      window.alert(error);
     }
   };
 
@@ -89,14 +77,16 @@ const ViewSavings = () => {
           <div className="flex justify-center py-10">
             <select
               name="Selector"
-              className="bg-purple text-white text-3xl font-bold mr-5"
+              className="bg-purple text-white text-3xl font-bold mr-5 pl-2 rounded-lg"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
             >
               <option value="A">A</option>
               <option value="jeune">Jeune</option>
             </select>
             <button
               onClick={() => {
-                handleSaving();
+                handleSaving(selectedType);
               }}
             >
               <FontAwesomeIcon icon={faCirclePlus} className="text-6xl" />

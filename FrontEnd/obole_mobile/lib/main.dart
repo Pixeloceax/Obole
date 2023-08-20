@@ -3,6 +3,7 @@ import 'package:obole_mobile/pages/homescreen.dart';
 import 'package:obole_mobile/pages/login.dart';
 import 'package:obole_mobile/pages/register.dart';
 import 'package:obole_mobile/pages/dashboard.dart';
+import 'package:obole_mobile/pages/cardpage.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/dashboard': (context) => const DashboardPage(),
+        '/card': (context) => const CardPage(),
       },
     );
   }
