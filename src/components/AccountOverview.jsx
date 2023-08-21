@@ -92,7 +92,7 @@ function AccountOverview() {
   }, []);
 
   const formattedTransactions = transaction.map(
-    (transaction) => `- ${transaction.amount} €`
+    (transaction) => ` ${transaction.amount} €`
   );
 
   const [modalOpen, setModalOpen] = useState(false);
