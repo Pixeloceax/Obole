@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import Modal from "../components/Modal";
 
 const Payment = () => {
   const getCurrentYear = () => new Date().getFullYear();
@@ -17,10 +19,20 @@ const Payment = () => {
     "Éducation",
     "Autres",
   ];
-  const [data, setData] = useState(null);
+  const [setData] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   const [formData, setFormData] = useState({
-    number_carte: "",
+    cardNumber: "",
+    card_holder: "",
     month: "",
     year: "",
     ccv: "",
@@ -28,34 +40,61 @@ const Payment = () => {
     prix: "",
   });
 
+  const response = async (formData) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/payment",
+        formData
+      );
+
+      console.log("Response from the backend:", response.data);
+      if (response.status >= 400) {
+        console.error("Error response from the backend:", response.data);
+      } else {
+        setData(response.data);
+        openModal();
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Server responded with an error:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received from the server");
+      } else {
+        console.error(
+          "An error occurred while sending the request:",
+          error.message
+        );
+      }
+    }
+  };
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === "cardNumber") {
+      const cleanedValue = value.replace(/\D/g, "");
+      setFormData({ ...formData, [name]: cleanedValue });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleClickButton = async () => {
     try {
-      const { number_carte, month, year, ccv, type, prix } = formData;
+      const { cardNumber, card_holder, month, year, ccv, type, prix } =
+        formData;
       const formattedDate = `${month.padStart(2, "0")}/${year.slice(-2)}`;
 
       const paymentBody = {
-        cardNumber: number_carte,
+        cardNumber: parseInt(cardNumber),
+        cardHolderName: card_holder,
         expirationDate: formattedDate,
-        CCV: ccv,
-        paymentAmount: prix,
+        CCV: parseInt(ccv),
+        amount: parseInt(prix),
         categorie: type,
       };
-      const response = await fetch(`http://localhost:5000/payment`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(paymentBody),
-      });
-      if (!response.ok) {
-        throw new Error("Something went wrong!");
-      }
-      const result = await response.json();
-      setData(result);
+
+      response(paymentBody);
     } catch (error) {
       console.error(error);
     }
@@ -63,15 +102,28 @@ const Payment = () => {
 
   return (
     <div className="bg-white h-screen flex items-center justify-center">
-      <form className="w-96 bg-[#fff] p-8 shadow-md rounded h-[36rem]">
-        <label htmlFor="card_number" className="block mb-2">
+      <form className="w-96 bg-[#fff] p-8 shadow-md rounded h-[42rem]">
+        <label htmlFor="cardNumber" className="block mb-2">
           Numéro de carte :
         </label>
         <input
           type="text"
-          id="card_number"
-          name="number_carte"
+          id="cardNumber"
+          name="cardNumber"
           maxLength={16}
+          required
+          className="w-full border border-gray-300 px-3 py-2 rounded"
+          onChange={handleChange}
+        />
+        <br />
+
+        <label htmlFor="card_holder" className="block mb-2 mt-4">
+          Nom du titulaire :
+        </label>
+        <input
+          type="text"
+          id="card_holder"
+          name="card_holder"
           required
           className="w-full border border-gray-300 px-3 py-2 rounded"
           onChange={handleChange}
@@ -167,6 +219,12 @@ const Payment = () => {
           value="Acheter"
           className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         />
+        {modalIsOpen && (
+          <Modal isOpen={openModal} onClose={closeModal}>
+            <h2>Payment Successful</h2>
+            <p>Thank you for your purchase</p>
+          </Modal>
+        )}
       </form>
     </div>
   );

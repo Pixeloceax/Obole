@@ -1,91 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Doughnut, Bar } from "react-chartjs-2";
-import Chart from "chart.js/auto";
+import axios from "axios";
+import { Doughnut } from "react-chartjs-2";
+import * as chart from "chart.js/auto";
 
 const StatisticsTable = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const fakeData = [
-      {
-        transactions: [
-          {
-            amount: 100,
-            currency: "EUR",
-            description: "Transfer from savings account",
-            type: "Transfer",
-            date: "2023/08/14",
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/stats", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          {
-            amount: 100,
-            currency: "EUR",
-            description: "Transfer to savings account",
-            type: "Transfer",
-            date: "2023/08/14",
-          },
-        ],
-        payments: [
-          {
-            amount: 20,
-            categorie: "Loyer",
-            date: "2023/08/14",
-          },
-          {
-            amount: 20,
-            categorie: "Nourriture",
-            date: "2023/08/14",
-          },
-          {
-            amount: 20,
-            categorie: "Vêtements",
-            date: "2023/08/14",
-          },
-          {
-            amount: 20,
-            categorie: "Transport",
-            date: "2023/08/14",
-          },
-          {
-            amount: 20,
-            categorie: "Santé",
-            date: "2023/08/14",
-          },
-          {
-            amount: 20,
-            categorie: "Loisirs",
-            date: "2023/08/14",
-          },
-          {
-            amount: 20,
-            categorie: "Éducation",
-            date: "2023/08/14",
-          },
-          {
-            amount: 20,
-            categorie: "Autres",
-            date: "2023/08/14",
-          },
-        ],
-      },
-    ];
+        });
 
-    const groupedPayments = fakeData[0].payments.reduce((acc, payment) => {
-      if (!acc[payment.categorie]) {
-        acc[payment.categorie] = 0;
+        const groupedPayments = response.data.payments.reduce(
+          (acc, payment) => {
+            if (!acc[payment.categorie]) {
+              acc[payment.categorie] = 0;
+            }
+            acc[payment.categorie] += payment.amount;
+            return acc;
+          },
+          {}
+        );
+
+        const groupedTransactions = response.data.transactions.reduce(
+          (acc, transaction) => {
+            acc += transaction.amount;
+            return acc;
+          },
+          0
+        );
+
+        setData({
+          payments: groupedPayments,
+          transactions: groupedTransactions,
+        });
+      } catch (error) {
+        console.error(error);
       }
-      acc[payment.categorie] += payment.amount;
-      return acc;
-    }, {});
+    };
 
-    const groupedTransactions = fakeData[0].transactions.reduce((acc, transaction) => {
-      acc += transaction.amount;
-      return acc;
-    }, 0);
-
-    setData({
-      payments: groupedPayments,
-      transactions: groupedTransactions,
-    });
+    fetchData();
   }, []);
 
   const paymentCategories = Object.keys(data?.payments || []);
@@ -112,13 +70,14 @@ const StatisticsTable = () => {
   };
 
   return (
-    <div className="p-4 bg-white h-screen">
+    <div className="p-4 bg-white h-screen flex items-center justify-center">
       {data ? (
-        <div className="p-6">
-          <h1 className="text-3xl font-bold mb-4">Statistics</h1>
-          <div className="h-[50rem]">
-            <h2>Payments and Transactions</h2>
-            <Doughnut data={paymentChartData} />
+        <div className="p-6 w-[60vw]">
+          <div className="h-full flex items-center justify-center">
+            <div className="w-3/4 max-w-screen-xl">
+              <h2 className="text-center">Payments and Transactions</h2>
+              <Doughnut data={paymentChartData} />
+            </div>
           </div>
         </div>
       ) : (
