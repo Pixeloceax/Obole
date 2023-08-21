@@ -17,7 +17,7 @@ To install the project, follow these steps:
 
 ## Run the tests
 
-    ./run-tests.sh
+    npm test
 
 ## Register a new user
 

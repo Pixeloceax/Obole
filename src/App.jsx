@@ -42,6 +42,10 @@ function App() {
     }
   }, []);
 
+  setTimeout(() => {
+    window.location.reload();
+  }, 5 * 60 * 1000);
+
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
@@ -95,6 +99,11 @@ function App() {
         <Route
           path="/dashboard/message"
           element={checkAuth() ? <Message /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/dashboard/transaction"
+          element={checkAuth() ? <TransactionForm /> : <Navigate to="/login" />}
         />
 
         <Route path="/payment" element={<Payment />} />
