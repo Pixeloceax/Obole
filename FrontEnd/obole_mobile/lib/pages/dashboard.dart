@@ -418,7 +418,8 @@ class _DashboardPageState extends State<DashboardPage>
                         const SizedBox(height: 30),
                       ],
                     ),
-                  if (data.isEmpty) const Text("Loading..."),
+                  if (data.isEmpty)
+                    const Center(child: CircularProgressIndicator()),
                 ],
               ),
             ),

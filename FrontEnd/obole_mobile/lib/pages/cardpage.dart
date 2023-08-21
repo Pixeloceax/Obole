@@ -16,6 +16,8 @@ class _CardPageState extends State<CardPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
+  int newPlafond = 0;
+
   @override
   void initState() {
     super.initState();
@@ -89,9 +91,23 @@ class _CardPageState extends State<CardPage>
                         ),
                         const SizedBox(height: 30),
                         for (var card in data) _buildCardWidget(card),
+                        ElevatedButton(
+                            onPressed: () {
+                              handleAdd();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                            ),
+                            child: const Icon(
+                              Icons.add_circle_outline,
+                              color: CustomColors.black,
+                              size: 60,
+                            ))
                       ],
                     ),
-                  if (data.isEmpty) const Text("Loading..."),
+                  if (data.isEmpty)
+                    const Center(child: CircularProgressIndicator()),
                 ],
               ),
             ),
@@ -118,80 +134,76 @@ class _CardPageState extends State<CardPage>
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Carte ${data.indexOf(card) + 1}",
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            "**** **** **** ${card["cardNumber"].toString().substring(card["cardNumber"].toString().length - 4)}",
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Center(
-              child: ElevatedButton(
-            onPressed: () => handleClickButton("plafond", data.indexOf(card)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: CustomColors.black,
-              shadowColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-            ),
-            child: const Text("Modifier le plafond"),
-          )),
-          const SizedBox(height: 16),
-          Text(
-            "Plafond utilisé: ${card["used"]} € / ${card["limit"]} €",
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          LinearProgressIndicator(
-            value: card["used"] / card["limit"],
-          ),
-          const SizedBox(height: 16),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                "Carte ${data.indexOf(card) + 1}",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "**** **** **** ${card["cardNumber"].toString().substring(card["cardNumber"].toString().length - 4)}",
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 16),
               Center(
                   child: ElevatedButton(
-                onPressed: () =>
-                    handleClickButton("verrouiller", data.indexOf(card)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.black,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                ),
-                child: Text(card["locked"] ? "Déverrouiller" : "Verrouiller"),
-              )),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () =>
-                    handleClickButton("opposition", data.indexOf(card)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.black,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                ),
-                child: Text(card["opposition"]
-                    ? "Annuler l'Opposition"
-                    : "Faire Opposition"),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  await handleDelete(data.indexOf(card));
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 16),
+                          TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                newPlafond = int.parse(value);
+                              });
+                            },
+                            decoration: InputDecoration(
+                              hintText: "Nouveau plafond",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide:
+                                    const BorderSide(color: CustomColors.black),
+                              ),
+                              filled: true,
+                              fillColor: CustomColors.white,
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 15.0,
+                                horizontal: 20.0,
+                              ),
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              handleClickButton(
+                                  "plafond", data.indexOf(card), newPlafond);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Modifier"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Annuler"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: CustomColors.black,
@@ -200,7 +212,65 @@ class _CardPageState extends State<CardPage>
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                 ),
-                child: const Text("Supprimer"),
+                child: const Text("Modifier le plafond"),
+              )),
+              const SizedBox(height: 16),
+              Text(
+                "Plafond utilisé: ${card["used"]} € / ${card["limit"]} €",
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              LinearProgressIndicator(
+                value: card["used"] / card["limit"],
+              ),
+              const SizedBox(height: 16),
+              Column(
+                children: [
+                  Center(
+                      child: ElevatedButton(
+                    onPressed: () =>
+                        handleClickButton("verrouiller", data.indexOf(card), 0),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.black,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                    ),
+                    child:
+                        Text(card["locked"] ? "Déverrouiller" : "Verrouiller"),
+                  )),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () =>
+                        handleClickButton("opposition", data.indexOf(card), 0),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.black,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                    ),
+                    child: Text(card["opposition"]
+                        ? "Annuler l'Opposition"
+                        : "Faire Opposition"),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await handleDelete(data.indexOf(card));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.black,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                    ),
+                    child: const Text("Supprimer"),
+                  ),
+                ],
               ),
             ],
           ),
@@ -209,11 +279,148 @@ class _CardPageState extends State<CardPage>
     );
   }
 
-  Future<void> handleClickButton(String type, int index) async {
-    // Your button handling logic here
+  Future<void> handleClickButton(String type, int index, int number) async {
+    if (type == "plafond") {
+      String token = await getToken();
+      int cardId = data[index]["cardNumber"];
+      print(
+          "number $number, data $cardId, URL http://10.0.2.2:5000/card/$cardId");
+      print(number.runtimeType);
+
+      Map<String, dynamic> formDataJSON = {
+        "limit": number.toString(),
+      };
+
+      try {
+        final response = await http.post(
+          Uri.parse("http://10.0.2.2:5000/card/$cardId"),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+          body: formDataJSON,
+        );
+
+        if (response.statusCode == 200) {
+          setState(() {
+            data = json.decode(response.body);
+          });
+          print('data $data');
+        } else {
+          print("error: ${response.statusCode}");
+        }
+      } catch (error) {
+        print("Error: $error");
+      }
+    } else if (type == "verrouiller") {
+      String token = await getToken();
+      int cardId = data[index]["cardNumber"];
+
+      Map<String, dynamic> formDataJSON = {
+        "locked": !data[index]["locked"],
+      };
+      print(formDataJSON);
+
+      try {
+        final response = await http.post(
+          Uri.parse("http://10.0.2.2:5000/card/$cardId"),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+          body: formDataJSON,
+        );
+
+        if (response.statusCode == 200) {
+          setState(() {
+            data = json.decode(response.body);
+          });
+          print('data $data');
+        } else {
+          print("error: ${response.statusCode}");
+        }
+      } catch (error) {
+        print("Error: $error");
+      }
+    } else if (type == "opposition") {
+      String token = await getToken();
+      int cardId = data[index]["cardNumber"];
+
+      Map<String, dynamic> formDataJSON = {
+        "locked": !data[index]["opposition"],
+      };
+      print(formDataJSON);
+
+      try {
+        final response = await http.post(
+          Uri.parse("http://10.0.2.2:5000/card/$cardId"),
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+          body: formDataJSON,
+        );
+
+        if (response.statusCode == 200) {
+          setState(() {
+            data = json.decode(response.body);
+          });
+          print('data $data');
+        } else {
+          print("error: ${response.statusCode}");
+        }
+      } catch (error) {
+        print("Error: $error");
+      }
+    }
   }
 
   Future<void> handleDelete(int index) async {
-    // Your delete button handling logic here
+    String token = await getToken();
+    int cardId = data[index]["cardNumber"];
+
+    try {
+      final response = await http.delete(
+        Uri.parse("http://10.0.2.2:5000/card/$cardId"),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          data = json.decode(response.body);
+        });
+        print('data $data');
+      } else {
+        print("error: ${response.statusCode}");
+      }
+    } catch (error) {
+      print("Error: $error");
+    }
+  }
+
+  Future<void> handleAdd() async {
+    String token = await getToken();
+
+    try {
+      final response = await http.post(
+        Uri.parse("http://10.0.2.2:5000/card/"),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          data = json.decode(response.body);
+        });
+        print('data $data');
+      } else {
+        print("error: ${response.statusCode}");
+      }
+    } catch (error) {
+      print("Error: $error");
+    }
   }
 }
