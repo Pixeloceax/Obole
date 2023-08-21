@@ -49,14 +49,19 @@ class _DashboardPageState extends State<DashboardPage>
         setState(() {
           data = jsonDecode(response.body);
         });
-        print(data);
       } else {
-        print("Status Code: ${response.statusCode}");
-        print("Response Body: ${response.body}");
+        Navigator.of(context).pushReplacementNamed('/login');
       }
     } catch (error) {
       print("Error: $error");
     }
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    await prefs.remove('tokenTimestamp');
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override
@@ -118,7 +123,7 @@ class _DashboardPageState extends State<DashboardPage>
                                         const SizedBox(height: 16),
                                         ElevatedButton(
                                           onPressed: () {
-                                            // close action
+                                            logout();
                                           },
                                           child: const Text("Déconnexion"),
                                         ),
@@ -223,7 +228,8 @@ class _DashboardPageState extends State<DashboardPage>
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          // send to card page
+                                          Navigator.of(context)
+                                              .pushReplacementNamed('/card');
                                         },
                                         icon: const Icon(
                                           Icons.arrow_right,
@@ -279,7 +285,7 @@ class _DashboardPageState extends State<DashboardPage>
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.3),
                                     blurRadius: 5,
-                                    offset: Offset(0, 2),
+                                    offset: const Offset(0, 2),
                                   ),
                                 ],
                               ),
@@ -302,7 +308,8 @@ class _DashboardPageState extends State<DashboardPage>
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          // send to epargne page
+                                          Navigator.of(context)
+                                              .pushReplacementNamed('/epargne');
                                         },
                                         child: const Icon(
                                           Icons.arrow_right,

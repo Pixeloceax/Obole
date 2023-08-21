@@ -188,8 +188,8 @@ function AccountOverview() {
                   <div
                     className={`flex items-center justify-center md:w-[50%] ${
                       index != 0
-                        ? "md:border-r-2 border-b-2 md:border-b-0 border-white"
-                        : ""
+                        ? ""
+                        : "md:border-r-2 border-b-2 md:border-b-0 border-white"
                     }`}
                   >
                     <div className="text-center">
