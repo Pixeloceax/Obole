@@ -58,11 +58,11 @@ function AccountOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const _id = sessionStorage.getItem("_id");
-        const response = await axios.post(
-          "https://obole-back.onrender.com/paymentStatistics",
-          { _id }
-        );
+        const response = await axios.get("http://localhost:5000/payment", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setPayment(response.data);
       } catch (error) {
         console.error(error);
@@ -72,20 +72,16 @@ function AccountOverview() {
     fetchData();
   }, []);
 
-  const formattedPayments = payment.map(
-    (payment) => `- ${payment.payment.amount} €`
-  );
+  const formattedPayments = payment.map((payment) => `- ${payment.amount} €`);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const _id = sessionStorage.getItem("_id");
-        const response = await axios.post(
-          "https://obole-back.onrender.com/transaction",
-          {
-            _id,
-          }
-        );
+        const response = await axios.get("http://localhost:5000/transaction", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setTransaction(response.data);
       } catch (error) {
         console.error(error);
@@ -94,6 +90,10 @@ function AccountOverview() {
 
     fetchData();
   }, []);
+
+  const formattedTransactions = transaction.map(
+    (transaction) => `- ${transaction.amount} €`
+  );
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -180,7 +180,7 @@ function AccountOverview() {
                   Livrets
                 </h1>
                 <Link to="/dashboard/epargne">
-                  <FontAwesomeIcon icon={faArrowRight} className="text-5xl" />
+                  <FontAwesomeIcon icon={faArrowRight} className="text-5xl " />
                 </Link>
               </div>
               <div className="flex justify-around flex-col md:flex-row">
@@ -228,6 +228,16 @@ function AccountOverview() {
                     <p className="text-white font-bold md:text-4xl text-xl mb-2">
                       Gain
                     </p>
+                    {formattedTransactions
+                      .slice(0, 4)
+                      .map((transaction, index) => (
+                        <p
+                          key={index}
+                          className="text-white font-bold md:text-2xl text-lg mb-2"
+                        >
+                          {transaction}
+                        </p>
+                      ))}
                   </div>
                 </div>
                 <wr className="border-2 border-white" />
