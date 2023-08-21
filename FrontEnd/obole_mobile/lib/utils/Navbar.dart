@@ -80,7 +80,7 @@ class _NavbarComponentsState extends State<NavbarComponents>
                           shadowColor: Colors.transparent,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/card');
+                          Navigator.pushNamed(context, '/stat');
                         },
                         child: const Icon(
                           Icons.line_axis,
@@ -94,7 +94,7 @@ class _NavbarComponentsState extends State<NavbarComponents>
                           shadowColor: Colors.transparent,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/card');
+                          Navigator.pushNamed(context, '/epargne');
                         },
                         child: const Icon(
                           Icons.savings,
@@ -108,7 +108,7 @@ class _NavbarComponentsState extends State<NavbarComponents>
                           shadowColor: Colors.transparent,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/card');
+                          Navigator.pushNamed(context, '/message');
                         },
                         child: const Icon(
                           Icons.message,
