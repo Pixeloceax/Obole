@@ -103,9 +103,11 @@ const ViewMessage = () => {
 
           <div className="p-4">
             {selectedDiscussion.messages.map((message, index) => (
-              <div key={index} 
-              className="w-full flex justify-center
-              ">
+              <div
+                key={index}
+                className="w-full flex justify-center
+              "
+              >
                 <div
                   className={`flex w-full p-4 items-start my-2 md:rounded-2xl rounded-lg 
                 ${
