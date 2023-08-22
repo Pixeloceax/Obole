@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import Loader from "./loader";
-
+import Information from "./Information";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -126,7 +126,7 @@ function AccountOverview() {
               <span className="text-purple">{data.Information.name}</span>
             </h1>
             <button onClick={openModal}>
-              <FontAwesomeIcon icon={faUserCircle} className="text-5xl" />
+              <FontAwesomeIcon icon={faUserCircle} className="text-5xl " />
             </button>
             <Modal
               isOpen={modalOpen}
@@ -163,7 +163,10 @@ function AccountOverview() {
                   </p>
                 </div>
                 <Link to="/dashboard/cartes">
-                  <FontAwesomeIcon icon={faArrowRight} className="text-5xl" />
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    className="text-5xl text-white"
+                  />
                 </Link>
               </div>
             </div>
@@ -171,6 +174,7 @@ function AccountOverview() {
               <h1 className="text-white font-bold md:text-4xl text-xl md:mb-12 mb-8 justify-center flex">
                 Information
               </h1>
+              <Information />
             </div>
           </div>
           <div className="lg:flex block justify-evenly">
@@ -180,7 +184,10 @@ function AccountOverview() {
                   Livrets
                 </h1>
                 <Link to="/dashboard/epargne">
-                  <FontAwesomeIcon icon={faArrowRight} className="text-5xl " />
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    className="text-5xl text-white"
+                  />
                 </Link>
               </div>
               <div className="flex justify-around flex-col md:flex-row">
