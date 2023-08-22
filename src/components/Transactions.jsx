@@ -3,20 +3,12 @@ import axios from "axios";
 
 const TransactionForm = () => {
   const [amount, setAmount] = useState(0);
-  const [currency, setCurrency] = useState("USD");
   const [description, setDescription] = useState("");
-  const [transactionType, setTransactionType] = useState("Transfer");
   const [destinationAccount, setDestinationAccount] = useState("");
   const [destinationAccountType, setDestinationAccountType] = useState("");
   const [transactionResponse, setTransactionResponse] = useState(null);
-  const [formFromOption, setFormFromOption] = useState(null);
-  const [formToOption, setFormToOption] = useState(null);
-  const [showSavingAcc, setShowSavingAcc] = useState(false);
-  const [showMainAcc, setShowMainAcc] = useState(false);
-  const [showAccountChoices, setShowAccountChoices] = useState(false);
-  const [showForm, setShowForm] = useState(false);
 
-  const transactionFromSavingAccToMainAcc = async (
+  const handleSavingToMainAccTransaction = async (
     amount,
     destinationAccountType
   ) => {
@@ -43,7 +35,7 @@ const TransactionForm = () => {
     }
   };
 
-  const transactionFromMainAccToSavingAcc = async (
+  const handleMainToSavingAccTransaction = async (
     amount,
     destinationAccountType
   ) => {
@@ -70,11 +62,11 @@ const TransactionForm = () => {
     }
   };
 
-  const transactionFromMainAccToAcc = async (
+  const handleMainToAccTransaction = async (
     amount,
-    currency,
+    currency = "EUR",
     description,
-    type,
+    type = "transfer",
     destinationAccount
   ) => {
     try {
@@ -102,98 +94,96 @@ const TransactionForm = () => {
     }
   };
 
-  const handleFromButtonClick = () => {
-    setShowAccountChoices(true);
-  };
-
-  const handleAccountChoice = (accountType) => {
-    setFormFromOption(accountType);
-    setShowAccountChoices(false);
-    setShowForm(true);
-    if (accountType === "A" || accountType === "jeune") {
-      setShowSavingAcc(true);
-      setShowMainAcc(false);
-      setDestinationAccountType(accountType);
-    } else {
-      setShowMainAcc(true);
-      setShowSavingAcc(false);
-    }
-  };
-
-  const handleToButtonClick = (accountType) => {
-    setFormToOption(accountType);
-    if (accountType === "Saving") {
-      if (formFromOption === "A" || formFromOption === "jeune") {
-        setDestinationAccountType("A");
-      } else {
-        setDestinationAccountType("B");
-      }
-    } else {
-      setShowMainAcc(true);
-      setShowSavingAcc(false);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (destinationAccount === "unsaving" || destinationAccount === "saving") {
-      if (
-        destinationAccountType === "A" ||
-        destinationAccountType === "jeune"
-      ) {
-        transactionFromSavingAccToMainAcc(amount, destinationAccountType);
-      } else {
-        transactionFromMainAccToSavingAcc(amount, destinationAccountType);
-      }
-    } else if (destinationAccount === "account") {
-      transactionFromMainAccToAcc(
-        amount,
-        currency,
-        description,
-        transactionType,
-        destinationAccount
-      );
-    }
-  };
-
   return (
-    <div>
-      <button onClick={handleFromButtonClick}>
-        {showAccountChoices || showForm ? "Cancel" : "From"}
-      </button>
-      {showAccountChoices && (
-        <div>
-          <button onClick={() => handleAccountChoice("A")}>A</button>
-          <button onClick={() => handleAccountChoice("jeune")}>jeune</button>
+    <div className="container mx-auto p-4">
+      <div className="grid grid-cols-1 gap-4">
+        <div className="bg-white p-4 shadow-md rounded-md">
+          <h2 className="text-lg font-semibold mb-4">Saving to Main Account</h2>
+          <form onSubmit={handleSavingToMainAccTransaction}>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Amount"
+              className="border rounded-md p-2 mb-2"
+            />
+            <input
+              type="text"
+              value={destinationAccountType}
+              onChange={(e) => setDestinationAccountType(e.target.value)}
+              placeholder="Destination Account Type"
+              className="border rounded-md p-2 mb-2"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+            >
+              Submit
+            </button>
+          </form>
         </div>
-      )}
-      {showForm && showSavingAcc && (
-        <form onSubmit={handleSubmit}>
-          {formFromOption === "A" && (
-            <>
-              <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="Amount"
-              />
-              <input type="hidden" value="A" onChange={() => {}} />
-            </>
-          )}
-          {formFromOption === "jeune" && (
-            <>
-              <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="Amount"
-              />
-              <input type="hidden" value="jeune" onChange={() => {}} />
-            </>
-          )}
-          <button type="submit">Submit</button>
-        </form>
-      )}
+
+        <div className="bg-white p-4 shadow-md rounded-md">
+          <h2 className="text-lg font-semibold mb-4">Main to Saving Account</h2>
+          <form onSubmit={handleMainToSavingAccTransaction}>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Amount"
+              className="border rounded-md p-2 mb-2"
+            />
+            <input
+              type="text"
+              value={destinationAccountType}
+              onChange={(e) => setDestinationAccountType(e.target.value)}
+              placeholder="Destination Account Type"
+              className="border rounded-md p-2 mb-2"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+
+        <div className="bg-white p-4 shadow-md rounded-md">
+          <h2 className="text-lg font-semibold mb-4">Main to Account</h2>
+          <form onSubmit={handleMainToAccTransaction}>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Amount"
+              className="border rounded-md p-2 mb-2"
+            />
+
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description"
+              className="border rounded-md p-2 mb-2"
+            />
+
+            <input
+              type="text"
+              value={destinationAccount}
+              onChange={(e) => setDestinationAccount(e.target.value)}
+              placeholder="Destination Account"
+              className="border rounded-md p-2 mb-2"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
