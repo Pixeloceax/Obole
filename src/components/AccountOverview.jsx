@@ -28,7 +28,6 @@ const Modal = ({ isOpen, onClose, deconexion }) => {
 };
 
 function AccountOverview() {
-  const _id = sessionStorage.getItem("_id");
   const [data, setData] = useState(null);
   const [transaction, setTransaction] = useState([]);
   const [payment, setPayment] = useState([]);
@@ -47,13 +46,12 @@ function AccountOverview() {
         }
         const result = await response.json();
         setData(result);
-        setId(result._id);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [_id]);
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,8 +89,17 @@ function AccountOverview() {
     fetchData();
   }, []);
 
-  const formattedTransactions = transaction.map(
-    (transaction) => ` ${transaction.amount} €`
+  const matchingTransactions = [];
+
+  for (const transactions of transaction) {
+    const destinationAccount = transactions.destinationAccount;
+    if (parseInt(destinationAccount) === data.Account.accountNumber) {
+      matchingTransactions.push(transactions);
+    }
+  }
+
+  const formattedTransactions = matchingTransactions.map(
+    (matchingTransactions) => `${matchingTransactions.amount} €`
   );
 
   const [modalOpen, setModalOpen] = useState(false);
