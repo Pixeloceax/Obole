@@ -4,95 +4,72 @@ import axios from "axios";
 const TransactionForm = () => {
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
-  const [destinationAccount, setDestinationAccount] = useState("");
   const [transactionResponse, setTransactionResponse] = useState(null);
   const [sourceAccount, setSourceAccount] = useState("");
+  const [destinationAccount, setDestinationAccount] = useState("");
   const [destinationToOtherAccount, setDestinationToOtherAccount] =
     useState("");
 
-  const handleSavingToMainAccTransaction = async (
-    amount,
-    destinationAccountType
-  ) => {
+  const handleTransaction = async () => {
     try {
-      const response = await axios.put(
-        `http://localhost:5000/transaction/unsaving`,
-        {
-          amount,
-          destinationAccountType,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (response.status === 201) {
-        setTransactionResponse("Transaction Successful");
+      let response;
+
+      if (sourceAccount === "main" && destinationAccount === "A") {
+        response = await axios.put(
+          "http://localhost:5000/transaction/saving",
+          { amount, destinationAccountType: destinationAccount },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+      } else if (sourceAccount === "main" && destinationAccount === "jeune") {
+        response = await axios.put(
+          "http://localhost:5000/transaction/saving",
+          { amount, destinationAccountType: destinationAccount },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+      } else if (sourceAccount === "A" && destinationAccount === "main") {
+        response = await axios.put(
+          "http://localhost:5000/transaction/unsaving",
+          { amount, sourceAccountType: sourceAccount },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+      } else if (sourceAccount === "jeune" && destinationAccount === "main") {
+        response = await axios.put(
+          "http://localhost:5000/transaction/unsaving",
+          { amount, sourceAccountType: sourceAccount },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+      } else if (sourceAccount === "main" && destinationAccount === "main") {
+        throw new Error("You can't transfer to the same account");
+      } else if (sourceAccount === destinationAccount) {
+        throw new Error("You can't transfer to the same account");
       } else {
-        setTransactionResponse("Transaction Failed");
+        response = await axios.post(
+          `http://localhost:5000/transaction/${destinationToOtherAccount}`,
+          { amount, currency: "USD", description, type: "Transfer" },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
       }
-      if (response.status === 400) {
-        console.log(response);
-      }
-    } catch (error) {
-      setTransactionResponse(error);
-    }
-  };
 
-  const handleMainToSavingAccTransaction = async (
-    amount,
-    destinationAccountType
-  ) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:5000/transaction/saving`,
-        {
-          amount,
-          destinationAccountType,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (response.status === 201) {
-        setTransactionResponse("Transaction Successful");
-      } else {
-        setTransactionResponse("Transaction Failed");
-      }
-      if (response.status === 500) {
-        console.log(response);
-      }
-    } catch (error) {
-      setTransactionResponse(error.response?.data?.message);
-    }
-  };
-
-  const handleMainToAccTransaction = async (
-    amount,
-    description,
-    destinationAccount
-  ) => {
-    try {
-      const currency = "USD";
-      const type = "Transfer";
-
-      const response = await axios.post(
-        `http://localhost:5000/transaction/${destinationAccount}`,
-        {
-          amount,
-          currency,
-          description,
-          type,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
       if (response.status === 201) {
         setTransactionResponse("Transaction Successful");
       } else {
@@ -108,32 +85,44 @@ const TransactionForm = () => {
   const handleTransactionSubmit = async (event) => {
     event.preventDefault();
 
-    const savingAccount = "A" || "jeune";
-
-    if (destinationAccount === "other" && sourceAccount === "main") {
-      await handleMainToAccTransaction(
-        amount,
-        description,
-        destinationToOtherAccount
-      );
-    } else if (destinationAccount === "main" && sourceAccount === "main") {
-      throw new Error("You can't transfer to the same account");
-    } else if (destinationAccount === "main" && sourceAccount === "A") {
-      await handleSavingToMainAccTransaction(amount, savingAccount);
-    } else if (destinationAccount === "main" && sourceAccount === "jeune") {
-      await handleSavingToMainAccTransaction(amount, savingAccount);
-    } else if (destinationAccount === "A" && sourceAccount === "main") {
-      await handleMainToSavingAccTransaction(amount, savingAccount);
-    } else if (destinationAccount === "jeune" && sourceAccount === "main") {
-      await handleMainToSavingAccTransaction(amount, savingAccount);
-    } else {
-      throw new Error("Something went wrong");
+    if (!amount || sourceAccount === "" || destinationAccount === "") {
+      setTransactionResponse("Please fill in all the required fields");
+      return;
     }
 
+    if (
+      sourceAccount === destinationAccount ||
+      sourceAccount === destinationToOtherAccount
+    ) {
+      setTransactionResponse("You can't transfer to the same account");
+      return;
+    }
+
+    if (
+      (destinationAccount === "other" && sourceAccount === "A") ||
+      (destinationAccount === "other" && sourceAccount === "jeune")
+    ) {
+      setTransactionResponse(
+        "You can't transfer from a saving account to other account"
+      );
+      return;
+    }
+
+    if (
+      destinationToOtherAccount === sourceAccount ||
+      destinationToOtherAccount === destinationAccount
+    ) {
+      setTransactionResponse("You can't transfer to the same account");
+      return;
+    }
+
+    await handleTransaction();
+
     setAmount(0);
-    setDestinationAccount("");
-    setSourceAccount("");
     setDescription("");
+    setSourceAccount("");
+    setDestinationAccount("");
+    setDestinationToOtherAccount("");
   };
 
   return (
@@ -146,6 +135,7 @@ const TransactionForm = () => {
         </label>
         <input
           type="number"
+          min="0"
           id="amount"
           name="amount"
           value={amount}
@@ -161,6 +151,7 @@ const TransactionForm = () => {
             <>
               <input
                 type="number"
+                min="0"
                 placeholder="Enter destination account"
                 className="border rounded p-2 w-full mb-2"
                 onChange={(event) =>
