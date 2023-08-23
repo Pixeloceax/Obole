@@ -5,15 +5,17 @@ const TransactionForm = () => {
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
   const [destinationAccount, setDestinationAccount] = useState("");
-  const [destinationAccountType, setDestinationAccountType] = useState("");
   const [transactionResponse, setTransactionResponse] = useState(null);
+  const [sourceAccount, setSourceAccount] = useState("");
+  const [destinationToOtherAccount, setDestinationToOtherAccount] =
+    useState("");
 
   const handleSavingToMainAccTransaction = async (
     amount,
     destinationAccountType
   ) => {
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:5000/transaction/unsaving`,
         {
           amount,
@@ -30,8 +32,11 @@ const TransactionForm = () => {
       } else {
         setTransactionResponse("Transaction Failed");
       }
+      if (response.status === 400) {
+        console.log(response);
+      }
     } catch (error) {
-      setTransactionResponse("Transaction Failed");
+      setTransactionResponse(error);
     }
   };
 
@@ -40,7 +45,7 @@ const TransactionForm = () => {
     destinationAccountType
   ) => {
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:5000/transaction/saving`,
         {
           amount,
@@ -57,21 +62,25 @@ const TransactionForm = () => {
       } else {
         setTransactionResponse("Transaction Failed");
       }
+      if (response.status === 500) {
+        console.log(response);
+      }
     } catch (error) {
-      setTransactionResponse("Transaction Failed");
+      setTransactionResponse(error.response?.data?.message);
     }
   };
 
   const handleMainToAccTransaction = async (
     amount,
-    currency = "EUR",
     description,
-    type = "transfer",
     destinationAccount
   ) => {
     try {
+      const currency = "USD";
+      const type = "Transfer";
+
       const response = await axios.post(
-        `http://localhost:5000/transaction/${parseInt(destinationAccount)}`,
+        `http://localhost:5000/transaction/${destinationAccount}`,
         {
           amount,
           currency,
@@ -90,100 +99,147 @@ const TransactionForm = () => {
         setTransactionResponse("Transaction Failed");
       }
     } catch (error) {
-      setTransactionResponse("Transaction Failed");
+      setTransactionResponse(
+        error.response?.data?.message || "Transaction Failed"
+      );
     }
   };
 
+  const handleTransactionSubmit = async (event) => {
+    event.preventDefault();
+
+    const savingAccount = "A" || "jeune";
+
+    if (destinationAccount === "other" && sourceAccount === "main") {
+      await handleMainToAccTransaction(
+        amount,
+        description,
+        destinationToOtherAccount
+      );
+    } else if (destinationAccount === "main" && sourceAccount === "main") {
+      throw new Error("You can't transfer to the same account");
+    } else if (destinationAccount === "main" && sourceAccount === "A") {
+      await handleSavingToMainAccTransaction(amount, savingAccount);
+    } else if (destinationAccount === "main" && sourceAccount === "jeune") {
+      await handleSavingToMainAccTransaction(amount, savingAccount);
+    } else if (destinationAccount === "A" && sourceAccount === "main") {
+      await handleMainToSavingAccTransaction(amount, savingAccount);
+    } else if (destinationAccount === "jeune" && sourceAccount === "main") {
+      await handleMainToSavingAccTransaction(amount, savingAccount);
+    } else {
+      throw new Error("Something went wrong");
+    }
+
+    setAmount(0);
+    setDestinationAccount("");
+    setSourceAccount("");
+    setDescription("");
+  };
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="grid grid-cols-1 gap-4">
-        <div className="bg-white p-4 shadow-md rounded-md">
-          <h2 className="text-lg font-semibold mb-4">Saving to Main Account</h2>
-          <form onSubmit={handleSavingToMainAccTransaction}>
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Amount"
-              className="border rounded-md p-2 mb-2"
-            />
-            <input
-              type="text"
-              value={destinationAccountType}
-              onChange={(e) => setDestinationAccountType(e.target.value)}
-              placeholder="Destination Account Type"
-              className="border rounded-md p-2 mb-2"
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
+    <div className="max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
+      <h1 className="text-2xl font-semibold mb-4">Transfer Funds</h1>
 
-        <div className="bg-white p-4 shadow-md rounded-md">
-          <h2 className="text-lg font-semibold mb-4">Main to Saving Account</h2>
-          <form onSubmit={handleMainToSavingAccTransaction}>
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Amount"
-              className="border rounded-md p-2 mb-2"
-            />
-            <input
-              type="text"
-              value={destinationAccountType}
-              onChange={(e) => setDestinationAccountType(e.target.value)}
-              placeholder="Destination Account Type"
-              className="border rounded-md p-2 mb-2"
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
+      <form onSubmit={handleTransactionSubmit}>
+        <label htmlFor="amount" className="block font-semibold mb-1">
+          Amount
+        </label>
+        <input
+          type="number"
+          id="amount"
+          name="amount"
+          value={amount}
+          onChange={(event) => setAmount(event.target.value)}
+          className="border rounded p-2 w-full mb-2"
+        />
 
-        <div className="bg-white p-4 shadow-md rounded-md">
-          <h2 className="text-lg font-semibold mb-4">Main to Account</h2>
-          <form onSubmit={handleMainToAccTransaction}>
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Amount"
-              className="border rounded-md p-2 mb-2"
-            />
+        <div className="mb-4">
+          <label className="block font-semibold mb-1">
+            Destination Account
+          </label>
+          {destinationAccount === "other" ? (
+            <>
+              <input
+                type="number"
+                placeholder="Enter destination account"
+                className="border rounded p-2 w-full mb-2"
+                onChange={(event) =>
+                  setDestinationToOtherAccount(event.target.value)
+                }
+              />
 
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description"
-              className="border rounded-md p-2 mb-2"
-            />
-
-            <input
-              type="text"
+              <button onClick={() => setDestinationAccount("A")}>Cancel</button>
+            </>
+          ) : (
+            <select
+              id="destinationAccount"
+              name="destinationAccount"
               value={destinationAccount}
-              onChange={(e) => setDestinationAccount(e.target.value)}
-              placeholder="Destination Account"
-              className="border rounded-md p-2 mb-2"
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+              onChange={(event) => setDestinationAccount(event.target.value)}
+              className="border rounded p-2 w-full mb-2"
             >
-              Submit
-            </button>
-          </form>
+              <option value="default" hidden />
+              <option value="main">Main Account</option>
+              <option value="A">A</option>
+              <option value="jeune">jeune</option>
+              <option value="other">Other</option>
+            </select>
+          )}
         </div>
-      </div>
+
+        <label htmlFor="sourceAccount" className="block font-semibold mb-1">
+          Source Account
+        </label>
+        <select
+          id="sourceAccount"
+          name="sourceAccount"
+          value={sourceAccount}
+          onChange={(event) => setSourceAccount(event.target.value)}
+          className="border rounded p-2 w-full mb-4"
+        >
+          <option value="default" hidden />
+          <option value="main">Main Account</option>
+          <option value="A">A</option>
+          <option value="jeune">jeune</option>
+        </select>
+
+        {destinationAccount === "other" && sourceAccount === "main" && (
+          <div className="mb-4">
+            <label htmlFor="description" className="block font-semibold mb-1">
+              Description
+            </label>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              className="border rounded p-2 w-full mb-2"
+            />
+          </div>
+        )}
+
+        <button
+          type="submit"
+          className="bg-blue-500 text-white rounded px-4 py-2 mr-2"
+          aria-label="Submit"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          className="border rounded px-4 py-2 ml-2"
+          aria-label="Cancel"
+        >
+          Cancel
+        </button>
+      </form>
+
+      {transactionResponse && (
+        <div className="mt-4">
+          <p>{transactionResponse}</p>
+        </div>
+      )}
     </div>
   );
 };
