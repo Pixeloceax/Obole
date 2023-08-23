@@ -233,9 +233,17 @@ function AccountOverview() {
               </div>
             </div>
             <div className="lg:w-[45%] w-full mt-10 bg-black rounded-3xl shadow-md p-8">
-              <h1 className="text-white font-bold md:text-4xl text-xl mb-12 justify-center flex">
-                Transaction
-              </h1>
+              <div className="flex justify-center">
+                <h1 className="text-white font-bold md:text-4xl text-xl md:mb-12 mb-8 flex-1 flex justify-center">
+                  Transaction
+                </h1>
+                <Link to="/dashboard/transaction">
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    className="text-5xl text-white"
+                  />
+                </Link>
+              </div>
               <div className="flex justify-around">
                 <div className="flex items-center justify-center w-[50%]">
                   <div className="text-center">
