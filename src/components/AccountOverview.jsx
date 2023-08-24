@@ -35,11 +35,14 @@ function AccountOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/user`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await fetch(
+          process.env.REACT_APP_CONNECTION_STRING + `/user`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("Something went wrong!");
         }
@@ -55,11 +58,14 @@ function AccountOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/payment", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          process.env.REACT_APP_CONNECTION_STRING + "/payment",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setPayment(response.data);
       } catch (error) {
         console.error(error);
@@ -74,11 +80,14 @@ function AccountOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/transaction", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          process.env.REACT_APP_CONNECTION_STRING + "/transaction",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setTransaction(response.data);
       } catch (error) {
         console.error(error);
@@ -119,7 +128,7 @@ function AccountOverview() {
 
   const deconexion = () => {
     localStorage.clear();
-    window.location.href = "/login";
+    window.location.href = "/lo=gin";
   };
 
   return (
@@ -129,7 +138,9 @@ function AccountOverview() {
           <div className="flex justify-between">
             <h1 className="md:text-3xl text-2xl font-extrabold underline underline-offset-4">
               Bonjour,{" "}
-              <span className="text-purple">{data.Information.name}</span>
+              <span className="text-purple">
+                {data && data.Information && data.Information.name}
+              </span>
             </h1>
             <button onClick={openModal}>
               <FontAwesomeIcon icon={faUserCircle} className="text-5xl " />
@@ -137,9 +148,7 @@ function AccountOverview() {
             <Modal
               isOpen={modalOpen}
               onClose={closeModal}
-              deconexion={() => {
-                deconexion();
-              }}
+              deconexion={deconexion}
             />
           </div>
           <div className="lg:flex block justify-evenly">

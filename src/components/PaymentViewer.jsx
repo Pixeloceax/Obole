@@ -7,11 +7,14 @@ const PaymentViewer = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/payment", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          process.env.REACT_APP_CONNECTION_STRING + "/payment",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setPayment(response.data);
       } catch (error) {
         console.error(error);
@@ -23,7 +26,6 @@ const PaymentViewer = () => {
 
   return (
     <div className="payment-container max-h-[400px] overflow-y-scroll">
-      
       <table className="w-full border">
         <thead>
           <tr>

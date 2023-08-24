@@ -11,11 +11,14 @@ const TransactionViewer = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/transaction", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          process.env.REACT_APP_CONNECTION_STRING + "/transaction",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setTransactions(response.data);
       } catch (error) {
         console.error(error);
@@ -27,7 +30,6 @@ const TransactionViewer = () => {
 
   return (
     <div className="transaction-container max-h-[400px] overflow-y-scroll">
-      
       <table className="w-full border">
         <thead>
           <tr>

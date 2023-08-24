@@ -43,7 +43,7 @@ const Payment = () => {
   const response = async (formData) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/payment",
+        process.env.REACT_APP_CONNECTION_STRING + "/payment",
         formData
       );
 

@@ -19,7 +19,7 @@ const TransactionForm = () => {
 
       if (sourceAccount === "main" && destinationAccount === "A") {
         response = await axios.put(
-          "http://localhost:5000/transaction/saving",
+          process.env.REACT_APP_CONNECTION_STRING + "/transaction/saving",
           { amount, destinationAccountType: destinationAccount },
           {
             headers: {
@@ -29,7 +29,7 @@ const TransactionForm = () => {
         );
       } else if (sourceAccount === "main" && destinationAccount === "jeune") {
         response = await axios.put(
-          "http://localhost:5000/transaction/saving",
+          process.env.REACT_APP_CONNECTION_STRING + "/transaction/saving",
           { amount, destinationAccountType: destinationAccount },
           {
             headers: {
@@ -39,7 +39,7 @@ const TransactionForm = () => {
         );
       } else if (sourceAccount === "A" && destinationAccount === "main") {
         response = await axios.put(
-          "http://localhost:5000/transaction/unsaving",
+          process.env.REACT_APP_CONNECTION_STRING + "/transaction/unsaving",
           { amount, sourceAccountType: sourceAccount },
           {
             headers: {
@@ -49,7 +49,7 @@ const TransactionForm = () => {
         );
       } else if (sourceAccount === "jeune" && destinationAccount === "main") {
         response = await axios.put(
-          "http://localhost:5000/transaction/unsaving",
+          process.env.REACT_APP_CONNECTION_STRING + "/transaction/unsaving",
           { amount, sourceAccountType: sourceAccount },
           {
             headers: {
@@ -63,7 +63,8 @@ const TransactionForm = () => {
         throw new Error("You can't transfer to the same account");
       } else {
         response = await axios.post(
-          `http://localhost:5000/transaction/${destinationToOtherAccount}`,
+          process.env.REACT_APP_CONNECTION_STRING +
+            `/transaction/${destinationToOtherAccount}`,
           { amount, currency: "USD", description, type: "Transfer" },
           {
             headers: {
@@ -130,7 +131,9 @@ const TransactionForm = () => {
 
   return (
     <div className=" mx-auto p-4 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-semibold mb-4 flex justify-center">Transfer Funds</h1>
+      <h1 className="text-2xl font-semibold mb-4 flex justify-center">
+        Transfer Funds
+      </h1>
 
       <div className="flex justify-center">
         <form onSubmit={handleTransactionSubmit} className="max-w-xl">
@@ -240,7 +243,7 @@ const TransactionForm = () => {
       )}
 
       <section>
-      <h2 className="mb-4 text-lg font-semibold">Payments</h2>
+        <h2 className="mb-4 text-lg font-semibold">Payments</h2>
         <PaymentViewer />
         <h2 className="mb-4 text-lg font-semibold">Transactions</h2>
         <TransactionViewer />
