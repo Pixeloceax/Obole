@@ -9,8 +9,9 @@
     "resolveJsonModule": true,
     "declaration": true,
     "sourceMap": true,
-    "allowJs": true
+    "allowJs": true,
+    "types": ["express", "body-parser"]
   },
   "include": ["./src", "src/middleware"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/tests"]
 }
