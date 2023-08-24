@@ -3,6 +3,7 @@ import 'package:obole_mobile/main.dart'; // You might need to adjust the import 
 import 'package:obole_mobile/pages/login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       final response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/register"),
+        Uri.parse("https://back1-one.vercel.app/register"),
         headers: {"Content-Type": "application/json"},
         body: json.encode(formDataJSON),
       );

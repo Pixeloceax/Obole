@@ -4,6 +4,7 @@ import 'package:obole_mobile/main.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/Navbar.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EpargnePage extends StatefulWidget {
   const EpargnePage({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _EpargnePageState extends State<EpargnePage> {
     try {
       String token = await getToken();
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:5000/saving"),
+        Uri.parse("https://back1-one.vercel.app/saving"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -54,7 +55,7 @@ class _EpargnePageState extends State<EpargnePage> {
     try {
       String token = await getToken();
       final response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/saving"),
+        Uri.parse("https://back1-one.vercel.app/saving"),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
