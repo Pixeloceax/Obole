@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
+// import jwtDecode from "jwt-decode";
 
-const account = jwtDecode(localStorage.getItem("token"));
-const acc = account.accountNumber.toString();
+// const account = jwtDecode(localStorage.getItem("token"));
+// const acc = account.accountNumber.toString();
 
 const TransactionViewer = () => {
   const [transactions, setTransactions] = useState([]);
@@ -39,14 +39,14 @@ const TransactionViewer = () => {
         </thead>
         <tbody>
           {transactions.map((transaction) => {
-            const isSameAccount = acc === transaction.destinationAccount;
-            const formattedAmount = isSameAccount
-              ? `+${transaction.amount}`
-              : `-${transaction.amount}`;
+            // const isSameAccount = acc === transaction.destinationAccount;
+            // const formattedAmount = isSameAccount
+            //   ? `+${transaction.amount}`
+            //   : `-${transaction.amount}`;
 
             return (
               <tr key={transaction.id} className="hover:bg-gray-100">
-                <td className="p-2 border">{formattedAmount}</td>
+                {/* <td className="p-2 border">{formattedAmount}</td> */}
                 <td className="p-2 border">{transaction.description}</td>
                 <td className="p-2 border">{transaction.sourceAccount}</td>
                 <td className="p-2 border">{transaction.destinationAccount}</td>

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../main.dart';
 import './dashboard.dart';
 import 'package:http/http.dart' as http;
@@ -153,6 +154,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 keyboardType: TextInputType.number,
+                autofillHints: const [AutofillHints.username],
+                onEditingComplete: () => TextInput.finishAutofillContext(),
               ),
               const SizedBox(height: 20.0),
               TextField(
@@ -172,6 +175,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 keyboardType: TextInputType.number,
                 obscureText: true,
+                autofillHints: const [AutofillHints.password],
+                onEditingComplete: () => TextInput.finishAutofillContext(),
               ),
               const SizedBox(height: 40.0),
               ElevatedButton(
