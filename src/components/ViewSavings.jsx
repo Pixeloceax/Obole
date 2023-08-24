@@ -13,11 +13,14 @@ const ViewSavings = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/saving", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          process.env.REACT_APP_CONNECTION_STRING + "/saving",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setData(response.data);
       } catch (error) {
         console.error(error);
@@ -28,14 +31,17 @@ const ViewSavings = () => {
 
   const handleSaving = async (type) => {
     try {
-      const response = await fetch(`http://localhost:5000/saving`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ type: type }),
-      });
+      const response = await fetch(
+        process.env.REACT_APP_CONNECTION_STRING + `/saving`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ type: type }),
+        }
+      );
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error);

@@ -18,11 +18,14 @@ function CartesBancaires() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/card`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await fetch(
+          process.env.REACT_APP_CONNECTION_STRING + `/card`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("Something went wrong!");
         }
@@ -37,13 +40,16 @@ function CartesBancaires() {
 
   const handleAddCard = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/card`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await fetch(
+        process.env.REACT_APP_CONNECTION_STRING + `/card`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
@@ -86,7 +92,8 @@ function CartesBancaires() {
       };
 
       const response = await fetch(
-        `http://localhost:5000/card/${data[index].cardNumber}`,
+        process.env.REACT_APP_CONNECTION_STRING +
+          `/card/${data[index].cardNumber}`,
         {
           method: "PUT",
           headers: {
@@ -110,7 +117,8 @@ function CartesBancaires() {
   const handleDelete = (index) => async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/card/${data[index].cardNumber}`,
+        process.env.REACT_APP_CONNECTION_STRING +
+          `/card/${data[index].cardNumber}`,
         {
           method: "DELETE",
           headers: {

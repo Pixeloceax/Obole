@@ -10,11 +10,14 @@ const StatisticsTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/stats", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          process.env.REACT_APP_CONNECTION_STRING + "/stats",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
         const groupedPayments = response.data.payments.reduce(
           (acc, payment) => {
