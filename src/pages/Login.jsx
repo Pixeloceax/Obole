@@ -35,11 +35,9 @@ const Login = ({ handleLogin }) => {
         response.data.message === "Login successful"
       ) {
         const token = response.data.token;
-        const _id = response.data._id;
 
         if (!isTokenExpired(token)) {
           localStorage.setItem("token", token);
-          sessionStorage.setItem("_id", _id);
           handleLogin();
         } else {
           setMessage("Token expired");

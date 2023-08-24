@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+import PaymentViewer from "./PaymentViewer";
+import TransactionViewer from "./TransactionViewer";
+
 const TransactionForm = () => {
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
@@ -231,6 +234,11 @@ const TransactionForm = () => {
           <p>{transactionResponse}</p>
         </div>
       )}
+
+      <section>
+        <PaymentViewer />
+        <TransactionViewer />
+      </section>
     </div>
   );
 };

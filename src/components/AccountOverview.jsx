@@ -31,7 +31,6 @@ function AccountOverview() {
   const [data, setData] = useState(null);
   const [transaction, setTransaction] = useState([]);
   const [payment, setPayment] = useState([]);
-  const [id, setId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
