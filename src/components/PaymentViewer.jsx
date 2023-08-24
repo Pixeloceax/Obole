@@ -23,7 +23,7 @@ const PaymentViewer = () => {
 
   return (
     <div className="payment-container max-h-[400px] overflow-y-scroll">
-      <h2 className="mb-4 text-lg font-semibold">Payments</h2>
+      
       <table className="w-full border">
         <thead>
           <tr>

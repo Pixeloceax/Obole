@@ -21,6 +21,8 @@ class _DashboardPageState extends State<DashboardPage>
     super.initState();
     _controller = AnimationController(vsync: this);
     handleDataSave();
+    handleDataFetch();
+    handleDatatransaction();
   }
 
   Future<String> getToken() async {
@@ -30,10 +32,11 @@ class _DashboardPageState extends State<DashboardPage>
   }
 
   var data = {};
+  var dataPayment = [];
+  var dataTransaction = [];
 
   Future<void> handleDataSave() async {
     String token = await getToken();
-    print("token; $token");
 
     try {
       final response = await http.get(
@@ -43,12 +46,66 @@ class _DashboardPageState extends State<DashboardPage>
         },
       );
 
-      print("response: $response.body");
-
       if (response.statusCode == 200) {
         setState(() {
           data = jsonDecode(response.body);
         });
+      } else {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+    } catch (error) {
+      print("Error: $error");
+    }
+  }
+
+  Future<void> handleDataFetch() async {
+    String token = await getToken();
+    print("token; $token");
+
+    try {
+      final response = await http.get(
+        Uri.parse("http://10.0.2.2:5000/payment"),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          dataPayment = jsonDecode(response.body);
+        });
+      } else {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+    } catch (error) {
+      print("Error: $error");
+    }
+  }
+
+  Future<void> handleDatatransaction() async {
+    String token = await getToken();
+    print("token; $token");
+
+    try {
+      final response = await http.get(
+        Uri.parse("http://10.0.2.2:5000/transaction"),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print("response: ${response.body}");
+
+      if (response.statusCode == 200) {
+        setState(() {
+          dataTransaction = jsonDecode(response.body);
+        });
+        for (var i = 0; i < dataTransaction.length; i++) {
+          print(
+              "datatransaction: ${dataTransaction[i]['destinationAccount'].runtimeType}, ${data['Account']['accountNumber'].runtimeType}");
+          print(int.tryParse(dataTransaction[i]['destinationAccount']) ==
+              data['Account']['accountNumber']);
+        }
       } else {
         Navigator.of(context).pushReplacementNamed('/login');
       }
@@ -165,7 +222,7 @@ class _DashboardPageState extends State<DashboardPage>
                                   const Text(
                                     "Compte Courant",
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: CustomColors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                     ),
@@ -178,7 +235,7 @@ class _DashboardPageState extends State<DashboardPage>
                                       Text(
                                         "N° **** ${data['Account']['accountNumber'].toString().substring(data['Account']['accountNumber'].toString().length - 4)}",
                                         style: const TextStyle(
-                                          color: Colors.white,
+                                          color: CustomColors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                         ),
@@ -186,7 +243,7 @@ class _DashboardPageState extends State<DashboardPage>
                                       Text(
                                         "${data['Balance']['balance']} €",
                                         style: const TextStyle(
-                                          color: Colors.white,
+                                          color: CustomColors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                         ),
@@ -195,7 +252,7 @@ class _DashboardPageState extends State<DashboardPage>
                                   ),
                                   const SizedBox(height: 20),
                                   const Divider(
-                                      color: Colors.white,
+                                      color: CustomColors.white,
                                       thickness: 2,
                                       height: 32),
                                   const SizedBox(height: 20),
@@ -210,7 +267,7 @@ class _DashboardPageState extends State<DashboardPage>
                                           const Text(
                                             "CB VISA",
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: CustomColors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20,
                                             ),
@@ -219,7 +276,7 @@ class _DashboardPageState extends State<DashboardPage>
                                           Text(
                                             "N° **** ${data['Card'][0]['cardNumber'].toString().substring(data['Card'][0]['cardNumber'].toString().length - 4)}",
                                             style: const TextStyle(
-                                              color: Colors.white,
+                                              color: CustomColors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20,
                                             ),
@@ -233,7 +290,7 @@ class _DashboardPageState extends State<DashboardPage>
                                         },
                                         icon: const Icon(
                                           Icons.arrow_right,
-                                          color: Colors.white,
+                                          color: CustomColors.white,
                                           size: 50,
                                         ),
                                       ),
@@ -255,17 +312,54 @@ class _DashboardPageState extends State<DashboardPage>
                                 color: CustomColors.black,
                                 borderRadius: BorderRadius.circular(30),
                               ),
-                              child: const Column(
+                              child: Column(
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Information",
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: CustomColors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                     ),
                                   ),
-                                  SizedBox(height: 30),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const SizedBox(width: 30),
+                                          const Text("Message",
+                                              style: TextStyle(
+                                                color: CustomColors.white,
+                                                fontSize: 20,
+                                              )),
+                                          const SizedBox(width: 10),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pushReplacementNamed(
+                                                      '/message');
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              shadowColor: Colors.transparent,
+                                            ),
+                                            child: const Icon(
+                                              Icons.arrow_right,
+                                              color: CustomColors.white,
+                                              size: 50,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Text("Parler avec un conseiller",
+                                          style: TextStyle(
+                                            color: CustomColors.white,
+                                            fontSize: 16,
+                                          )),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 30),
                                 ],
                               ),
                             ),
@@ -283,7 +377,7 @@ class _DashboardPageState extends State<DashboardPage>
                                 borderRadius: BorderRadius.circular(30),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
+                                    color: CustomColors.black.withOpacity(0.3),
                                     blurRadius: 5,
                                     offset: const Offset(0, 2),
                                   ),
@@ -300,7 +394,7 @@ class _DashboardPageState extends State<DashboardPage>
                                         child: Text(
                                           "Livrets",
                                           style: TextStyle(
-                                            color: Colors.white,
+                                            color: CustomColors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 24,
                                           ),
@@ -313,7 +407,7 @@ class _DashboardPageState extends State<DashboardPage>
                                         },
                                         child: const Icon(
                                           Icons.arrow_right,
-                                          color: Colors.white,
+                                          color: CustomColors.white,
                                           size: 50,
                                         ),
                                       ),
@@ -331,7 +425,7 @@ class _DashboardPageState extends State<DashboardPage>
                                             Text(
                                               livret['type'],
                                               style: const TextStyle(
-                                                color: Colors.white,
+                                                color: CustomColors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 24,
                                               ),
@@ -339,7 +433,7 @@ class _DashboardPageState extends State<DashboardPage>
                                             Text(
                                               "${livret['savingsBalance']} €",
                                               style: const TextStyle(
-                                                color: Colors.white,
+                                                color: CustomColors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 24,
                                               ),
@@ -347,7 +441,7 @@ class _DashboardPageState extends State<DashboardPage>
                                             const Text(
                                               "Previsionelle",
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: CustomColors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 24,
                                               ),
@@ -362,7 +456,7 @@ class _DashboardPageState extends State<DashboardPage>
                                                       ? "${(2 / 100) * livret['savingsBalance']} €"
                                                       : "${(3 / 100) * livret['savingsBalance']} €",
                                                   style: const TextStyle(
-                                                    color: Colors.white,
+                                                    color: CustomColors.white,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 24,
                                                   ),
@@ -372,7 +466,7 @@ class _DashboardPageState extends State<DashboardPage>
                                                       ? "2%"
                                                       : "3%",
                                                   style: const TextStyle(
-                                                    color: Colors.white,
+                                                    color: CustomColors.white,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 24,
                                                   ),
@@ -390,30 +484,101 @@ class _DashboardPageState extends State<DashboardPage>
                           ],
                         ),
                         const SizedBox(height: 30),
-                        Row(
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.68,
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: CustomColors.black,
-                                borderRadius: BorderRadius.circular(30),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.68,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: CustomColors.black,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Column(
+                            children: [
+                              const Text(
+                                "Transactions",
+                                style: TextStyle(
+                                  color: CustomColors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
                               ),
-                              child: const Column(
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(
-                                    "Transactions",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
+                                  Column(
+                                    children: [
+                                      const Text(
+                                        "Gain",
+                                        style: TextStyle(
+                                          color: CustomColors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      for (var i = 0, j = 0;
+                                          i < dataTransaction.length;
+                                          i++)
+                                        if (int.tryParse(dataTransaction[i]
+                                                    ['destinationAccount']
+                                                .toString()) ==
+                                            data['Account']['accountNumber'])
+                                          for (j; j < 5; j++)
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 2),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "${dataTransaction[i]['amount']} €",
+                                                    style: const TextStyle(
+                                                      color: CustomColors.white,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                    ],
                                   ),
-                                  SizedBox(height: 30),
+                                  Column(
+                                    children: [
+                                      const Text(
+                                        "Deficit",
+                                        style: TextStyle(
+                                          color: CustomColors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      for (var i = 0;
+                                          i < dataPayment.length && i < 5;
+                                          i++)
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 2),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "- ${dataPayment[i]['amount']} €",
+                                                style: const TextStyle(
+                                                  color: CustomColors.white,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 30),
                       ],

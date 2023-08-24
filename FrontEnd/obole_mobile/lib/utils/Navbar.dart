@@ -80,20 +80,6 @@ class _NavbarComponentsState extends State<NavbarComponents>
                           shadowColor: Colors.transparent,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/stat');
-                        },
-                        child: const Icon(
-                          Icons.line_axis,
-                          color: CustomColors.white,
-                          size: 50,
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                        ),
-                        onPressed: () {
                           Navigator.pushNamed(context, '/epargne');
                         },
                         child: const Icon(
