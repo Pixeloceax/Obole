@@ -27,7 +27,7 @@ const TransactionViewer = () => {
 
   return (
     <div className="transaction-container max-h-[400px] overflow-y-scroll">
-      <h2 className="mb-4 text-lg font-semibold">Transactions</h2>
+      
       <table className="w-full border">
         <thead>
           <tr>
