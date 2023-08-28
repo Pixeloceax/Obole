@@ -130,7 +130,7 @@ const TransactionForm = () => {
   };
 
   return (
-    <div className=" mx-auto p-4 bg-white shadow-md rounded-lg">
+    <div className=" mx-auto p-4 bg-white shadow-md rounded-lg h-screen">
       <h1 className="text-2xl font-semibold mb-4 flex justify-center">
         Transfer Funds
       </h1>
