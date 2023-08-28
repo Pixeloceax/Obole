@@ -37,16 +37,13 @@ app.use("/payment", paymentRouter);
 app.use("/stats", authenticateToken, statsRouter);
 app.use("/saving", authenticateToken, savingRouter);
 
-app.get("/free-endpoint", (req: Request, res: Response) => {
-  res.json({ message: "You are free to access me anytime" });
-});
+const corsOptions = {
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
 
-app.get(
-  "/protected-endpoint",
-  authenticateToken,
-  (req: Request, res: Response) => {
-    res.json({ message: "You are authorized to access me" });
-  }
-);
+app.use(cors(corsOptions));
 
 export default app;
