@@ -14,11 +14,22 @@ import dbConnect from "./database/dbConnect";
 import { authenticateToken } from "./middleware/auth";
 import { getUserInfo } from "./controllers/userController";
 
+import * as dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
 
 dbConnect();
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -37,16 +48,6 @@ app.use("/payment", paymentRouter);
 app.use("/stats", authenticateToken, statsRouter);
 app.use("/saving", authenticateToken, savingRouter);
 
-app.get("/free-endpoint", (req: Request, res: Response) => {
-  res.json({ message: "You are free to access me anytime" });
-});
-
-app.get(
-  "/protected-endpoint",
-  authenticateToken,
-  (req: Request, res: Response) => {
-    res.json({ message: "You are authorized to access me" });
-  }
-);
+console.log(process.env.CORS_ORIGIN);
 
 export default app;

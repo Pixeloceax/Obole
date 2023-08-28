@@ -1,6 +1,8 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const router = express.Router();
 
@@ -35,7 +37,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    const secretKey = process.env.SECRET_KEY || "SECRET_KEY";
+    const secretKey = process.env.JWT_KEY || "JWT_KEY";
     if (!secretKey) {
       return res.status(500).json({ message: "Server error" });
     }

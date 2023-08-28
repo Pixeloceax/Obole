@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 declare global {
   namespace Express {
@@ -20,12 +22,24 @@ export function authenticateToken(
     return res.sendStatus(401);
   }
 
-  jwt.verify(token, "SECRET_KEY", (err: jwt.VerifyErrors | null, user: any) => {
-    if (err) {
-      return res.sendStatus(403);
-    }
+  if (!process.env.JWT_KEY) {
+    return res.status(500).send("JWT_KEY not defined in environment variables");
+  }
 
-    req.user = user;
-    next();
-  });
+  if (!process.env.JWT_KEY) {
+    return res.status(500).send("JWT_KEY not defined in environment variables");
+  }
+
+  jwt.verify(
+    token,
+    process.env.JWT_KEY,
+    (err: jwt.VerifyErrors | null, user: any) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+
+      req.user = user;
+      next();
+    }
+  );
 }

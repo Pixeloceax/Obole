@@ -134,7 +134,6 @@ export const sendNewCardEmail = async (
     };
 
     const info: any = await transport.sendMail(mailOptions);
-    console.log("Message sent: %s", info.messageId);
   } catch (err) {
     throw new Error(`Error sending new card email: ${err}`);
   }
@@ -260,7 +259,6 @@ export const sendNewAccountEmail = async (
     };
 
     const info: any = await transport.sendMail(mailOptions);
-    console.log("Message sent: %s", info.messageId);
   } catch (err) {
     throw new Error(`Error sending new account email: ${err}`);
   }

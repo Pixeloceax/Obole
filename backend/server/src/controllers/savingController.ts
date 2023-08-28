@@ -77,5 +77,4 @@ const updatePrevisional = async (req: Request, res: Response) => {
       res.status(500).json({ error: error.message });
     }
   }, 30000);
-  console.log("Previsional updated");
 };

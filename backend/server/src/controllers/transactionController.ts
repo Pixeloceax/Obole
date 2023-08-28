@@ -211,8 +211,6 @@ export async function transferToSavingAccount(req: Request, res: Response) {
       (account) => account.type === destinationAccountType
     )?.savingAccountNumber;
 
-    console.log(destinationAccount);
-
     if (!destinationAccount) {
       return res.status(400).json({
         error: "The destination account does not exist.",
@@ -295,8 +293,6 @@ export async function transferFromSavingAccount(req: Request, res: Response) {
       (account) => account.type === sourceAccountType
     )?.savingAccountNumber;
 
-    console.log(sourceAccount);
-
     if (!sourceAccount) {
       return res.status(400).json({
         error: "The source account does not exist.",
@@ -353,7 +349,6 @@ export async function transferFromSavingAccount(req: Request, res: Response) {
       updateSavingAccountBalance(sourceAccount, amount, "subtract");
       updateAccountBalance(destinationAccount, amount, "add");
       checkPendingTransactionStatus(savedTransaction._id.toString());
-      console.log("timeout");
     }, 30 * 1000);
 
     await user.save();

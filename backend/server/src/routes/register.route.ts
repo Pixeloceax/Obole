@@ -117,8 +117,6 @@ router.post("/register", async (req, res) => {
     expirationDate
   );
 
-  console.log("accountNumber", accountNumber, "password", password);
-
   try {
     const result = await user.save();
     res.status(201).send({
