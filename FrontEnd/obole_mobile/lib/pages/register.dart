@@ -3,7 +3,6 @@ import 'package:obole_mobile/main.dart'; // You might need to adjust the import 
 import 'package:obole_mobile/pages/login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);

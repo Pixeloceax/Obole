@@ -8,7 +8,6 @@ const ViewSavings = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [selectedType, setSelectedType] = useState("A");
-  console.log(data);
 
   useEffect(() => {
     const fetchData = async () => {

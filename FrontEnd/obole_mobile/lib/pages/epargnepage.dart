@@ -4,7 +4,6 @@ import 'package:obole_mobile/main.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/Navbar.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EpargnePage extends StatefulWidget {
   const EpargnePage({Key? key}) : super(key: key);

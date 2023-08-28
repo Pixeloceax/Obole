@@ -24,6 +24,7 @@ const Login = ({ handleLogin }) => {
     }
 
     try {
+      console.log(process.env.REACT_APP_CONNECTION_STRING + "/login");
       const response = await axios.post(
         process.env.REACT_APP_CONNECTION_STRING + "/login",
         formDataJSON
@@ -45,7 +46,6 @@ const Login = ({ handleLogin }) => {
         setMessage(response.data.message);
       }
     } catch (error) {
-      console.error(error);
       console.log(error.response);
       setMessage("An error occurred while logging in.");
     }
