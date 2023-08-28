@@ -39,8 +39,6 @@ const herrorHandler = (error: NodeJS.ErrnoException) => {
   }
 };
 
-generateAndWriteJWTKey();
-
 const server = http.createServer(app);
 
 server.on("error", herrorHandler);
