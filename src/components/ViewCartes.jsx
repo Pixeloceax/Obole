@@ -138,9 +138,10 @@ function CartesBancaires() {
   };
 
   return (
-    <div className="p-6 bg-white h-full">
+    <div>
       {data ? (
-        <div className="ml-5 overflow-y-auto">
+        <div className={data.length == 2 ? `p-6 bg-white h-fit` :
+        `p-6 bg-white h-screen`}>
           <div className="flex justify-between">
             <h1 className="text-3xl font-extrabold text-gray-900">
               Cartes bancaires

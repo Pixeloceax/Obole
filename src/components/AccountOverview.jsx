@@ -31,6 +31,7 @@ function AccountOverview() {
   const [data, setData] = useState(null);
   const [transaction, setTransaction] = useState([]);
   const [payment, setPayment] = useState([]);
+  let i = 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -209,7 +210,7 @@ function AccountOverview() {
                 {data.SavingsAccount.map((livret, index) => (
                   <div
                     className={`flex items-center justify-center md:w-[50%] ${
-                      index != 0
+                      index == 0
                         ? ""
                         : "md:border-r-2 border-b-2 md:border-b-0 border-white"
                     }`}
@@ -270,8 +271,7 @@ function AccountOverview() {
                       ))}
                   </div>
                 </div>
-                <wr className="border-2 border-white" />
-                <div className="flex items-center justify-center w-[50%]">
+                <div className="flex items-center justify-center w-[50%] border-l-4 border-white">
                   <div className="text-center">
                     <p className="text-white font-bold md:text-4xl text-xl mb-2">
                       Deficit
