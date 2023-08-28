@@ -48,6 +48,4 @@ app.use("/payment", paymentRouter);
 app.use("/stats", authenticateToken, statsRouter);
 app.use("/saving", authenticateToken, savingRouter);
 
-console.log(process.env.CORS_ORIGIN);
-
 export default app;
