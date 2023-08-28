@@ -22,7 +22,6 @@ function writeJWTKeyToFile(key: string): void {
 function generateAndWriteJWTKey(): void {
   const jwtKey = generateJWTKey();
   writeJWTKeyToFile(jwtKey);
-  console.log("Nouvelle clé JWT générée et écrite dans le fichier .env");
 }
 
 generateAndWriteJWTKey();
