@@ -2,6 +2,7 @@ import http from "http";
 import app from "./app";
 
 import * as dotenv from "dotenv";
+import { generateAndWriteJWTKey } from "./utils/jwtKeyGenerator.utils";
 dotenv.config();
 
 const normalizePort = (val: string) => {
@@ -37,6 +38,8 @@ const herrorHandler = (error: NodeJS.ErrnoException) => {
       throw error;
   }
 };
+
+generateAndWriteJWTKey();
 
 const server = http.createServer(app);
 
