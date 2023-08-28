@@ -21,7 +21,15 @@ const app = express();
 
 dbConnect();
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -40,13 +48,6 @@ app.use("/payment", paymentRouter);
 app.use("/stats", authenticateToken, statsRouter);
 app.use("/saving", authenticateToken, savingRouter);
 
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
+console.log(process.env.CORS_ORIGIN);
 
 export default app;
