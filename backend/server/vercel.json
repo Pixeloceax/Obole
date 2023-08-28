@@ -4,10 +4,6 @@
     {
       "src": "src/index.ts",
       "use": "@vercel/node"
-    },
-    {
-      "src": "build.ts",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
