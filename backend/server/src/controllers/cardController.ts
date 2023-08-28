@@ -57,7 +57,6 @@ export async function addCard(req: Request, res: Response) {
 export async function getAllCards(req: Request, res: Response) {
   try {
     const accountNumber = await getAccount(req, res);
-    console.log(accountNumber);
 
     const user = await User.findOne({ "Account.accountNumber": accountNumber });
 
