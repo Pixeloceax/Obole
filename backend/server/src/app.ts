@@ -14,6 +14,9 @@ import dbConnect from "./database/dbConnect";
 import { authenticateToken } from "./middleware/auth";
 import { getUserInfo } from "./controllers/userController";
 
+import * as dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
 
 dbConnect();
@@ -38,7 +41,7 @@ app.use("/stats", authenticateToken, statsRouter);
 app.use("/saving", authenticateToken, savingRouter);
 
 const corsOptions = {
-  origin: "*",
+  origin: process.env.CORS_ORIGIN,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
