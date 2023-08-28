@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../utils/navbar.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({Key? key}) : super(key: key);
@@ -31,14 +32,14 @@ class _CardPageState extends State<CardPage>
     return storedToken;
   }
 
-  var data = [];
+  List<dynamic> data = [];
 
   Future<void> handleDataSave() async {
     String token = await getToken();
 
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:5000/card"),
+        Uri.parse("https://back1-one.vercel.app/card"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -283,93 +284,114 @@ class _CardPageState extends State<CardPage>
     if (type == "plafond") {
       String token = await getToken();
       int cardId = data[index]["cardNumber"];
-      print(
-          "number $number, data $cardId, URL http://10.0.2.2:5000/card/$cardId");
-      print(number.runtimeType);
 
-      Map<String, dynamic> formDataJSON = {
-        "limit": number.toString(),
+      Map<String, dynamic> requestData = {
+        "limit": number,
       };
 
+      String requestBody = json.encode(requestData);
+
       try {
-        final response = await http.post(
-          Uri.parse("http://10.0.2.2:5000/card/$cardId"),
+        final response = await http.put(
+          Uri.parse("https://back1-one.vercel.app/card/$cardId"),
           headers: {
             'Authorization': 'Bearer $token',
             'Accept': 'application/json',
+            'Content-Type': 'application/json',
           },
-          body: formDataJSON,
+          body: requestBody,
         );
 
         if (response.statusCode == 200) {
           setState(() {
-            data = json.decode(response.body);
+            handleDataSave();
           });
-          print('data $data');
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacementNamed(context, '/card');
         } else {
+          // ignore: avoid_print
           print("error: ${response.statusCode}");
+          // ignore: avoid_print
+          print(response.body);
         }
       } catch (error) {
+        // ignore: avoid_print
         print("Error: $error");
       }
     } else if (type == "verrouiller") {
       String token = await getToken();
       int cardId = data[index]["cardNumber"];
+      final locked = !data[index]["locked"];
 
-      Map<String, dynamic> formDataJSON = {
-        "locked": !data[index]["locked"],
+      Map<String, dynamic> requestData = {
+        "locked": locked,
       };
-      print(formDataJSON);
+
+      String requestBody = json.encode(requestData);
 
       try {
-        final response = await http.post(
-          Uri.parse("http://10.0.2.2:5000/card/$cardId"),
+        final response = await http.put(
+          Uri.parse("https://back1-one.vercel.app/card/$cardId"),
           headers: {
             'Authorization': 'Bearer $token',
             'Accept': 'application/json',
+            'Content-Type': 'application/json',
           },
-          body: formDataJSON,
+          body: requestBody,
         );
 
         if (response.statusCode == 200) {
           setState(() {
-            data = json.decode(response.body);
+            handleDataSave();
           });
-          print('data $data');
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacementNamed(context, '/card');
         } else {
+          // ignore: avoid_print
           print("error: ${response.statusCode}");
+          // ignore: avoid_print
+          print(response.body);
         }
       } catch (error) {
+        // ignore: avoid_print
         print("Error: $error");
       }
     } else if (type == "opposition") {
       String token = await getToken();
       int cardId = data[index]["cardNumber"];
+      final opposition = !data[index]["opposition"];
 
-      Map<String, dynamic> formDataJSON = {
-        "locked": !data[index]["opposition"],
+      Map<String, dynamic> requestData = {
+        "opposition": opposition,
       };
-      print(formDataJSON);
+
+      String requestBody = json.encode(requestData);
 
       try {
-        final response = await http.post(
-          Uri.parse("http://10.0.2.2:5000/card/$cardId"),
+        final response = await http.put(
+          Uri.parse("https://back1-one.vercel.app/card/$cardId"),
           headers: {
             'Authorization': 'Bearer $token',
             'Accept': 'application/json',
+            'Content-Type': 'application/json',
           },
-          body: formDataJSON,
+          body: requestBody,
         );
 
         if (response.statusCode == 200) {
           setState(() {
-            data = json.decode(response.body);
+            handleDataSave();
           });
-          print('data $data');
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacementNamed(context, '/card');
         } else {
+          // ignore: avoid_print
           print("error: ${response.statusCode}");
+          // ignore: avoid_print
+          print(response.body);
         }
       } catch (error) {
+        // ignore: avoid_print
         print("Error: $error");
       }
     }
@@ -381,7 +403,7 @@ class _CardPageState extends State<CardPage>
 
     try {
       final response = await http.delete(
-        Uri.parse("http://10.0.2.2:5000/card/$cardId"),
+        Uri.parse("https://back1-one.vercel.app/card/$cardId"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -389,10 +411,10 @@ class _CardPageState extends State<CardPage>
 
       if (response.statusCode == 200) {
         setState(() {
-          data = json.decode(response.body);
+          handleDataSave();
         });
-        print('data $data');
       } else {
+        // ignore: avoid_print
         print("error: ${response.statusCode}");
       }
     } catch (error) {
@@ -405,15 +427,15 @@ class _CardPageState extends State<CardPage>
 
     try {
       final response = await http.post(
-        Uri.parse("http://10.0.2.2:5000/card/"),
+        Uri.parse("https://back1-one.vercel.app/card"),
         headers: {
           'Authorization': 'Bearer $token',
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         setState(() {
-          data = json.decode(response.body);
+          handleDataSave();
         });
         print('data $data');
       } else {

@@ -6,9 +6,11 @@ import 'package:obole_mobile/pages/dashboard.dart';
 import 'package:obole_mobile/pages/cardpage.dart';
 import 'package:obole_mobile/pages/messagepage.dart';
 import 'package:obole_mobile/pages/epargnepage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() {
   runApp(MyApp());
+  dotenv.load(fileName: ".env");
 }
 
 class CustomColors {

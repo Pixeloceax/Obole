@@ -4,6 +4,7 @@ import '../utils/Navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -40,7 +41,7 @@ class _DashboardPageState extends State<DashboardPage>
 
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:5000/user"),
+        Uri.parse("https://back1-one.vercel.app/user"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -64,7 +65,7 @@ class _DashboardPageState extends State<DashboardPage>
 
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:5000/payment"),
+        Uri.parse("https://back1-one.vercel.app/payment"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -88,7 +89,7 @@ class _DashboardPageState extends State<DashboardPage>
 
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:5000/transaction"),
+        Uri.parse("https://back1-one.vercel.app/transaction"),
         headers: {
           'Authorization': 'Bearer $token',
         },
