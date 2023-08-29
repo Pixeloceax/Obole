@@ -30,7 +30,7 @@ class _EpargnePageState extends State<EpargnePage> {
     try {
       String token = await getToken();
       final response = await http.get(
-        Uri.parse("https://back1-one.vercel.app/saving"),
+        Uri.parse("https://obole-back.onrender.com/saving"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -59,7 +59,7 @@ class _EpargnePageState extends State<EpargnePage> {
     try {
       String token = await getToken();
       final response = await http.post(
-        Uri.parse("https://back1-one.vercel.app/saving"),
+        Uri.parse("https://obole-back.onrender.com/saving"),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',

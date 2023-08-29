@@ -44,7 +44,7 @@ class _DashboardPageState extends State<DashboardPage>
 
     try {
       final response = await http.get(
-        Uri.parse("https://back1-one.vercel.app/user"),
+        Uri.parse("https://obole-back.onrender.com/user"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -69,7 +69,7 @@ class _DashboardPageState extends State<DashboardPage>
 
     try {
       final response = await http.get(
-        Uri.parse("https://back1-one.vercel.app/payment"),
+        Uri.parse("https://obole-back.onrender.com/payment"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -94,7 +94,7 @@ class _DashboardPageState extends State<DashboardPage>
 
     try {
       final response = await http.get(
-        Uri.parse("https://back1-one.vercel.app/transaction"),
+        Uri.parse("https://obole-back.onrender.com/transaction"),
         headers: {
           'Authorization': 'Bearer $token',
         },
