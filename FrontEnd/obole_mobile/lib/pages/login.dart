@@ -44,6 +44,8 @@ class _LoginPageState extends State<LoginPage> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('token', data["token"]);
           prefs.setInt('tokenTimestamp', DateTime.now().millisecondsSinceEpoch);
+          prefs.setString('accountNumber', accountNumber);
+          prefs.setString('password', password);
 
           // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
