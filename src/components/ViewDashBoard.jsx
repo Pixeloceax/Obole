@@ -5,7 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 // Import components
-import Loader from "./Loader";
+import Loader from "./loader";
 import Information from "./Information";
 
 // Import assets
@@ -41,24 +41,23 @@ function ViewDashBoard() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          process.env.REACT_APP_CONNECTION_STRING + `/user`,
+          `${process.env.REACT_APP_CONNECTION_STRING}/user`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-        if (!response.ok) {
+        if (response.status !== 200) {
           throw new Error("Something went wrong!");
         }
-        const result = await response.json();
-        setData(result);
+        setData(response.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  });
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

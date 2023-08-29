@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 // Import components
-import Loader from "./Loader";
+import Loader from "./loader";
 
 // Import assets
 import logo from "../assets/Logo_white_bg_gray.png";
@@ -17,7 +17,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function CartesBancaires() {
-  const _id = sessionStorage.getItem("_id");
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -31,22 +30,22 @@ function CartesBancaires() {
             },
           }
         );
-        if (!response.ok) {
+        if (response.status !== 200) {
           throw new Error("Something went wrong!");
         }
-        const result = await response.json();
-        setData(result);
+        setData(response.data);
       } catch (error) {
-        console.error(error);
+        console.error(error + "error!!!!!");
       }
     };
     fetchData();
-  }, [_id]);
+  }, []);
 
   const handleAddCard = async () => {
     try {
       const response = await axios.post(
         process.env.REACT_APP_CONNECTION_STRING + `/card`,
+        {},
         {
           headers: {
             "Content-Type": "application/json",
@@ -54,14 +53,13 @@ function CartesBancaires() {
           },
         }
       );
-      if (!response.ok) {
+      if (response.status !== 201) {
         throw new Error("Something went wrong!");
       }
-      const result = await response.json();
-      setData(result);
+      setData(response.data);
       window.location.reload(true);
     } catch (error) {
-      console.error(error);
+      console.error(error + "error!!!!!");
     }
   };
 
@@ -101,22 +99,21 @@ function CartesBancaires() {
       const response = await axios.put(
         process.env.REACT_APP_CONNECTION_STRING +
           `/card/${data[index].cardNumber}`,
+        requestBody,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestBody),
         }
       );
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error("Something went wrong!");
       }
-      const result = await response.json();
-      setData(result);
+      setData(response.data);
       window.location.reload(true);
     } catch (error) {
-      console.error(error);
+      console.error(error + "error!!!!!");
     }
   };
 
@@ -131,14 +128,13 @@ function CartesBancaires() {
           },
         }
       );
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error("Something went wrong!");
       }
-      const result = await response.json();
-      setData(result);
+      setData(response.data);
       window.location.reload(true);
     } catch (error) {
-      console.error(error);
+      console.error(error + "error!!!!!");
     }
   };
 

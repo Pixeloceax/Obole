@@ -6,7 +6,7 @@ import { Doughnut } from "react-chartjs-2";
 import * as chart from "chart.js/auto";
 
 // Import components
-import Loader from "./Loader";
+import Loader from "./loader";
 
 const StatisticsTable = () => {
   const [data, setData] = useState(null);

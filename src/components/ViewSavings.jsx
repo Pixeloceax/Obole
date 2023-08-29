@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 // Import components
-import Loader from "./Loader";
+import Loader from "./loader";
 
 // Import assets
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,24 +37,24 @@ const ViewSavings = () => {
     try {
       const response = await axios.post(
         process.env.REACT_APP_CONNECTION_STRING + `/saving`,
+        { type: type },
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({ type: type }),
         }
       );
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
+      if (response.status !== 200) {
+        return;
       }
-      const result = await response.json();
-      setData(result);
+      setData(response.data);
       window.location.reload(true);
     } catch (error) {
       console.error(error.message);
-      window.alert(error);
+      window.alert(
+        "Une erreur est survenue, vous ne pouvez pas crée de compte ayant le même type'"
+      );
     }
   };
 
