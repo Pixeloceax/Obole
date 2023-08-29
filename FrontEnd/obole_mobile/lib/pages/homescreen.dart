@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+// Import components
 import '../main.dart';
 
 class HomeScreen extends StatefulWidget {

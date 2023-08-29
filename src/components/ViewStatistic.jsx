@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+
+// Import dependencies
 import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
 import * as chart from "chart.js/auto";
-import Loader from "./loader";
+
+// Import components
+import Loader from "./Loader";
 
 const StatisticsTable = () => {
   const [data, setData] = useState(null);

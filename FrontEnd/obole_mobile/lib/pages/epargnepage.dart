@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+
+// Import dependencies
 import 'package:http/http.dart' as http;
-import 'package:obole_mobile/main.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// Import components
 import '../utils/Navbar.dart';
+import 'package:obole_mobile/main.dart';
 
 class EpargnePage extends StatefulWidget {
   const EpargnePage({Key? key}) : super(key: key);
@@ -37,6 +41,7 @@ class _EpargnePageState extends State<EpargnePage> {
           data = jsonDecode(response.body);
         });
       } else {
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed('/login');
       }
     } catch (error) {
@@ -64,12 +69,8 @@ class _EpargnePageState extends State<EpargnePage> {
 
       if (response.statusCode == 200) {
         fetchData();
-      } else {
-        // Handle error scenario
-      }
-    } catch (error) {
-      // Handle error scenario
-    }
+      } else {}
+    } catch (error) {}
   }
 
   @override

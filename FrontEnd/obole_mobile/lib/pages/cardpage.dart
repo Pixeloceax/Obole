@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:obole_mobile/main.dart';
+
+// Import dependencies
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+// Import components
 import '../utils/navbar.dart';
+import 'package:obole_mobile/main.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({Key? key}) : super(key: key);
@@ -48,11 +52,12 @@ class _CardPageState extends State<CardPage>
         setState(() {
           data = json.decode(response.body);
         });
-        print('data $data');
       } else {
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed('/login');
       }
     } catch (error) {
+      // ignore: avoid_print
       print("Error: $error");
     }
   }
@@ -68,9 +73,9 @@ class _CardPageState extends State<CardPage>
     return Scaffold(
       body: Row(
         children: [
-          Container(
+          const SizedBox(
             width: 80,
-            child: const NavbarComponents(),
+            child: NavbarComponents(),
           ),
           Expanded(
             flex: 1,

@@ -1,5 +1,6 @@
 import React from "react";
 
+// Import components
 import Navbar from "../components/Navbar";
 import ViewMessage from "../components/ViewMessage";
 

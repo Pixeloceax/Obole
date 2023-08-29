@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:obole_mobile/main.dart';
-import '../utils/Navbar.dart';
+
+// Import dependencies
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+// Import components
+import 'package:obole_mobile/main.dart';
+import '../utils/Navbar.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -51,16 +55,17 @@ class _DashboardPageState extends State<DashboardPage>
           data = jsonDecode(response.body);
         });
       } else {
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed('/login');
       }
     } catch (error) {
+      // ignore: avoid_print
       print("Error: $error");
     }
   }
 
   Future<void> handleDataFetch() async {
     String token = await getToken();
-    print("token; $token");
 
     try {
       final response = await http.get(
@@ -75,16 +80,17 @@ class _DashboardPageState extends State<DashboardPage>
           dataPayment = jsonDecode(response.body);
         });
       } else {
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed('/login');
       }
     } catch (error) {
+      // ignore: avoid_print
       print("Error: $error");
     }
   }
 
   Future<void> handleDatatransaction() async {
     String token = await getToken();
-    print("token; $token");
 
     try {
       final response = await http.get(
@@ -94,22 +100,17 @@ class _DashboardPageState extends State<DashboardPage>
         },
       );
 
-      print("response: ${response.body}");
-
       if (response.statusCode == 200) {
         setState(() {
           dataTransaction = jsonDecode(response.body);
         });
-        for (var i = 0; i < dataTransaction.length; i++) {
-          print(
-              "datatransaction: ${dataTransaction[i]['destinationAccount'].runtimeType}, ${data['Account']['accountNumber'].runtimeType}");
-          print(int.tryParse(dataTransaction[i]['destinationAccount']) ==
-              data['Account']['accountNumber']);
-        }
+        for (var i = 0; i < dataTransaction.length; i++) {}
       } else {
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed('/login');
       }
     } catch (error) {
+      // ignore: avoid_print
       print("Error: $error");
     }
   }
@@ -118,6 +119,7 @@ class _DashboardPageState extends State<DashboardPage>
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
     await prefs.remove('tokenTimestamp');
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacementNamed('/login');
   }
 

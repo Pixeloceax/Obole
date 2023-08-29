@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-// import jwtDecode from "jwt-decode";
 
-// const account = jwtDecode(localStorage.getItem("token"));
-// const acc = account.accountNumber.toString();
+// Import dependencies
+import axios from "axios";
 
 const TransactionViewer = () => {
   const [transactions, setTransactions] = useState([]);

@@ -27,6 +27,7 @@ const HomePage = () => {
       <main className="container mx-auto flex-grow px-4 py-20 text-center pt-52">
         <h2 className="text-6xl font-extrabold mb-6">La banque de demain</h2>
       </main>
+
       <section className="bg-black text-white py-20 text-center justify-center items-center">
         <h3 className="text-xl font-bold mb-4">Sécurité</h3>
         <h3 className="text-3xl font-bold mb-4">Sécurité de bout en bout</h3>
@@ -90,6 +91,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
       <footer>
         <div className="bg-black py-6">
           <div className="container mx-auto flex justify-center items-center px-4">

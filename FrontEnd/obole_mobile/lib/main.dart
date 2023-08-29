@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+
+// import dependencies
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+// import components
 import 'package:obole_mobile/pages/homescreen.dart';
 import 'package:obole_mobile/pages/login.dart';
 import 'package:obole_mobile/pages/register.dart';
@@ -6,7 +11,6 @@ import 'package:obole_mobile/pages/dashboard.dart';
 import 'package:obole_mobile/pages/cardpage.dart';
 import 'package:obole_mobile/pages/messagepage.dart';
 import 'package:obole_mobile/pages/epargnepage.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +27,7 @@ class CustomColors {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

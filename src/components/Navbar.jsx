@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+
+// Import dependencies
 import { Link, useLocation } from "react-router-dom";
 
-// images
+// Import assets
 import Logo from "../assets/Logo_white_bg_gray.png";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faWallet,
@@ -38,9 +39,7 @@ const Navbar = () => {
               key={link.path}
               className={
                 `flex flex-row items-center justify-center space-y-1 rounded-xl p-2 flex-grow` +
-                (location.pathname === link.path
-                  ? " text-purple_clair"
-                  : " ")
+                (location.pathname === link.path ? " text-purple_clair" : " ")
               }
               to={link.path}
             >

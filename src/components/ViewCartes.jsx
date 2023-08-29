@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
-import logo from "../assets/Logo_white_bg_gray.png";
 
+// Import dependencies
+import axios from "axios";
+
+// Import components
+import Loader from "./Loader";
+
+// Import assets
+import logo from "../assets/Logo_white_bg_gray.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrashCan,
@@ -9,8 +16,6 @@ import {
   faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 
-import Loader from "./loader";
-
 function CartesBancaires() {
   const _id = sessionStorage.getItem("_id");
   const [data, setData] = useState(null);
@@ -18,7 +23,7 @@ function CartesBancaires() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           process.env.REACT_APP_CONNECTION_STRING + `/card`,
           {
             headers: {
@@ -40,10 +45,9 @@ function CartesBancaires() {
 
   const handleAddCard = async () => {
     try {
-      const response = await fetch(
+      const response = await axios.post(
         process.env.REACT_APP_CONNECTION_STRING + `/card`,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -71,6 +75,9 @@ function CartesBancaires() {
           "Veuillez entrer le nouveau plafond pour la carte :"
         );
         while (!/^[0-9]+$/.test(newPlafond) || newPlafond < [index].used) {
+          if (newPlafond === null) {
+            return;
+          }
           alert(
             "Veuillez entrer uniquement des nombres et un montant supérieur à votre dépense effectuée."
           );
@@ -91,11 +98,10 @@ function CartesBancaires() {
         limit: newPlafond === undefined ? data[index].limit : newPlafond,
       };
 
-      const response = await fetch(
+      const response = await axios.put(
         process.env.REACT_APP_CONNECTION_STRING +
           `/card/${data[index].cardNumber}`,
         {
-          method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
@@ -116,11 +122,10 @@ function CartesBancaires() {
 
   const handleDelete = (index) => async () => {
     try {
-      const response = await fetch(
+      const response = await axios.delete(
         process.env.REACT_APP_CONNECTION_STRING +
           `/card/${data[index].cardNumber}`,
         {
-          method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -140,8 +145,11 @@ function CartesBancaires() {
   return (
     <div>
       {data ? (
-        <div className={data.length == 2 ? `p-6 bg-white h-fit` :
-        `p-6 bg-white h-screen`}>
+        <div
+          className={
+            data.length === 2 ? `p-6 bg-white h-fit` : `p-6 bg-white h-screen`
+          }
+        >
           <div className="flex justify-between">
             <h1 className="text-3xl font-extrabold text-gray-900">
               Cartes bancaires

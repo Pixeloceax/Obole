@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+// Import components
 import '../main.dart';
 
 class NavbarComponents extends StatefulWidget {
@@ -30,7 +32,7 @@ class _NavbarComponentsState extends State<NavbarComponents>
       decoration: const BoxDecoration(
         color: CustomColors.black,
       ),
-      child: Container(
+      child: SizedBox(
         width: 80,
         child: Scaffold(
           backgroundColor: Colors.transparent,

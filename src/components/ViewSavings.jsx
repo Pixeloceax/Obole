@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
+
+// Import dependencies
 import axios from "axios";
-import Loader from "./loader";
+
+// Import components
+import Loader from "./Loader";
+
+// Import assets
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
 const ViewSavings = () => {
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
   const [selectedType, setSelectedType] = useState("A");
 
   useEffect(() => {
@@ -30,10 +35,9 @@ const ViewSavings = () => {
 
   const handleSaving = async (type) => {
     try {
-      const response = await fetch(
+      const response = await axios.post(
         process.env.REACT_APP_CONNECTION_STRING + `/saving`,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -50,7 +54,6 @@ const ViewSavings = () => {
       window.location.reload(true);
     } catch (error) {
       console.error(error.message);
-      setError(error.message);
       window.alert(error);
     }
   };

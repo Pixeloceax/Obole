@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+// Import assets
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleRight,

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
+
+// Import dependencies
+import axios from "axios";
+
+// Import assets
 import logo from "../assets/Logo_white_bg_gray.png";
-import "../styles/index.css";
 
 const Register = () => {
   const [message, setMessage] = useState("");
@@ -11,11 +15,14 @@ const Register = () => {
     const formData = new FormData(event.target);
     const formDataJSON = Object.fromEntries(formData.entries());
 
-    const response = await fetch("https://obole-back.onrender.com/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formDataJSON),
-    });
+    const response = await axios.post(
+      "https://obole-back.onrender.com/register",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formDataJSON),
+      }
+    );
 
     const data = await response.json();
     if (data.message === "User Created Successfully") {

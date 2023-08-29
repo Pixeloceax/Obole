@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+// Import components
 import '../main.dart';
 import '../utils/navbar.dart';
 
@@ -75,13 +77,13 @@ class _MessagePageState extends State<MessagePage>
     return Scaffold(
       body: Row(
         children: [
-          Container(
+          const SizedBox(
             width: 80,
-            child: const NavbarComponents(),
+            child: NavbarComponents(),
           ),
           Stack(
             children: [
-              Container(
+              SizedBox(
                 width: 280,
                 child: ListView(
                   children: discussions

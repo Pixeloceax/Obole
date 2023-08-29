@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+
+// Import dependencies
 import axios from "axios";
 
 const PaymentViewer = () => {

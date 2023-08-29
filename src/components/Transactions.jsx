@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+
+// Import dependencies
 import axios from "axios";
 
+// Import components
 import PaymentViewer from "./PaymentViewer";
 import TransactionViewer from "./TransactionViewer";
 

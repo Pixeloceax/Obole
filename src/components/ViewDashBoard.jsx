@@ -1,9 +1,14 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+
+// Import dependencies
+import axios from "axios";
 import { Link } from "react-router-dom";
 
-import Loader from "./loader";
+// Import components
+import Loader from "./Loader";
 import Information from "./Information";
+
+// Import assets
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -27,16 +32,15 @@ const Modal = ({ isOpen, onClose, deconexion }) => {
   );
 };
 
-function AccountOverview() {
+function ViewDashBoard() {
   const [data, setData] = useState(null);
   const [transaction, setTransaction] = useState([]);
   const [payment, setPayment] = useState([]);
-  let i = 0;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           process.env.REACT_APP_CONNECTION_STRING + `/user`,
           {
             headers: {
@@ -129,7 +133,7 @@ function AccountOverview() {
 
   const deconexion = () => {
     localStorage.clear();
-    window.location.href = "/lo=gin";
+    window.location.href = "/login";
   };
 
   return (
@@ -210,7 +214,7 @@ function AccountOverview() {
                 {data.SavingsAccount.map((livret, index) => (
                   <div
                     className={`flex items-center justify-center md:w-[50%] ${
-                      index == 0
+                      index === 0
                         ? ""
                         : "md:border-r-2 border-b-2 md:border-b-0 border-white"
                     }`}
@@ -297,4 +301,4 @@ function AccountOverview() {
   );
 }
 
-export default AccountOverview;
+export default ViewDashBoard;

@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
+
+// Import dependencies
 import axios from "axios";
-import logo from "../assets/Logo_white_bg_gray.png";
 import jwtDecode from "jwt-decode";
+
+// Import assets
+import logo from "../assets/Logo_white_bg_gray.png";
 
 const Login = ({ handleLogin }) => {
   const [message, setMessage] = useState("");
@@ -24,9 +28,8 @@ const Login = ({ handleLogin }) => {
     }
 
     try {
-      console.log(process.env.REACT_APP_CONNECTION_STRING + "/login");
       const response = await axios.post(
-        process.env.REACT_APP_CONNECTION_STRING + "/login",
+        `${process.env.REACT_APP_CONNECTION_STRING}/login`,
         formDataJSON
       );
 

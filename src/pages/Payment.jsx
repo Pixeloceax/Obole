@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+
+// Import dependencies
 import axios from "axios";
+
+// Import components
 import Modal from "../components/Modal";
 
 const Payment = () => {

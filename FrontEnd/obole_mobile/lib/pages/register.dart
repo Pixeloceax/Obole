@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:obole_mobile/main.dart'; // You might need to adjust the import path
-import 'package:obole_mobile/pages/login.dart';
+
+// Import dependencies
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+// Import components
+import 'package:obole_mobile/pages/login.dart';
+import 'package:obole_mobile/main.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -47,7 +51,6 @@ class _RegisterPageState extends State<RegisterPage> {
       "gender": gender,
       "address": address,
     };
-    print(formDataJSON);
 
     try {
       final response = await http.post(

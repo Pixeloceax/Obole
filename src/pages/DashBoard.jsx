@@ -1,17 +1,18 @@
 import React from "react";
-import AccountOverview from "../components/AccountOverview";
-import Navbar from "../components/Navbar";
 
-const DashBoard = (isLoggedIn) => {
+// Import components
+import Navbar from "../components/Navbar";
+import ViewDashBoard from "../components/ViewDashBoard";
+
+const DashBoard = ({ isLoggedIn }) => {
   if (isLoggedIn) {
   }
+
   return (
     <div className="bg-white h-screen">
-      <div className="flex">
-        <Navbar />
-        <div className="w-full md:pl-40 pl-20">
-          <AccountOverview />
-        </div>
+      <Navbar className="fixed top-0 w-full z-50" />
+      <div className="w-full md:pl-40 pl-20">
+        <ViewDashBoard />
       </div>
     </div>
   );

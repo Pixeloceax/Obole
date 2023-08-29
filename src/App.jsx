@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
-// pages
+// Import pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -69,7 +69,9 @@ function App() {
             )
           }
         />
+
         <Route path="/register" element={<Register />} />
+
         <Route
           path="/dashboard"
           element={
@@ -80,22 +82,27 @@ function App() {
             )
           }
         />
+
         <Route
           path="/dashboard/transaction"
           element={checkAuth() ? <TransactionForm /> : <Navigate to="/login" />}
         />
+
         <Route
           path="/dashboard/cartes"
           element={checkAuth() ? <Cartes /> : <Navigate to="/login" />}
         />
+
         <Route
           path="/dashboard/epargne"
           element={checkAuth() ? <Epargne /> : <Navigate to="/login" />}
         />
+
         <Route
           path="/dashboard/statistic"
           element={checkAuth() ? <Statistic /> : <Navigate to="/login" />}
         />
+
         <Route
           path="/dashboard/message"
           element={checkAuth() ? <Message /> : <Navigate to="/login" />}
@@ -107,6 +114,7 @@ function App() {
         />
 
         <Route path="/payment" element={<Payment />} />
+
         <Route path="/*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+
+// Import dependencies
 import 'package:flutter/services.dart';
-import '../main.dart';
-import './dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+
+// Import components
+import '../main.dart';
+import './dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -27,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
       "accountNumber": accountNumber,
       "password": password,
     };
-    print("https://back1-one.vercel.app/login");
 
     try {
       final response = await http.post(
@@ -42,10 +45,10 @@ class _LoginPageState extends State<LoginPage> {
           prefs.setString('token', data["token"]);
           prefs.setInt('tokenTimestamp', DateTime.now().millisecondsSinceEpoch);
 
-          // Navigate to Dashboard
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => DashboardPage()),
+            MaterialPageRoute(builder: (context) => const DashboardPage()),
           );
         } else {
           setState(() {
@@ -58,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     } catch (error) {
-      print(error);
       setState(() {
         message = "An error occurred while logging in.";
       });
@@ -72,12 +74,13 @@ class _LoginPageState extends State<LoginPage> {
 
     if (token != null && tokenTimestamp != null) {
       final currentTime = DateTime.now().millisecondsSinceEpoch;
-      const fiveMinutesInMillis = 5 * 60 * 1000; // 5 minutes in milliseconds
+      const fiveMinutesInMillis = 5 * 60 * 1000;
 
       if (currentTime - tokenTimestamp <= fiveMinutesInMillis) {
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => DashboardPage()),
+          MaterialPageRoute(builder: (context) => const DashboardPage()),
         );
       }
     }
@@ -89,10 +92,9 @@ class _LoginPageState extends State<LoginPage> {
 
     if (tokenTimestamp != null) {
       final currentTime = DateTime.now().millisecondsSinceEpoch;
-      const fiveMinutesInMillis = 5 * 60 * 1000; // 5 minutes in milliseconds
+      const fiveMinutesInMillis = 5 * 60 * 1000;
 
       if (currentTime - tokenTimestamp > fiveMinutesInMillis) {
-        // Clear token and timestamp
         prefs.remove('token');
         prefs.remove('tokenTimestamp');
       }
