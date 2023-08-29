@@ -27,6 +27,7 @@ const Login = ({ handleLogin }) => {
       return;
     }
     try {
+      console.log(process.env.REACT_APP_CONNECTION_STRING);
       const response = await axios.post(
         `${process.env.REACT_APP_CONNECTION_STRING}/login`,
         formDataJSON,
