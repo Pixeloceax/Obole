@@ -24,6 +24,7 @@ yarn-error.log*
 
 # dependencies
 package-lock.json
+package-lock
 node_modules
 
 .env
