@@ -26,11 +26,11 @@ const Login = ({ handleLogin }) => {
       setMessage("An error occurred while logging in.");
       return;
     }
-
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_CONNECTION_STRING}/login`,
-        formDataJSON
+        formDataJSON,
+        { withCredentials: true }
       );
 
       if (
