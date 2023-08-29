@@ -23,7 +23,7 @@ async function getStatusTransaction(transactionId: string) {
 
 async function updateTransactionStatus(
   transactionId: string,
-  newStatus: string
+  newStatus: "pending" | "completed" | "cancelled"
 ) {
   try {
     const transaction = await Transaction.findById(transactionId);
