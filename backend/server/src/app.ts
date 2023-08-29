@@ -21,8 +21,8 @@ const app = express();
 
 dbConnect();
 
-const corsOptions = {
-  origin: "*",
+const corsOptions: cors.CorsOptions = {
+  origin: [process.env.CORS_ORIGIN || "", process.env.CORS_ORIGIN_DEV || ""],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
