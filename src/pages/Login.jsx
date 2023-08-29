@@ -27,11 +27,16 @@ const Login = ({ handleLogin }) => {
       return;
     }
     try {
-      console.log(process.env.REACT_APP_CONNECTION_STRING);
       const response = await axios.post(
         `${process.env.REACT_APP_CONNECTION_STRING}/login`,
         formDataJSON,
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          },
+        }
       );
 
       if (
