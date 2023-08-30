@@ -212,6 +212,7 @@ function ViewDashBoard() {
               <div className="flex justify-around flex-col md:flex-row">
                 {data.SavingsAccount.map((livret, index) => (
                   <div
+                    key={livret.type}
                     className={`flex items-center justify-center md:w-[50%] ${
                       index === 0
                         ? ""
