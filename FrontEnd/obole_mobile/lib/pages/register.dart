@@ -54,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       final response = await http.post(
-        Uri.parse("https://back1-one.vercel.app/register"),
+        Uri.parse("https://obole-back.onrender.com/register"),
         headers: {"Content-Type": "application/json"},
         body: json.encode(formDataJSON),
       );

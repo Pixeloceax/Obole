@@ -42,7 +42,7 @@ class _CardPageState extends State<CardPage>
 
     try {
       final response = await http.get(
-        Uri.parse("https://back1-one.vercel.app/card"),
+        Uri.parse("https://obole-back.onrender.com/card"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -297,7 +297,7 @@ class _CardPageState extends State<CardPage>
 
       try {
         final response = await http.put(
-          Uri.parse("https://back1-one.vercel.app/card/$cardId"),
+          Uri.parse("https://obole-back.onrender.com/card/$cardId"),
           headers: {
             'Authorization': 'Bearer $token',
             'Accept': 'application/json',
@@ -335,7 +335,7 @@ class _CardPageState extends State<CardPage>
 
       try {
         final response = await http.put(
-          Uri.parse("https://back1-one.vercel.app/card/$cardId"),
+          Uri.parse("https://obole-back.onrender.com/card/$cardId"),
           headers: {
             'Authorization': 'Bearer $token',
             'Accept': 'application/json',
@@ -373,7 +373,7 @@ class _CardPageState extends State<CardPage>
 
       try {
         final response = await http.put(
-          Uri.parse("https://back1-one.vercel.app/card/$cardId"),
+          Uri.parse("https://obole-back.onrender.com/card/$cardId"),
           headers: {
             'Authorization': 'Bearer $token',
             'Accept': 'application/json',
@@ -407,7 +407,7 @@ class _CardPageState extends State<CardPage>
 
     try {
       final response = await http.delete(
-        Uri.parse("https://back1-one.vercel.app/card/$cardId"),
+        Uri.parse("https://obole-back.onrender.com/card/$cardId"),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -431,7 +431,7 @@ class _CardPageState extends State<CardPage>
 
     try {
       final response = await http.post(
-        Uri.parse("https://back1-one.vercel.app/card"),
+        Uri.parse("https://obole-back.onrender.com/card"),
         headers: {
           'Authorization': 'Bearer $token',
         },
