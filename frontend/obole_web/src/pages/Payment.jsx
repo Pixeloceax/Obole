@@ -51,7 +51,6 @@ const Payment = () => {
         formData
       );
 
-      console.log("Response from the backend:", response.data);
       if (response.status >= 400) {
         console.error("Error response from the backend:", response.data);
       } else {
