@@ -11,7 +11,14 @@ export const openSaving = async (req: Request, res: Response) => {
   const savingAccountNumber = Math.floor(Math.random() * 1000000000000);
   const type = req.body.type;
   const savingsBalance = 0;
-  const interestRate = 1;
+  let interestRate;
+
+  if (type !== "A") {
+    interestRate = 3;
+  }
+  else {
+    interestRate = 4;
+  }
 
   try {
     const existingAccount = user.SavingsAccount.find(

@@ -215,7 +215,7 @@ function ViewDashBoard() {
                     className={`flex items-center justify-center md:w-[50%] ${
                       index === 0
                         ? ""
-                        : "md:border-r-2 border-b-2 md:border-b-0 border-white"
+                        : "md:border-l-2 border-b-2 md:border-b-0 border-white"
                     }`}
                   >
                     <div className="text-center">
@@ -230,13 +230,13 @@ function ViewDashBoard() {
                       </p>
                       <div className="flex justify-between mb-4">
                         <p className="text-white font-bold md:text-4xl text-xl">
-                          {livret.type === "A"
-                            ? (2 / 100) * livret.savingsBalance
-                            : (3 / 100) * livret.savingsBalance}{" "}
+                          +{livret.type === "A"
+                            ? ((3 / 100) * livret.savingsBalance).toFixed(2)
+                            : ((4 / 100) * livret.savingsBalance).toFixed(2)}{" "}
                           €
                         </p>
                         <p className="text-white font-bold md:text-4xl text-xl">
-                          {livret.type === "A" ? "2%" : "3%"}
+                          {livret.type === "A" ? "3%" : "4%"}
                         </p>
                       </div>
                     </div>

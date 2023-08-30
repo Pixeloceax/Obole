@@ -153,7 +153,7 @@ function CartesBancaires() {
           </div>
           {data.map((carte, index) => (
             <div
-              key={carte._id}
+              key={index}
               className="bg-purple rounded-3xl shadow-xl border-b-6 border-r-6 border-gray-700 p-6 mb-6"
             >
               <div className="flex justify-between items-center">
