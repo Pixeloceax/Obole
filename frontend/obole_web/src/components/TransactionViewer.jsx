@@ -19,7 +19,7 @@ const TransactionViewer = () => {
         );
         setTransactions(response.data);
       } catch (error) {
-        console.error(error);
+        throw new Error(error);
       }
     };
 

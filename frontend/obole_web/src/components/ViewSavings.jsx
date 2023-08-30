@@ -13,6 +13,7 @@ import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 const ViewSavings = () => {
   const [data, setData] = useState([]);
   const [selectedType, setSelectedType] = useState("A");
+  const [responseStatus, setResponseStatus] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +28,7 @@ const ViewSavings = () => {
         );
         setData(response.data);
       } catch (error) {
-        console.error(error);
+        setResponseStatus(error.response);
       }
     };
     fetchData();
@@ -51,7 +52,6 @@ const ViewSavings = () => {
       setData(response.data);
       window.location.reload(true);
     } catch (error) {
-      console.error(error.message);
       window.alert(
         "Une erreur est survenue, vous ne pouvez pas crée de compte ayant le même type'"
       );

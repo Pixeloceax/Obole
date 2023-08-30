@@ -53,7 +53,7 @@ function ViewDashBoard() {
         }
         setData(response.data);
       } catch (error) {
-        console.error(error);
+        throw new Error(error);
       }
     };
     fetchData();
@@ -72,7 +72,7 @@ function ViewDashBoard() {
         );
         setPayment(response.data);
       } catch (error) {
-        console.error(error);
+        throw new Error(error);
       }
     };
 
@@ -94,7 +94,7 @@ function ViewDashBoard() {
         );
         setTransaction(response.data);
       } catch (error) {
-        console.error(error);
+        throw new Error(error);
       }
     };
 
@@ -230,9 +230,12 @@ function ViewDashBoard() {
                       </p>
                       <div className="flex justify-between mb-4">
                         <p className="text-white font-bold md:text-4xl text-xl">
-                          +{livret.type === "A"
+                          +
+                          {livret.type === "A"
                             ? ((3 / 100) * livret.savingsBalance).toFixed(2)
-                            : ((4 / 100) * livret.savingsBalance).toFixed(2)}{" "}
+                            : ((4 / 100) * livret.savingsBalance).toFixed(
+                                2
+                              )}{" "}
                           €
                         </p>
                         <p className="text-white font-bold md:text-4xl text-xl">
