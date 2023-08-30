@@ -3,9 +3,6 @@ import React, { useState } from "react";
 // Import dependencies
 import axios from "axios";
 
-// Import components
-import Modal from "../components/Modal";
-
 const Payment = () => {
   const getCurrentYear = () => new Date().getFullYear();
   const months = Array.from({ length: 12 }, (_, index) => index + 1);
@@ -24,16 +21,7 @@ const Payment = () => {
     "Autres",
   ];
   const [setData] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
+  const [responseStatus, setResponseStatus] = useState(null);
   const [formData, setFormData] = useState({
     cardNumber: "",
     card_holder: "",
@@ -55,7 +43,7 @@ const Payment = () => {
         console.error("Error response from the backend:", response.data);
       } else {
         setData(response.data);
-        openModal();
+        setResponseStatus(response.status);
       }
     } catch (error) {
       if (error.response) {
@@ -222,13 +210,8 @@ const Payment = () => {
           value="Acheter"
           className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         />
-        {modalIsOpen && (
-          <Modal isOpen={true} onClose={closeModal}>
-            <h2>Payment Successful</h2>
-            <p>Thank you for your purchase</p>
-          </Modal>
-        )}
       </form>
+      {{ responseStatus } && <p>{responseStatus}</p>}
     </div>
   );
 };
