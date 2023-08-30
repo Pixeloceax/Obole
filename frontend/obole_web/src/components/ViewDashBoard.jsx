@@ -103,13 +103,14 @@ function ViewDashBoard() {
 
   const matchingTransactions = [];
 
-  for (const transactions of transaction) {
-    const destinationAccount = transactions.destinationAccount;
-    if (parseInt(destinationAccount) === data.Account.accountNumber) {
-      matchingTransactions.push(transactions);
+  if (data) {
+    for (const transactions of transaction) {
+      const destinationAccount = transactions.destinationAccount;
+      if (parseInt(destinationAccount) === data.Account.accountNumber) {
+        matchingTransactions.push(transactions);
+      }
     }
   }
-
   const formattedTransactions = matchingTransactions.map(
     (matchingTransactions) => `${matchingTransactions.amount} €`
   );
