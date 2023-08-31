@@ -34,11 +34,21 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token && !isTokenExpired(token)) {
-      setIsLoggedIn(true);
+    if (token) {
+      try {
+        jwtDecode(token);
+        if (!isTokenExpired(token)) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+          localStorage.removeItem("token");
+        }
+      } catch (error) {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+      }
     } else {
       setIsLoggedIn(false);
-      localStorage.removeItem("token");
     }
   }, []);
 
@@ -54,7 +64,6 @@ function App() {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
   };
-
   return (
     <BrowserRouter>
       <Routes>
