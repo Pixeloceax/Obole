@@ -10,6 +10,7 @@ import Loader from "./loader";
 
 const StatisticsTable = () => {
   const [data, setData] = useState(null);
+  const [responseStatus, setResponseStatus] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +48,7 @@ const StatisticsTable = () => {
           transactions: groupedTransactions,
         });
       } catch (error) {
-        console.error(error);
+        setResponseStatus(error.response);
       }
     };
 
@@ -87,6 +88,11 @@ const StatisticsTable = () => {
               <Doughnut data={paymentChartData} />
             </div>
           </div>
+          {responseStatus && (
+            <div className="text-center text-red-500">
+              {responseStatus.data.message}
+            </div>
+          )}
         </div>
       ) : (
         <Loader />

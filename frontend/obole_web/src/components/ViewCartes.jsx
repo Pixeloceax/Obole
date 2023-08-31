@@ -18,6 +18,7 @@ import {
 
 function CartesBancaires() {
   const [data, setData] = useState(null);
+  const [responseStatus, setResponseStatus] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +36,7 @@ function CartesBancaires() {
         }
         setData(response.data);
       } catch (error) {
-        console.error(error + "error!!!!!");
+        setResponseStatus(error.message);
       }
     };
     fetchData();
@@ -59,7 +60,7 @@ function CartesBancaires() {
       setData(response.data);
       window.location.reload(true);
     } catch (error) {
-      console.error(error + "error!!!!!");
+      setResponseStatus(error.message);
     }
   };
 
@@ -113,7 +114,7 @@ function CartesBancaires() {
       setData(response.data);
       window.location.reload(true);
     } catch (error) {
-      console.error(error + "error!!!!!");
+      setResponseStatus(error.message);
     }
   };
 
@@ -134,7 +135,7 @@ function CartesBancaires() {
       setData(response.data);
       window.location.reload(true);
     } catch (error) {
-      console.error(error + "error!!!!!");
+      setResponseStatus(error.message);
     }
   };
 
@@ -306,6 +307,9 @@ function CartesBancaires() {
               <FontAwesomeIcon icon={faCirclePlus} className="text-6xl" />
             </button>
           </div>
+          {responseStatus && (
+            <p className="text-red-500 text-center">{responseStatus}</p>
+          )}
         </div>
       ) : (
         <Loader />

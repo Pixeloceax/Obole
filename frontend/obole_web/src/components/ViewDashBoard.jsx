@@ -53,7 +53,7 @@ function ViewDashBoard() {
         }
         setData(response.data);
       } catch (error) {
-        console.error(error);
+        throw new Error(error);
       }
     };
     fetchData();
@@ -72,7 +72,7 @@ function ViewDashBoard() {
         );
         setPayment(response.data);
       } catch (error) {
-        console.error(error);
+        throw new Error(error);
       }
     };
 
@@ -94,7 +94,7 @@ function ViewDashBoard() {
         );
         setTransaction(response.data);
       } catch (error) {
-        console.error(error);
+        throw new Error(error);
       }
     };
 
@@ -103,13 +103,14 @@ function ViewDashBoard() {
 
   const matchingTransactions = [];
 
-  for (const transactions of transaction) {
-    const destinationAccount = transactions.destinationAccount;
-    if (parseInt(destinationAccount) === data.Account.accountNumber) {
-      matchingTransactions.push(transactions);
+  if (data) {
+    for (const transactions of transaction) {
+      const destinationAccount = transactions.destinationAccount;
+      if (parseInt(destinationAccount) === data.Account.accountNumber) {
+        matchingTransactions.push(transactions);
+      }
     }
   }
-
   const formattedTransactions = matchingTransactions.map(
     (matchingTransactions) => `${matchingTransactions.amount} €`
   );
@@ -212,6 +213,7 @@ function ViewDashBoard() {
               <div className="flex justify-around flex-col md:flex-row">
                 {data.SavingsAccount.map((livret, index) => (
                   <div
+                    key={livret.type}
                     className={`flex items-center justify-center md:w-[50%] ${
                       index === 0
                         ? ""
@@ -230,9 +232,12 @@ function ViewDashBoard() {
                       </p>
                       <div className="flex justify-between mb-4">
                         <p className="text-white font-bold md:text-4xl text-xl">
-                          +{livret.type === "A"
+                          +
+                          {livret.type === "A"
                             ? ((3 / 100) * livret.savingsBalance).toFixed(2)
-                            : ((4 / 100) * livret.savingsBalance).toFixed(2)}{" "}
+                            : ((4 / 100) * livret.savingsBalance).toFixed(
+                                2
+                              )}{" "}
                           €
                         </p>
                         <p className="text-white font-bold md:text-4xl text-xl">

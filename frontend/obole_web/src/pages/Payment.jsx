@@ -20,7 +20,7 @@ const Payment = () => {
     "Éducation",
     "Autres",
   ];
-  const [setData] = useState(null);
+  const [data, setData] = useState(null);
   const [responseStatus, setResponseStatus] = useState(null);
   const [formData, setFormData] = useState({
     cardNumber: "",
@@ -40,21 +40,18 @@ const Payment = () => {
       );
 
       if (response.status >= 400) {
-        console.error("Error response from the backend:", response.data);
+        setResponseStatus("Error response from the backend");
       } else {
         setData(response.data);
         setResponseStatus(response.status);
       }
     } catch (error) {
       if (error.response) {
-        console.error("Server responded with an error:", error.response.data);
+        setResponseStatus("Error response from the backend");
       } else if (error.request) {
-        console.error("No response received from the server");
+        setResponseStatus("No response received from the server");
       } else {
-        console.error(
-          "An error occurred while sending the request:",
-          error.message
-        );
+        setResponseStatus("Une erreur est survenue" + error);
       }
     }
   };
@@ -87,7 +84,7 @@ const Payment = () => {
 
       response(paymentBody);
     } catch (error) {
-      console.error(error);
+      setResponseStatus("Une erreur est survenue" + error);
     }
   };
 
@@ -210,8 +207,8 @@ const Payment = () => {
           value="Acheter"
           className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         />
+        {{ responseStatus } && <p>{responseStatus}</p>}
       </form>
-      {{ responseStatus } && <p>{responseStatus}</p>}
     </div>
   );
 };
