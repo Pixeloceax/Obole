@@ -133,13 +133,16 @@ const TransactionForm = () => {
   };
 
   return (
-    <div className=" mx-auto p-4 bg-white shadow-md rounded-lg h-screen">
+    <div className=" mx-auto p-4 bg-white rounded-xl">
       <h1 className="text-2xl font-semibold mb-4 flex justify-center">
         Transfer Funds
       </h1>
 
       <div className="flex justify-center">
-        <form onSubmit={handleTransactionSubmit} className="max-w-xl">
+        <form
+          onSubmit={handleTransactionSubmit}
+          className="max-w-xl bg-purple p-6 rounded-lg shadow-xl"
+        >
           <label htmlFor="amount" className="block font-semibold mb-1">
             Amount
           </label>
@@ -245,11 +248,15 @@ const TransactionForm = () => {
         </div>
       )}
 
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Payments</h2>
-        <PaymentViewer />
-        <h2 className="mb-4 text-lg font-semibold">Transactions</h2>
-        <TransactionViewer />
+      <section className="flex justify-evenly pt-6">
+        <div className="w-[30%] bg-purple_foncer p-3 rounded-xl text-white">
+          <h2 className="mb-4 text-lg font-semibold">Payments</h2>
+          <PaymentViewer />
+        </div>
+        <div className="w-[60%] bg-purple_foncer p-3 rounded-xl text-white">
+          <h2 className="mb-4 text-lg font-semibold">Transactions</h2>
+          <TransactionViewer />
+        </div>
       </section>
     </div>
   );
