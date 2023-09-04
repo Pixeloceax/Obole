@@ -80,7 +80,7 @@ const Register = () => {
                     autoComplete="name"
                     required
                     className="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
-                    placeholder="name"
+                    placeholder="Nom"
                     value={formData.name}
                     onChange={handleInputChange}
                   />
@@ -93,7 +93,7 @@ const Register = () => {
                     autoComplete="lastName"
                     required
                     className="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
-                    placeholder="lastName"
+                    placeholder="Prénom"
                     value={formData.lastName}
                     onChange={handleInputChange}
                   />
@@ -140,7 +140,7 @@ const Register = () => {
                     autoComplete="address"
                     required
                     className="input appearance-none relative block w-full px-3 mr-20 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full sm:text-sm"
-                    placeholder="address"
+                    placeholder="Address"
                     value={formData.address}
                     onChange={handleInputChange}
                   />
