@@ -12,13 +12,13 @@ const HomePage = () => {
               to="/register"
               className="text-black text-xl font-bold mr-4 bg-white px-4 py-2 rounded"
             >
-              Register
+              Inscription
             </Link>
             <Link
               to="/login"
               className="text-white text-xl font-bold mr-4 bg-black px-4 py-2 rounded"
             >
-              Login
+              Connexion
             </Link>
           </nav>
         </div>
