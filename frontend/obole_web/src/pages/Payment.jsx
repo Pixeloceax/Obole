@@ -3,6 +3,9 @@ import React, { useState } from "react";
 // Import dependencies
 import axios from "axios";
 
+// Import assets
+import amazon from "../assets/amazon-logo.png";
+
 const Payment = () => {
   const getCurrentYear = () => new Date().getFullYear();
   const months = Array.from({ length: 12 }, (_, index) => index + 1);
@@ -90,7 +93,8 @@ const Payment = () => {
 
   return (
     <div className="bg-white h-screen flex items-center justify-center">
-      <form className="w-96 bg-[#fff] p-8 shadow-md rounded h-[42rem]">
+      <form className="w-96 bg-[#fff] p-8 shadow-md rounded">
+        <img src={amazon} alt="amazon" className="w-30" />
         <label htmlFor="cardNumber" className="block mb-2">
           Numéro de carte :
         </label>
