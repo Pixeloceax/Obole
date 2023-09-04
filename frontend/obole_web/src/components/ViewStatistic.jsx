@@ -81,11 +81,11 @@ const StatisticsTable = () => {
   return (
     <div className="p-4 bg-white h-screen flex items-center justify-center">
       {data ? (
-        <div className="p-6 w-[60vw]">
+        <div className="p-6 w-[70vw]">
           <div className="h-full flex items-center justify-center">
             <div className="w-3/4 max-w-screen-xl">
-              <h2 className="text-center">Payments and Transactions</h2>
-              <Doughnut data={paymentChartData} />
+              <h2 className="text-center text-xl">Paiements et transactions</h2>
+              <Doughnut data={paymentChartData} className="text-5xl" />
             </div>
           </div>
           {responseStatus && (
