@@ -143,23 +143,24 @@ const TransactionForm = () => {
           onSubmit={handleTransactionSubmit}
           className="max-w-xl bg-purple p-6 rounded-lg shadow-xl"
         >
-          <label htmlFor="amount" className="block font-semibold mb-1">
-            Montant
+          <label htmlFor="sourceAccount" className="block font-semibold mb-1">
+            Compte source
           </label>
-          <input
-            type="number"
-            min="0"
-            id="amount"
-            name="amount"
-            value={amount}
-            onChange={(event) => setAmount(event.target.value)}
-            className="border rounded p-2 w-full mb-2"
-          />
+          <select
+            id="sourceAccount"
+            name="sourceAccount"
+            value={sourceAccount}
+            onChange={(event) => setSourceAccount(event.target.value)}
+            className="border rounded p-2 w-full mb-4"
+          >
+            <option value="default" hidden />
+            <option value="main">Compte principal</option>
+            <option value="A">A</option>
+            <option value="jeune">jeune</option>
+          </select>
 
           <div className="mb-4">
-            <label className="block font-semibold mb-1">
-              Compte de destination
-            </label>
+            <label className="block font-semibold mb-1">Destinataire</label>
             {destinationAccount === "other" ? (
               <>
                 <input
@@ -193,21 +194,18 @@ const TransactionForm = () => {
             )}
           </div>
 
-          <label htmlFor="sourceAccount" className="block font-semibold mb-1">
-            Compte source
+          <label htmlFor="amount" className="block font-semibold mb-1">
+            Montant
           </label>
-          <select
-            id="sourceAccount"
-            name="sourceAccount"
-            value={sourceAccount}
-            onChange={(event) => setSourceAccount(event.target.value)}
-            className="border rounded p-2 w-full mb-4"
-          >
-            <option value="default" hidden />
-            <option value="main">Compte principal</option>
-            <option value="A">A</option>
-            <option value="jeune">jeune</option>
-          </select>
+          <input
+            type="number"
+            min="0"
+            id="amount"
+            name="amount"
+            value={amount}
+            onChange={(event) => setAmount(event.target.value)}
+            className="border rounded p-2 w-full mb-2"
+          />
 
           {destinationAccount === "other" && sourceAccount === "main" && (
             <div className="mb-4">
