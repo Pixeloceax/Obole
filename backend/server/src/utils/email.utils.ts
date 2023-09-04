@@ -259,6 +259,7 @@ export const sendNewAccountEmail = async (
     };
 
     const info: any = await transport.sendMail(mailOptions);
+    return info;
   } catch (err) {
     throw new Error(`Error sending new account email: ${err}`);
   }
