@@ -38,8 +38,8 @@ const PaymentViewer = () => {
       <table className="w-full border">
         <thead>
           <tr>
-            <th className="p-2 border">Amount</th>
-            <th className="p-2 border">Category</th>
+            <th className="p-2 border">Montant</th>
+            <th className="p-2 border">Catégorie</th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +48,7 @@ const PaymentViewer = () => {
               <tr key={singlePayment.id} className="hover:bg-gray-100">
                 <td className="p-2 border">
                 <FontAwesomeIcon icon={faArrowTrendDown} className="text-sm text-red-600 pr-2" />
-                 {singlePayment.amount}</td>
+                 {singlePayment.amount} €</td>
                 <td className="p-2 border">{singlePayment.categorie}</td>
               </tr>
             );
