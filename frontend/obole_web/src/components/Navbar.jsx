@@ -20,7 +20,7 @@ const Navbar = () => {
   const navLinks = [
     { path: "/dashboard", icon: faWallet, text: "Compte" },
     { path: "/dashboard/cartes", icon: faCreditCard, text: "Cartes" },
-    { path: "/dashboard/statistic", icon: faChartLine, text: "Statistic" },
+    { path: "/dashboard/statistic", icon: faChartLine, text: "Statistique" },
     { path: "/dashboard/epargne", icon: faPiggyBank, text: "Epargne" },
     { path: "/dashboard/message", icon: faMessage, text: "Message" },
   ];
