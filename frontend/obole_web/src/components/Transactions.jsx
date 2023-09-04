@@ -135,7 +135,7 @@ const TransactionForm = () => {
   return (
     <div className=" mx-auto p-4 bg-white rounded-xl">
       <h1 className="text-2xl font-semibold mb-4 flex justify-center">
-        Transfer Funds
+        Transfert de fonds
       </h1>
 
       <div className="flex justify-center">
@@ -144,7 +144,7 @@ const TransactionForm = () => {
           className="max-w-xl bg-purple p-6 rounded-lg shadow-xl"
         >
           <label htmlFor="amount" className="block font-semibold mb-1">
-            Amount
+            Montant
           </label>
           <input
             type="number"
@@ -158,14 +158,14 @@ const TransactionForm = () => {
 
           <div className="mb-4">
             <label className="block font-semibold mb-1">
-              Destination Account
+              Compte de destination
             </label>
             {destinationAccount === "other" ? (
               <>
                 <input
                   type="number"
                   min="0"
-                  placeholder="Enter destination account"
+                  placeholder="Entrer le Compte de destination"
                   className="border rounded p-2 w-full mb-2"
                   onChange={(event) =>
                     setDestinationToOtherAccount(event.target.value)
@@ -173,7 +173,7 @@ const TransactionForm = () => {
                 />
 
                 <button onClick={() => setDestinationAccount("A")}>
-                  Cancel
+                  Annuler
                 </button>
               </>
             ) : (
@@ -185,16 +185,16 @@ const TransactionForm = () => {
                 className="border rounded p-2 w-full mb-2"
               >
                 <option value="default" hidden />
-                <option value="main">Main Account</option>
+                <option value="main">Compte principal</option>
                 <option value="A">A</option>
                 <option value="jeune">jeune</option>
-                <option value="other">Other</option>
+                <option value="other">Autre</option>
               </select>
             )}
           </div>
 
           <label htmlFor="sourceAccount" className="block font-semibold mb-1">
-            Source Account
+            Compte source
           </label>
           <select
             id="sourceAccount"
@@ -204,7 +204,7 @@ const TransactionForm = () => {
             className="border rounded p-2 w-full mb-4"
           >
             <option value="default" hidden />
-            <option value="main">Main Account</option>
+            <option value="main">Compte principal</option>
             <option value="A">A</option>
             <option value="jeune">jeune</option>
           </select>
@@ -230,14 +230,7 @@ const TransactionForm = () => {
             className="bg-blue-500 text-white rounded px-4 py-2 mr-2"
             aria-label="Submit"
           >
-            Submit
-          </button>
-          <button
-            type="button"
-            className="border rounded px-4 py-2 ml-2"
-            aria-label="Cancel"
-          >
-            Cancel
+            Soumettre
           </button>
         </form>
       </div>
@@ -250,7 +243,7 @@ const TransactionForm = () => {
 
       <section className="flex justify-evenly pt-6">
         <div className="w-[30%] bg-purple_foncer p-3 rounded-xl text-white">
-          <h2 className="mb-4 text-lg font-semibold">Payments</h2>
+          <h2 className="mb-4 text-lg font-semibold">Paiements</h2>
           <PaymentViewer />
         </div>
         <div className="w-[60%] bg-purple_foncer p-3 rounded-xl text-white">

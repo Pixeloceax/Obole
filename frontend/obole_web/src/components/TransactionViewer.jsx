@@ -38,10 +38,10 @@ const TransactionViewer = () => {
       <table className="w-full border">
         <thead>
           <tr>
-            <th className="p-2 border">Amount</th>
+            <th className="p-2 border">Montant</th>
             <th className="p-2 border">Description</th>
-            <th className="p-2 border">Source Account</th>
-            <th className="p-2 border">Destination Account</th>
+            <th className="p-2 border">Compte source</th>
+            <th className="p-2 border">Compte de destination</th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +50,7 @@ const TransactionViewer = () => {
               return (
                 <tr key={transaction.id} className="hover:bg-gray-100">
                   <td className="p-2 border">
-                  <FontAwesomeIcon icon={faArrowTrendUp} className="text-sm text-green-600 pr-2" /> {transaction.amount}</td>
+                  <FontAwesomeIcon icon={faArrowTrendUp} className="text-sm text-green-600 pr-2" /> {transaction.amount} €</td>
                   <td className="p-2 border">{transaction.description}</td>
                   <td className="p-2 border">{transaction.sourceAccount}</td>
                   <td className="p-2 border">{transaction.destinationAccount}</td>
@@ -60,7 +60,7 @@ const TransactionViewer = () => {
             return (
               <tr key={transaction.id} className="hover:bg-gray-100">
                 <td className="p-2 border">
-                <FontAwesomeIcon icon={faArrowTrendDown} className="text-sm text-red-600 pr-2" /> {transaction.amount}</td>
+                <FontAwesomeIcon icon={faArrowTrendDown} className="text-sm text-red-600 pr-2" /> {transaction.amount} €</td>
                 <td className="p-2 border">{transaction.description}</td>
                 <td className="p-2 border">{transaction.sourceAccount}</td>
                 <td className="p-2 border">{transaction.destinationAccount}</td>
