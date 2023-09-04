@@ -25,7 +25,7 @@ const Modal = ({ isOpen, onClose, deconexion }) => {
           className="mt-2 px-3 py-1 bg-white rounded-lg"
           onClick={onClose}
         >
-          Close
+          Fermer
         </button>
       </div>
     </div>
