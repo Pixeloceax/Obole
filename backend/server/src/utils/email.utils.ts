@@ -1,6 +1,4 @@
 import nodemailer, { TransportOptions } from "nodemailer";
-import { Request, Response } from "express";
-import { getAccount } from "./getaccountNumber.utils";
 import User from "../models/user.model";
 import * as dotenv from "dotenv";
 dotenv.config();
