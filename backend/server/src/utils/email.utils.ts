@@ -14,17 +14,17 @@ export async function checkEmailExist(email: string): Promise<boolean> {
 
 const transporter = async () => {
   try {
-    const transporter = nodemailer.createTransport("SMTP", {
+    const transport = nodemailer.createTransport({
       host: "smtp-mail.outlook.com",
-      secureConnection: false,
+      secure: false,
       port: 587,
-
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
       },
     } as TransportOptions);
-    return transporter;
+
+    return transport;
   } catch (err) {
     throw new Error(`Error creating transporter: ${err}`);
   }
