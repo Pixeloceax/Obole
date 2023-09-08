@@ -14,7 +14,7 @@ export async function checkEmailExist(email: string): Promise<boolean> {
 
 const transporter = async () => {
   try {
-    const transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport("SMTP", {
       host: "smtp.office365.com",
       secureConnection: false,
       port: 587,
