@@ -18,6 +18,9 @@ const transporter = async () => {
       host: "smtp-mail.outlook.com",
       secureConnection: false,
       port: 587,
+      tls: {
+        ciphers: "SSLv3",
+      },
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
