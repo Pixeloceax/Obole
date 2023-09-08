@@ -15,12 +15,10 @@ export async function checkEmailExist(email: string): Promise<boolean> {
 const transporter = async () => {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp-mail.outlook.com",
+      host: "smtp.office365.com",
       secureConnection: false,
       port: 587,
-      tls: {
-        ciphers: "SSLv3",
-      },
+
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
