@@ -114,6 +114,13 @@ const Login = ({ handleLogin }) => {
           {message && (
             <div className="text-center text-red-500 mt-2">{message}</div>
           )}
+          <div className="mt-2">
+            <p className="text-white text-center">Compte de Visiteur</p>
+            <p className="text-white text-center">
+              Numéro de compte : 999878627318
+            </p>
+            <p className="text-white text-center">Mot de passe : 5448037486</p>
+          </div>
         </div>
       </div>
     </div>

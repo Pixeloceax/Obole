@@ -8,7 +8,7 @@ Hi, we are Colas and Axel, the developers of this project. We are passionate sof
 
 ## Project Description
 
-Obole Bank is a cutting-edge online banking platform that revolutionizes the way you manage your finances. With its sleek design and powerful features, Obole Bank provides a seamless banking experience for individuals and businesses alike. Our project is built using the latest web technologies, including React, Node.js, and MongoDB. With Obole Bank, you can easily perform various banking operations such as managing accounts, making transfers, tracking expenses, and analyzing financial data. Our goal is to empower users with the tools they need to take control of their finances, making banking simple, secure, and efficient.
+Obole Bank is an online banking platform developed by a team of two in just two months as our final project at Holberton. This cutting-edge application, built using the MERN stack (MongoDB, Express.js, React, and Node.js)
 
 ## Story of Development
 
